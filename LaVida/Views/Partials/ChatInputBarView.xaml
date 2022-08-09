@@ -19,8 +19,6 @@
                  Keyboard="Chat"  
                  IsExpandable="true"
                  HorizontalOptions="FillAndExpand" 
-                 PlaceholderColor="LightGray"
-                 Placeholder="Type your message here"
                  Grid.Row="0" 
                  Grid.Column="0" />
         <Label Text="Send"

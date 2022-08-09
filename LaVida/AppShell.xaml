@@ -3,9 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:LaVida.Views"
        x:Class="LaVida.AppShell">
-   
-    <TabBar  Route="login">
-        <ShellContent  ContentTemplate="{DataTemplate local:LoginPage}"></ShellContent>
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.ForegroundColor" Value="#90a88e" />
+                <Setter Property="Shell.TitleColor" Value="White" />
+                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+                <Setter Property="Shell.UnselectedColor" Value="#e3d7b9" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="#90a88e"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#e3d7b9"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+                <Setter Property="Shell.Background" Value="#B6ADAF"/>
+            </Style>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+        </ResourceDictionary>
+    </Shell.Resources>
+    <TabBar  Route="registration">
+        <ShellContent  ContentTemplate="{DataTemplate local:RegistrationPage}"></ShellContent>
 
 
     </TabBar>

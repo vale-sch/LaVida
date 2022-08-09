@@ -14,7 +14,7 @@ namespace LaVida.Views
         public ChatPage()
         {
             InitializeComponent();
-            Title = "LA VIDA - Group Chat";
+            Title = "LAVIDA - DemoChat";
             BindingContext = new ChatBackend();
         }
 

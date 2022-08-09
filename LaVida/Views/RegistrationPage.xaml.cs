@@ -6,12 +6,12 @@ using Xamarin.Forms.Xaml;
 
 namespace LaVida.Views
 {
-    public partial class LoginPage : ContentPage
+    public partial class RegistrationPage : ContentPage
     {
-        public LoginPage()
+        public RegistrationPage()
         {
             InitializeComponent();
-            Title = "LA VIDA - Login";
+            Title = "LAVIDA - Registration";
         }
 
         private async void NavigateToChatRoom(object sender, EventArgs e)
