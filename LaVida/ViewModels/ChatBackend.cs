@@ -4,13 +4,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using LaVida;
 using LaVida.Models;
 using Xamarin.Forms;
 
 namespace LaVida.ViewModels
 {
-    public class ChatPageViewModel : INotifyPropertyChanged
+    public class ChatBackend : INotifyPropertyChanged
     {
         public bool ShowScrollTap { get; set; } = false;
         public bool LastMessageVisible { get; set; } = true;
@@ -24,7 +23,7 @@ namespace LaVida.ViewModels
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
 
-        public ChatPageViewModel()
+        public ChatBackend()
         {
             Console.WriteLine("Try to connect to Server...");
             try
@@ -37,50 +36,43 @@ namespace LaVida.ViewModels
                 throw ex;
             }
             Console.WriteLine("...Connection established!");
-
+            App.chatService.ReceiveMessage(ReceiveMessage);
             MessageAppearingCommand = new Command<MessageModel>(OnMessageAppearing);
             MessageDisappearingCommand = new Command<MessageModel>(OnMessageDisappearing);
 
             OnSendCommand = new Command(() =>
             {
+
                 if (!string.IsNullOrEmpty(TextToSend))
                 {
                     SendMessage(App.User, TextToSend);
                 }
 
             });
-            App.chatService.ReceiveMessage(ReceiveMessage);
-            //Code to simulate reveing a new message procces
-            /* Device.StartTimer(TimeSpan.FromSeconds(5), () =>
-             {
-                 if (LastMessageVisible)
-                 {
-                     Messages.Insert(0, new MessageModel(){ Text = "New message test" , UserName ="Mario"});
-                 }
-                 else
-                 {
-                     DelayedMessages.Enqueue(new MessageModel() { Text = "New message test" , UserName = "Mario"});
-                     PendingMessageCount++;
-                 }
-                 return true;
-             });*/
-
-
 
         }
         private void ReceiveMessage(string userName, string text)
         {
-            RefreshMessages(userName, text);
+            if (App.User != userName)
+                RefreshMessages(userName, text);
         }
         public void RefreshMessages(string userName, string text)
         {
             if (!string.IsNullOrEmpty(text))
-                Messages.Insert(0, new MessageModel {  Text = text , UserName = userName });
-
+            {
+                if (LastMessageVisible)
+                {
+                    Messages.Insert(0, new MessageModel() { Message = text, UserName = userName });
+                }
+                else
+                {
+                    DelayedMessages.Enqueue(new MessageModel() { Message = text, UserName = userName });
+                    PendingMessageCount++;
+                }
+            }
         }
         private void SendMessage(string username, string text)
         {
-            Console.WriteLine(text + " " + username);
             Task.Run(async () =>
             {
                 await App.chatService.SendMessage(username, text);

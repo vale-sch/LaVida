@@ -7,7 +7,8 @@
               FlowDirection="LeftToRight"
               Padding="10"
               HasShadow="false"
-              Margin="10,10,80,10">
-           <Label Text="{Binding Text}"/>
+              Margin="80,10,10,10"
+              CornerRadius="15">
+        <Label Text="{Binding Message}" BackgroundColor="Transparent"/>
         </Frame>
 </ViewCell>

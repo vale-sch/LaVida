@@ -14,7 +14,8 @@ namespace LaVida.Views
         public ChatPage()
         {
             InitializeComponent();
-            BindingContext = new ChatPageViewModel();
+            Title = "LA VIDA - Group Chat";
+            BindingContext = new ChatBackend();
         }
 
         public void ScrollTap(object sender, System.EventArgs e)
@@ -23,7 +24,7 @@ namespace LaVida.Views
             {
                 if (BindingContext != null)
                 {
-                    var vm = BindingContext as ChatPageViewModel;
+                    var vm = BindingContext as ChatBackend;
 
                     Device.BeginInvokeOnMainThread(() =>
                     {

@@ -9,9 +9,9 @@ namespace LaVida
     {
         public AppShell()
         {
+            Routing.RegisterRoute("login", typeof(TabBar));
+            Routing.RegisterRoute("main", typeof(TabBar));
             InitializeComponent();
-            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
-            Routing.RegisterRoute(nameof(ChatPage), typeof(ChatPage));
         }
 
     }

@@ -18,8 +18,9 @@ namespace LaVida.Views.Partials
         }
         public void Handle_Completed(object sender, EventArgs e)
         {
-            (this.Parent.Parent.BindingContext as ChatPageViewModel).OnSendCommand.Execute(null);
+            (this.Parent.Parent.BindingContext as ChatBackend).OnSendCommand.Execute(null);
             chatTextInput.Focus();
+            chatTextInput.Text = String.Empty;
         }
 
         public void UnFocusEntry()

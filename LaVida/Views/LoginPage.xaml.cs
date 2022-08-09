@@ -12,15 +12,14 @@ namespace LaVida.Views
     {
         public LoginPage()
         {
-            Title = "Login";
             InitializeComponent();
-            
+            Title = "LA VIDA - Login";
         }
 
         private async void NavigateToChatRoom(object sender, EventArgs e)
         {
             App.User = userName.Text;
-            await Shell.Current.GoToAsync($"{nameof(ChatPage)}");
+            await Shell.Current.GoToAsync("//main");        
         }
     }
 }

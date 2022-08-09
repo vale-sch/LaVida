@@ -4,14 +4,14 @@
              x:Class="LaVida.Views.ChatPage" 
              xmlns:local="clr-namespace:LaVida.Helpers" 
              xmlns:partials="clr-namespace:LaVida.Views.Partials" 
-             xmlns:controls="clr-namespace:LaVida.Controls" xmlns:viewmodels="clr-namespace:LaVida.ViewModels" x:DataType="viewmodels:ChatPageViewModel">
+             xmlns:controls="clr-namespace:LaVida.Controls" xmlns:viewmodels="clr-namespace:LaVida.ViewModels" x:DataType="viewmodels:ChatBackend">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:ChatTemplateSelector x:Key="MessageTemplateSelector"/>
         </ResourceDictionary>
     </ContentPage.Resources>
      <Grid RowSpacing="0" 
-           ColumnSpacing="0">
+           ColumnSpacing="0" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="1" />
@@ -64,4 +64,6 @@
                                    Margin="0,0,10,0"
                                    x:Name="chatInput"/>
     </Grid>
+    
 </ContentPage>
+

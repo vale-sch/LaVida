@@ -31,7 +31,7 @@ namespace LaVida.Services
         public void ReceiveMessage(Action<string, string> GetMessageAndUser)
         {
             hubConnection.On("ReceiveMessage", GetMessageAndUser);
-            Console.WriteLine("RECEIVE MESSAGES FROM SERVER");
+            Console.WriteLine("RECEIVE METHOD!");
         }
         public async Task Connect()
         {
