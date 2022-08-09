@@ -1,5 +1,4 @@
-﻿using LaVida.ViewModels;
-using LaVida.Views;
+﻿using LaVida.Views;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -11,8 +10,8 @@ namespace LaVida
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
-            Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            Routing.RegisterRoute(nameof(ChatPage), typeof(ChatPage));
         }
 
     }

@@ -1,34 +1,16 @@
-﻿using LaVida.Models;
-using LaVida.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Xamarin.Forms;
+using System.Text;
 
-namespace LaVida.ViewModels
+namespace LaVida.Views
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    internal class BaseViewModel: INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
-
-        bool isBusy = false;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
-        }
-
-        string title = string.Empty;
-        public string Title
-        {
-            get { return title; }
-            set { SetProperty(ref title, value); }
-        }
-
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName] string propertyName = "",
-            Action onChanged = null)
+        public bool SetProperty<T>(ref T backingStore, T value,
+       [CallerMemberName] string propertyName = "",
+       Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
