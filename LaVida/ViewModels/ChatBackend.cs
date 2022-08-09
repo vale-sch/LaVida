@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Firebase.Database;
+using Firebase.Database.Query;
 using LaVida.Models;
 using Xamarin.Forms;
 
@@ -22,21 +24,22 @@ namespace LaVida.ViewModels
         public ICommand OnSendCommand { get; set; }
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
+        private FirebaseClient firebaseClient;
+
 
         public ChatBackend()
         {
             Console.WriteLine("Try to connect to Server...");
             try
             {
-                App.StartService();
-
+                firebaseClient = new FirebaseClient("https://lavida-b6aca-default-rtdb.europe-west1.firebasedatabase.app/");
             }
             catch (Exception ex)
             {
                 throw ex;
             }
             Console.WriteLine("...Connection established!");
-            App.chatService.ReceiveMessage(ReceiveMessage);
+            ReceiveMessage();
             MessageAppearingCommand = new Command<MessageModel>(OnMessageAppearing);
             MessageDisappearingCommand = new Command<MessageModel>(OnMessageDisappearing);
 
@@ -51,10 +54,19 @@ namespace LaVida.ViewModels
             });
 
         }
-        private void ReceiveMessage(string userName, string text)
+        private void ReceiveMessage()
         {
-            if (App.User != userName)
-                RefreshMessages(userName, text);
+
+            var collection = firebaseClient.Child("Messages").AsObservable<MessageModel>().Subscribe((dbevent) =>
+            {
+                if (dbevent.Object != null)
+                {
+                    if (dbevent.Object.UserName != App.User)
+                        RefreshMessages(dbevent.Object.UserName, dbevent.Object.Message);
+                }
+            });
+
+
         }
         public void RefreshMessages(string userName, string text)
         {
@@ -73,11 +85,7 @@ namespace LaVida.ViewModels
         }
         private void SendMessage(string username, string text)
         {
-            Task.Run(async () =>
-            {
-                await App.chatService.SendMessage(username, text);
-
-            });
+            firebaseClient.Child("Messages").PostAsync(new MessageModel() { Message = text, UserName = username });
             RefreshMessages(username, text);
             TextToSend = string.Empty;
         }

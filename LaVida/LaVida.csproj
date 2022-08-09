@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <PackageReference Include="FirebaseDatabase.net" Version="4.0.7" />
 	  <PackageReference Include="FluentAssertions" Version="6.7.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.7" />
 	  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />

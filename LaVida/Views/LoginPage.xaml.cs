@@ -1,6 +1,4 @@
-﻿using LaVida.Services;
-using LaVida.Services.Interfaces;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
