@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Firebase.Database;
 using Firebase.Database.Query;
 using LaVida.Models;
+using MongoDB.Driver;
 using Xamarin.Forms;
 
 namespace LaVida.ViewModels
@@ -24,8 +25,8 @@ namespace LaVida.ViewModels
         public ICommand OnSendCommand { get; set; }
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
-        private FirebaseClient firebaseClient;
-
+        private readonly FirebaseClient firebaseClient;
+        private Connection connection;
 
         public ChatBackend()
         {
@@ -40,8 +41,8 @@ namespace LaVida.ViewModels
             }
             Console.WriteLine("...Connection established!");
             ReceiveMessage();
-            MessageAppearingCommand = new Command<MessageModel>(OnMessageAppearing);
-            MessageDisappearingCommand = new Command<MessageModel>(OnMessageDisappearing);
+            MessageAppearingCommand = new Xamarin.Forms.Command<MessageModel>(OnMessageAppearing);
+            MessageDisappearingCommand = new Xamarin.Forms.Command<MessageModel>(OnMessageDisappearing);
 
             OnSendCommand = new Command(() =>
             {
@@ -52,17 +53,17 @@ namespace LaVida.ViewModels
                 }
 
             });
+            Task.Run(async () => { await CreateTestConnection(); });
 
         }
         private void ReceiveMessage()
         {
 
-            var collection = firebaseClient.Child("Messages").AsObservable<MessageModel>().Subscribe((dbevent) =>
+            var collection = firebaseClient.Child("connection.chatId").AsObservable<MessageModel>().Subscribe((dbevent) =>
             {
                 if (dbevent.Object != null)
                 {
-                    if (dbevent.Object.UserName != App.User)
-                        RefreshMessages(dbevent.Object.UserName, dbevent.Object.Message);
+                    RefreshMessages(dbevent.Object.UserName, dbevent.Object.Message);
                 }
             });
 
@@ -83,11 +84,36 @@ namespace LaVida.ViewModels
                 }
             }
         }
+        async Task CreateTestConnection()
+        {
+            Console.WriteLine("ICH BIN HIER");
+            var results = await App.mongoCollection.FindAsync(_ => true);
+            Console.WriteLine("ICH BIN HIER");
+            foreach (var item in results.ToList())
+            {
+                if (item.Name == "Viola")
+                {
+                    connection = new Connection() { chatPartner = item.Name, chatId = App.User + item.Name.GetHashCode(), chatType = ChatType.PRIVATECHAT };
+                    Console.WriteLine(connection.chatId);
+                }
+            }
+            Console.WriteLine("ICH BIN HIER & FERTIG");
+
+
+        }
+        private void SendMessageFirstTime(string myUsername, string UsernameFromOther, string text)
+        {
+            connection = new Connection() { chatPartner = myUsername, chatId = myUsername + UsernameFromOther.GetHashCode(), chatType = ChatType.PRIVATECHAT };
+
+
+        }
         private void SendMessage(string username, string text)
         {
-            firebaseClient.Child("Messages").PostAsync(new MessageModel() { Message = text, UserName = username });
+
+            firebaseClient.Child(connection.chatId).PostAsync(new MessageModel() { Message = text, UserName = username });
             RefreshMessages(username, text);
             TextToSend = string.Empty;
+
         }
         void OnMessageAppearing(MessageModel message)
         {

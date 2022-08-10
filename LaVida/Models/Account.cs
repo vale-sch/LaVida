@@ -9,6 +9,8 @@ namespace LaVida.Models
         public string Name { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
-        public string [] Connections { get; set; }
+        public float AccountID { get; set; }
+        public List< Connection> Connections { get; set; }
+
     }
 }
