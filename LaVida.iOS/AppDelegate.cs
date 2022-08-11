@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using LaVida.Helpers;
 using UIKit;
+using Xamarin.Forms;
 
 namespace LaVida.iOS
 {
@@ -24,7 +26,10 @@ namespace LaVida.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
-
+            MessagingCenter.Subscribe<DeviceIDMessage>(this, "GetDeviceID", message =>
+            {
+                message.DeviceID = UIDevice.CurrentDevice.IdentifierForVendor.ToString();
+            });
             return base.FinishedLaunching(app, options);
         }
     }

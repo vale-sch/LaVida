@@ -21,9 +21,8 @@ namespace LaVida.Views
             App.User = userName.Text;
             await Shell.Current.GoToAsync("//main");
 
-            //   await collection.InsertOneAsync(account);
             if (String.IsNullOrEmpty(userName.Text)) return;
-            Account test = new Account() { Name = userName.Text, Password = password.Text, PhoneNumber = phoneNumber.Text, AccountID = phoneNumber.Text.GetHashCode(), Connections = new List<Connection>() };
+            Account test = new Account() { Name = userName.Text, Password = password.Text, PhoneNumber = phoneNumber.Text, AccountID = App.DeviceIdentifier.DeviceID, Connections = new List<Connection>() };
             await App.mongoCollection.InsertOneAsync(test);
         }
 

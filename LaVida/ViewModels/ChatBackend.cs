@@ -27,6 +27,7 @@ namespace LaVida.ViewModels
         public ICommand MessageDisappearingCommand { get; set; }
         private readonly FirebaseClient firebaseClient;
         private Connection connection;
+        private readonly  ContactCore contactsFromIntern;
 
         public ChatBackend()
         {
@@ -49,69 +50,62 @@ namespace LaVida.ViewModels
 
                 if (!string.IsNullOrEmpty(TextToSend))
                 {
-                    SendMessage(App.User, TextToSend);
+                    SendMessage(App.User, TextToSend, new DateTime());
                 }
 
             });
-            Task.Run(async () => { await CreateTestConnection(); });
+            contactsFromIntern = new ContactCore();
+            Task.Run(async () =>
+            {
+                await LoadPossibleConnections();
+            });
 
         }
-        private void ReceiveMessage()
+        private async Task LoadPossibleConnections()
+        {
+            foreach (var contactFromIntern in contactsFromIntern.GetContacts())
+                foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
+                    foreach (var accountFromDB in App.AccountsFromDB)
+                        if (phoneFromIntern.PhoneNumber == accountFromDB.PhoneNumber)
+                            Console.WriteLine("TREFFER");                               
+        }
+            private void ReceiveMessage()
         {
 
             var collection = firebaseClient.Child("connection.chatId").AsObservable<MessageModel>().Subscribe((dbevent) =>
             {
                 if (dbevent.Object != null)
                 {
-                    RefreshMessages(dbevent.Object.UserName, dbevent.Object.Message);
+                    RefreshMessages(dbevent.Object.UserName, dbevent.Object.Message, dbevent.Object.DateTime);
                 }
             });
 
 
         }
-        public void RefreshMessages(string userName, string text)
+        public void RefreshMessages(string userName, string message, DateTime dateTime)
         {
-            if (!string.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(message))
             {
                 if (LastMessageVisible)
                 {
-                    Messages.Insert(0, new MessageModel() { Message = text, UserName = userName });
+                    Messages.Insert(0, new MessageModel() { Message = message, UserName = userName, DateTime = dateTime });
                 }
                 else
                 {
-                    DelayedMessages.Enqueue(new MessageModel() { Message = text, UserName = userName });
+                    DelayedMessages.Enqueue(new MessageModel() { Message = message, UserName = userName });
                     PendingMessageCount++;
                 }
             }
         }
-        async Task CreateTestConnection()
+    
+       /* private void SendMessageFirstTime(string myUsername, string UsernameFromOther, string text)
         {
-            Console.WriteLine("ICH BIN HIER");
-            var results = await App.mongoCollection.FindAsync(_ => true);
-            Console.WriteLine("ICH BIN HIER");
-            foreach (var item in results.ToList())
-            {
-                if (item.Name == "Viola")
-                {
-                    connection = new Connection() { chatPartner = item.Name, chatId = App.User + item.Name.GetHashCode(), chatType = ChatType.PRIVATECHAT };
-                    Console.WriteLine(connection.chatId);
-                }
-            }
-            Console.WriteLine("ICH BIN HIER & FERTIG");
-
-
-        }
-        private void SendMessageFirstTime(string myUsername, string UsernameFromOther, string text)
-        {
-            connection = new Connection() { chatPartner = myUsername, chatId = myUsername + UsernameFromOther.GetHashCode(), chatType = ChatType.PRIVATECHAT };
-
-
-        }
-        private void SendMessage(string username, string text)
+        }*/
+        private void SendMessage(string username, string text, DateTime dateTime)
         {
 
-            firebaseClient.Child(connection.chatId).PostAsync(new MessageModel() { Message = text, UserName = username });
-            RefreshMessages(username, text);
+            firebaseClient.Child(connection.chatId).PostAsync(new MessageModel() { Message = text, UserName = username, DateTime=dateTime });
+            RefreshMessages(username, text, dateTime);
             TextToSend = string.Empty;
 
         }
