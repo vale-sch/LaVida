@@ -110,7 +110,9 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_scrolldown.png" />
     <AndroidResource Include="Resources\drawable-ldpi\ic_scrolldown.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\LaVida_Logo.png" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LaVida\LaVida.csproj">
       <Project>{7CC0F4B0-9DB4-4A2E-92EE-E01F0AFA4769}</Project>

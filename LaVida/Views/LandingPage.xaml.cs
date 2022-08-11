@@ -10,12 +10,12 @@ using Xamarin.Forms.Xaml;
 namespace LaVida.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AccountPage : ContentPage
+    public partial class LandingPage : ContentPage
     {
-        public AccountPage()
+        public LandingPage()
         {
             InitializeComponent();
-            Title = "Account Page";
+            Title = "WELCOME";
         }
     }
 }

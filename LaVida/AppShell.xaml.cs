@@ -9,6 +9,7 @@ namespace LaVida
     {
         public AppShell()
         {
+            Routing.RegisterRoute("landing", typeof(TabBar));
             Routing.RegisterRoute("registration", typeof(TabBar));
             Routing.RegisterRoute("main", typeof(TabBar));
             InitializeComponent();

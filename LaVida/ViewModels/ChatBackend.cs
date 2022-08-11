@@ -55,13 +55,13 @@ namespace LaVida.ViewModels
 
             });
             contactsFromIntern = new ContactCore();
-            Task.Run(async () =>
-            {
-                await LoadPossibleConnections();
-            });
+          
+            
+                 LoadPossibleConnections();
+           
 
         }
-        private async Task LoadPossibleConnections()
+        private void LoadPossibleConnections()
         {
             foreach (var contactFromIntern in contactsFromIntern.GetContacts())
                 foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
@@ -104,7 +104,7 @@ namespace LaVida.ViewModels
         private void SendMessage(string username, string text, DateTime dateTime)
         {
 
-            firebaseClient.Child(connection.chatId).PostAsync(new MessageModel() { Message = text, UserName = username, DateTime=dateTime });
+            firebaseClient.Child(connection.chatId).PostAsync(new MessageModel() { Message =dateTime.ToString() + "\n" +  text, UserName = username, DateTime=dateTime });
             RefreshMessages(username, text, dateTime);
             TextToSend = string.Empty;
 

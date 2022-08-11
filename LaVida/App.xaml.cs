@@ -22,6 +22,7 @@ namespace LaVida
         private IMongoDatabase Database;
         private readonly string dbName = "AccountsDB";
         private readonly string collectionName = "Account";
+        private Account myAccount;
         public App()
         {
             InitializeComponent();
@@ -60,17 +61,24 @@ namespace LaVida
 
             MessagingCenter.Send<DeviceIDMessage>(DeviceIdentifier, "GetDeviceID");
             await Task.Delay(TimeSpan.FromMilliseconds(50));
-
+            Boolean isInDB = false;
             foreach (var accountFromDB in AccountsFromDB)
             {
-                if (DeviceIdentifier.DeviceID != accountFromDB.AccountID)
+                if (DeviceIdentifier.DeviceID == accountFromDB.AccountID)
                 {
-                    await Shell.Current.GoToAsync("//registration");
+                    myAccount = accountFromDB;
+                    isInDB = true;
                 }
-                else await Shell.Current.GoToAsync("//main");
-
-
             }
+
+            if (isInDB)
+            {
+                await Shell.Current.GoToAsync("//main");
+                App.User = myAccount.Name;
+            }
+            else
+                await Shell.Current.GoToAsync("//registration");
+            
         }
         public async Task<List<Account>> GettALlAccountsFromDB()
         {

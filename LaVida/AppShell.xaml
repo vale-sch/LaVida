@@ -7,19 +7,24 @@
         <ResourceDictionary>
             <Style x:Key="BaseStyle" TargetType="Element">
                 <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.ForegroundColor" Value="#90a88e" />
-                <Setter Property="Shell.TitleColor" Value="White" />
-                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-                <Setter Property="Shell.UnselectedColor" Value="#e3d7b9" />
+                <Setter Property="Shell.ForegroundColor" Value="#A0BCC2" />
+                <Setter Property="Shell.TitleColor" Value="Black" />
+                <Setter Property="Shell.DisabledColor" Value="White" />
+                <Setter Property="Shell.UnselectedColor" Value="#White" />
                 <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="#90a88e"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#e3d7b9"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
-                <Setter Property="Shell.Background" Value="#B6ADAF"/>
+                <Setter Property="Shell.TabBarForegroundColor" Value="Black"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="Black"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="Black"/>
+                <Setter Property="Shell.Background" Value="White"/>
             </Style>
             <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
         </ResourceDictionary>
     </Shell.Resources>
+    <TabBar  Route="landing">
+        <ShellContent  ContentTemplate="{DataTemplate local:LandingPage}"></ShellContent>
+
+
+    </TabBar>
     <TabBar  Route="registration">
         <ShellContent  ContentTemplate="{DataTemplate local:RegistrationPage}"></ShellContent>
 
