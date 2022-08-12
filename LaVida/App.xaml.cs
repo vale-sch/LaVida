@@ -73,12 +73,14 @@ namespace LaVida
 
             if (isInDB)
             {
-                await Shell.Current.GoToAsync("//main");
+                await Shell.Current.Navigation.PopAsync();
+                await Shell.Current.GoToAsync("main");
                 App.User = myAccount.Name;
             }
             else
             {
-                await Shell.Current.GoToAsync("//registration");
+                await Shell.Current.Navigation.PopAsync();
+                await Shell.Current.GoToAsync("registration");
             }
            
             
