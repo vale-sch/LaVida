@@ -27,7 +27,7 @@ namespace LaVida.ViewModels
         public ICommand MessageDisappearingCommand { get; set; }
         private readonly FirebaseClient firebaseClient;
         private readonly Connection connection;
-        private readonly  ContactCore contactsFromIntern;
+        private readonly ContactCore contactsFromIntern;
 
         public ChatBackend()
         {
@@ -41,7 +41,7 @@ namespace LaVida.ViewModels
                 throw ex;
             }
             Console.WriteLine("...Connection established!");
-            ReceiveMessage();
+            StreamMessagesFromServer();
             MessageAppearingCommand = new Xamarin.Forms.Command<MessageModel>(OnMessageAppearing);
             MessageDisappearingCommand = new Xamarin.Forms.Command<MessageModel>(OnMessageDisappearing);
 
@@ -55,10 +55,10 @@ namespace LaVida.ViewModels
 
             });
             contactsFromIntern = new ContactCore();
-          
-            
-                 LoadPossibleConnections();
-           
+
+
+            LoadPossibleConnections();
+
 
         }
         private void LoadPossibleConnections()
@@ -67,9 +67,9 @@ namespace LaVida.ViewModels
                 foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
                     foreach (var accountFromDB in App.AccountsFromDB)
                         if (phoneFromIntern.PhoneNumber == accountFromDB.PhoneNumber)
-                            Console.WriteLine("TREFFER");                               
+                            Console.WriteLine("TREFFER");
         }
-            private void ReceiveMessage()
+        private void StreamMessagesFromServer()
         {
 
             var collection = firebaseClient.Child("Message").AsObservable<MessageModel>().Subscribe((dbevent) =>
@@ -88,24 +88,23 @@ namespace LaVida.ViewModels
             {
                 if (LastMessageVisible)
                 {
-                    Messages.Insert(0, new MessageModel() { Message = message, UserName = userName, DateTime = dateTime });
+                    Messages.Insert(0, new MessageModel() { Message = dateTime.ToString() + "\n" + message, UserName = userName, DateTime = dateTime });
                 }
                 else
                 {
-                    DelayedMessages.Enqueue(new MessageModel() { Message = message, UserName = userName });
+                    DelayedMessages.Enqueue(new MessageModel() { Message = dateTime.ToString() + "\n" + message, UserName = userName, DateTime = dateTime });
                     PendingMessageCount++;
                 }
             }
         }
-    
-       /* private void SendMessageFirstTime(string myUsername, string UsernameFromOther, string text)
-        {
-        }*/
-        private void SendMessage(string username, string text, DateTime dateTime)
+
+        /* private void SendMessageFirstTime(string myUsername, string UsernameFromOther, string text)
+         {
+         }*/
+        private void SendMessage(string username, string message, DateTime dateTime)
         {
 
-            firebaseClient.Child("Message").PostAsync(new MessageModel() { Message =dateTime.ToString() + "\n" +  text, UserName = username, DateTime=dateTime });
-            RefreshMessages(username, text, dateTime);
+            firebaseClient.Child("Message").PostAsync(new MessageModel() { Message = message, UserName = username, DateTime = dateTime });
             TextToSend = string.Empty;
 
         }
@@ -118,7 +117,7 @@ namespace LaVida.ViewModels
                 {
                     while (DelayedMessages.Count > 0)
                     {
-                        Messages.Insert(0, DelayedMessages.Dequeue());
+                        //   Messages.Insert(0, DelayedMessages.Dequeue());
                     }
                     ShowScrollTap = false;
                     LastMessageVisible = true;
