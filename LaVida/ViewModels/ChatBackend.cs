@@ -26,7 +26,7 @@ namespace LaVida.ViewModels
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
         private readonly FirebaseClient firebaseClient;
-        private Connection connection;
+        private readonly Connection connection;
         private readonly  ContactCore contactsFromIntern;
 
         public ChatBackend()

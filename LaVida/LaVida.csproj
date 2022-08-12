@@ -1,43 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="FirebaseDatabase.net" Version="4.0.7" />
-	  <PackageReference Include="FluentAssertions" Version="6.7.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.7" />
-	  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-	  <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
-	  <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
-	  <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Cells\" />
-    <Folder Include="Controls\" />
-    <Folder Include="Views\Partials\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="MainPage.xaml.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Views\.DS_Store" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Views\AccountPage.xaml.cs">
-      <DependentUpon>AccountPage.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="AppShell.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\AccountPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\LandingPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
+    <PackageReference Include="FirebaseDatabase.net" Version="4.0.7" />
+    <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2515" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
   </ItemGroup>
 </Project>

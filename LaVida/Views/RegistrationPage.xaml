@@ -15,18 +15,18 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Label Text="Welcome to our new Chat App LAVIDA!" FontSize="Title" Padding="5,15,5,2" HorizontalTextAlignment="Center" FontAttributes="Bold" ></Label>
+        <Label Text="Welcome to our Chat LAVIDA" FontSize="30" Padding="5,25,5,2" HorizontalTextAlignment="Center" FontAttributes="Bold" LineHeight="1.25"></Label>
 
         <ScrollView Grid.Row="1">
-            <StackLayout Orientation="Vertical" Padding="60,48,60,48" Spacing="40">
-               
-                <Label Text="Enter your chat name" FontSize="Large"/>
+            <StackLayout Orientation="Vertical" Padding="15,40,15,0" Spacing="40">
+
+                <Label Text="Chat Name: " FontSize="Large" FontAttributes="Bold"/>
                 <Entry x:Name="userName" ></Entry>
-                <Label Text="Enter your password" FontSize="Large"/>
+                <Label Text="Password:" FontSize="Large" FontAttributes="Bold"/>
                 <Entry x:Name="password" IsPassword="True"></Entry>
-                <Label Text="Enter your phone number" FontSize="Large"/>
+                <Label Text="Phone Number: " FontSize="Large" FontAttributes="Bold"/>
                 <Entry x:Name="phoneNumber"/>
-                <Button Margin="0,10,0,0" Text="Join Chat"
+                <Button Margin="0,10,0,0" Text="Join" FontAttributes="Bold"
                         Clicked="NavigateToChatRoom"
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White" />

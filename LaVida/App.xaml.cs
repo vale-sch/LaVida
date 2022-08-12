@@ -9,7 +9,6 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace LaVida
 {
     public partial class App : Application
