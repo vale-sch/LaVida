@@ -6,13 +6,20 @@ using Android.Runtime;
 using Android.OS;
 using Xamarin.Forms;
 using LaVida.Helpers;
+using Android;
 
 namespace LaVida.Droid
 {
     [Activity(Label = "LaVida", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        protected override void OnCreate(Bundle savedInstanceState)
+        readonly string[] ContactsPermissions =
+         {
+            Manifest.Permission.ReadContacts,
+        Manifest.Permission.WriteContacts
+
+        };
+    protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
@@ -24,6 +31,8 @@ namespace LaVida.Droid
 
             });
             LoadApplication(new App());
+            RequestPermissions(ContactsPermissions, 0);
+
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
