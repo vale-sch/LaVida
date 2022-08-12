@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using LaVida.Helpers;
 using LaVida.Models;
@@ -72,11 +73,17 @@ namespace LaVida
 
             if (isInDB)
             {
+                Shell.Current.CurrentItem = Shell.Current.CurrentItem.Items.FirstOrDefault(x => x.Title == "LAVIDA - DemoChat");
                 await Shell.Current.GoToAsync("//main");
                 App.User = myAccount.Name;
             }
             else
+            {
+                Shell.Current.CurrentItem = Shell.Current.CurrentItem.Items.FirstOrDefault(x => x.Title == "LAVIDA - Registration");
+
                 await Shell.Current.GoToAsync("//registration");
+            }
+           
             
         }
         public async Task<List<Account>> GettALlAccountsFromDB()
