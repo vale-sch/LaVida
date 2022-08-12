@@ -12,8 +12,8 @@ namespace LaVida
         {
             InitializeComponent();
 
-            Routing.RegisterRoute("landing", typeof(LandingPage));
-            Routing.RegisterRoute("registration", typeof(RegistrationPage));
+            //Routing.RegisterRoute("landing", typeof(LandingPage));
+            Routing.RegisterRoute("registration", typeof(TabBar));
             Routing.RegisterRoute("main", typeof(TabBar));
         }
 
