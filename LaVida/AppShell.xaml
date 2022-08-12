@@ -29,12 +29,11 @@
         </ResourceDictionary>
     </Shell.Resources>
 
-   <TabBar  Route="landing">
-        <ShellContent  ContentTemplate="{DataTemplate local:LandingPage}"></ShellContent>
-    </TabBar>
-    
-    <TabBar  Route="registration">
-        <ShellContent  ContentTemplate="{DataTemplate local:RegistrationPage}"></ShellContent>
+
+    <TabBar  >
+        <ShellContent Route="landing" ContentTemplate="{DataTemplate local:LandingPage}"></ShellContent>
+
+        <ShellContent Route="registration"  ContentTemplate="{DataTemplate local:RegistrationPage}"></ShellContent>
     </TabBar>
 
     <TabBar  Route="main">

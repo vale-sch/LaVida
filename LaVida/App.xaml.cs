@@ -73,17 +73,17 @@ namespace LaVida
 
             if (isInDB)
             {
-                await Shell.Current.Navigation.PopAsync();
-                await Shell.Current.GoToAsync("main");
-                App.User = myAccount.Name;
+                await Shell.Current.GoToAsync("//main");
+                User = myAccount.Name;
             }
+
+          
+
             else
-            {
-                await Shell.Current.Navigation.PopAsync();
-                await Shell.Current.GoToAsync("registration");
-            }
-           
-            
+                await Shell.Current.GoToAsync("//registration");
+
+
+
         }
         public async Task<List<Account>> GettALlAccountsFromDB()
         {
