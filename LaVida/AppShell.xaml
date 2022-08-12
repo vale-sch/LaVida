@@ -31,13 +31,14 @@
 
 
     <TabBar  Shell.TabBarIsVisible="False" >
-        <ShellContent Route="landing" ContentTemplate="{DataTemplate local:LandingPage}"></ShellContent>
+
+        <!--<ShellContent Route="landing" ContentTemplate="{DataTemplate local:LandingPage}"></ShellContent> -->
 
         <ShellContent Route="registration"  ContentTemplate="{DataTemplate local:RegistrationPage}"></ShellContent>
     </TabBar>
 
     <TabBar  Route="main" Shell.TabBarIsVisible="True">
-        <ShellContent Title="Chat" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:ChatPage}" />
+       <ShellContent Title="Chat" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:ChatPage}" />
 
         <ShellContent Title="Account" Icon="icon_about.png" ContentTemplate="{DataTemplate local:AccountPage}"/>
 

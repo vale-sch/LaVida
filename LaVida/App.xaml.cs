@@ -76,9 +76,6 @@ namespace LaVida
                 await Shell.Current.GoToAsync("//main");
                 User = myAccount.Name;
             }
-
-          
-
             else
                 await Shell.Current.GoToAsync("//registration");
 
