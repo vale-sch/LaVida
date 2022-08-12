@@ -50,7 +50,7 @@ namespace LaVida.ViewModels
 
                 if (!string.IsNullOrEmpty(TextToSend))
                 {
-                    SendMessage(App.User, TextToSend, new DateTime());
+                    SendMessage(App.User, TextToSend, DateTime.Now);
                 }
 
             });
@@ -72,7 +72,7 @@ namespace LaVida.ViewModels
             private void ReceiveMessage()
         {
 
-            var collection = firebaseClient.Child("connection.chatId").AsObservable<MessageModel>().Subscribe((dbevent) =>
+            var collection = firebaseClient.Child("Message").AsObservable<MessageModel>().Subscribe((dbevent) =>
             {
                 if (dbevent.Object != null)
                 {
@@ -104,7 +104,7 @@ namespace LaVida.ViewModels
         private void SendMessage(string username, string text, DateTime dateTime)
         {
 
-            firebaseClient.Child(connection.chatId).PostAsync(new MessageModel() { Message =dateTime.ToString() + "\n" +  text, UserName = username, DateTime=dateTime });
+            firebaseClient.Child("Message").PostAsync(new MessageModel() { Message =dateTime.ToString() + "\n" +  text, UserName = username, DateTime=dateTime });
             RefreshMessages(username, text, dateTime);
             TextToSend = string.Empty;
 
