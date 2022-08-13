@@ -16,6 +16,8 @@ namespace LaVida.Views
         {
             InitializeComponent();
             Title = "WELCOME";
+            Routing.RegisterRoute(nameof(ChatPage), typeof(ChatPage));
+            Routing.RegisterRoute(nameof(RegistrationPage), typeof(RegistrationPage));
         }
     }
 }

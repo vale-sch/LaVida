@@ -4,7 +4,7 @@
              x:Class="LaVida.Views.LandingPage">
     <ContentPage.Content >
         
-        <StackLayout BackgroundColor="Black" VerticalOptions="FillAndExpand" >
+        <StackLayout BackgroundColor="Black" VerticalOptions="FillAndExpand"  >
             <Image Source="LaVida_Logo.png" VerticalOptions="Center" Margin="15,100,15,5" HeightRequest="300" WidthRequest="300" ></Image>
             <Label Text="Welcome!"
                 VerticalOptions="CenterAndExpand" 

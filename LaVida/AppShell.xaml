@@ -30,14 +30,14 @@
     </Shell.Resources>
 
 
-    <TabBar  Shell.TabBarIsVisible="False" >
+    <!--  <TabBar  Shell.TabBarIsVisible="False" >
 
-        <!--<ShellContent Route="landing" ContentTemplate="{DataTemplate local:LandingPage}"></ShellContent> -->
+        <ShellContent Route="landing" ContentTemplate="{DataTemplate local:LandingPage}"></ShellContent>
 
         <ShellContent Route="registration"  ContentTemplate="{DataTemplate local:RegistrationPage}"></ShellContent>
-    </TabBar>
+    </TabBar> -->
 
-    <TabBar  Route="main" Shell.TabBarIsVisible="True">
+    <TabBar  >
        <ShellContent Title="Chat" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:ChatPage}" />
 
         <ShellContent Title="Account" Icon="icon_about.png" ContentTemplate="{DataTemplate local:AccountPage}"/>

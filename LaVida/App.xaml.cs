@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LaVida.Helpers;
 using LaVida.Models;
 using LaVida.ViewModels;
+using LaVida.Views;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Xamarin.Forms;
@@ -23,6 +24,7 @@ namespace LaVida
         private readonly string dbName = "AccountsDB";
         private readonly string collectionName = "Account";
         private Account myAccount;
+        private LandingPage landingPage = new LandingPage();
         public App()
         {
             InitializeComponent();
@@ -30,7 +32,7 @@ namespace LaVida
             {
                 await ConnectToAccount();
             });
-            MainPage = new AppShell();
+            MainPage = new NavigationPage(landingPage);
 
 
 
@@ -71,16 +73,25 @@ namespace LaVida
                 }
             }
 
+
             if (isInDB)
             {
-                await Shell.Current.GoToAsync("//main");
+               await Device.InvokeOnMainThreadAsync( () =>
+               {
+                    Current.MainPage.Navigation.PushModalAsync(new AppShell());
+                    Current.MainPage.Navigation.PopModalAsync();
+               });
+
                 User = myAccount.Name;
             }
             else
-                await Shell.Current.GoToAsync("//registration");
-
-
-
+            {
+                await Device.InvokeOnMainThreadAsync( () =>
+                {
+                     Current.MainPage.Navigation.PushModalAsync(new RegistrationPage());
+                     Current.MainPage.Navigation.PopModalAsync();
+                });
+            }
         }
         public async Task<List<Account>> GettALlAccountsFromDB()
         {
