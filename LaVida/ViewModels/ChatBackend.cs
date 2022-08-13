@@ -117,7 +117,7 @@ namespace LaVida.ViewModels
                 {
                     while (DelayedMessages.Count > 0)
                     {
-                        //   Messages.Insert(0, DelayedMessages.Dequeue());
+                          Messages.Insert(0, DelayedMessages.Dequeue());
                     }
                     ShowScrollTap = false;
                     LastMessageVisible = true;
