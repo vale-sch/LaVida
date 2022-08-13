@@ -7,8 +7,8 @@
     -->
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#C4D7E0</Color>
-            <Color x:Key="primary-back-title-color">#1572A1</Color>
+            <Color x:Key="Primary">#00308F</Color>
+            <Color x:Key="primary-back-title-color">#C4D7E0</Color>
             <Color x:Key="primary-title-color">#FFFFFF</Color>
             <!-- Pallete-end -->
                
