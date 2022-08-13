@@ -5,9 +5,9 @@
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BB999FBB-F064-464A-90AF-9A9B6E02BB33}</ProjectGuid>
+    <ProjectGuid>{C425878C-3810-4FC5-BC2F-CC816CDD128E}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TemplateGuid>{89a4fe7c-635d-49c9-8d8c-5cd363c0d68d}</TemplateGuid>
+    <TemplateGuid>{6143fdea-f3c2-4a09-aafa-6e230626515e}</TemplateGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>LaVida.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -112,13 +113,6 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <BundleResource Include="Resources\icon_about.png" />
-    <BundleResource Include="Resources\icon_about%402x.png" />
-    <BundleResource Include="Resources\icon_about%403x.png" />
-    <BundleResource Include="Resources\icon_feed.png" />
-    <BundleResource Include="Resources\icon_feed%402x.png" />
-    <BundleResource Include="Resources\icon_feed%403x.png" />
-    <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -135,14 +129,56 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\LaVida\LaVida.csproj">
-      <Project>{27087017-127D-40A5-BA27-FFB8CDD5BD2D}</Project>
+      <Project>{42A748BB-D389-414C-90B6-1E613BE028CB}</Project>
       <Name>LaVida</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\LaVida_Logo.png" />
+    <BundleResource Include="Resources\Default.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Default%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Default-568h%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Default-Portrait.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Default-Portrait%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\ic_scrolldown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_about.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_about%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_about%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_feed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_feed%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_feed%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\logo_cover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\logo_transparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\coverphoto.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\favicon.png" />
   </ItemGroup>
 </Project>

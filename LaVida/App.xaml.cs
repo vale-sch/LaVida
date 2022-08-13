@@ -24,24 +24,23 @@ namespace LaVida
         private readonly string dbName = "AccountsDB";
         private readonly string collectionName = "Account";
         private Account myAccount;
-        private LandingPage landingPage = new LandingPage();
         public App()
         {
             InitializeComponent();
+            MainPage = new NavigationPage(new MainPage());
+           
+
+            Connect();
+        }
+        private void Connect()
+        {
             Task.Run(async () =>
             {
                 await ConnectToAccount();
             });
-            MainPage = new NavigationPage(landingPage);
-
-
-
         }
         private async Task ConnectToAccount()
         {
-
-
-
             try
             {
                 var connectionString = "mongodb://LaVidaAdmin:pO85OZbNjw1iNxvV@ac-jhy5v3n-shard-00-00.x5tlyr9.mongodb.net:27017,ac-jhy5v3n-shard-00-01.x5tlyr9.mongodb.net:27017,ac-jhy5v3n-shard-00-02.x5tlyr9.mongodb.net:27017/?ssl=true&replicaSet=atlas-9uw66t-shard-0&authSource=admin&retryWrites=true&w=majority";
@@ -57,12 +56,17 @@ namespace LaVida
             {
                 Console.WriteLine(ex.Message);
             }
-            var accounts = await GettALlAccountsFromDB();
+
+            MessagingCenter.Send(DeviceIdentifier, "GetDeviceID");
+            var accounts = await GettAllAccountsFromDB();
             foreach (var account in accounts)
                 AccountsFromDB.Add(account);
+      
 
-            MessagingCenter.Send<DeviceIDMessage>(DeviceIdentifier, "GetDeviceID");
-            await Task.Delay(TimeSpan.FromMilliseconds(50));
+          
+            while (DeviceIdentifier.DeviceID == null)
+                await Task.Delay(1);
+
             Boolean isInDB = false;
             foreach (var accountFromDB in AccountsFromDB)
             {
@@ -76,24 +80,13 @@ namespace LaVida
 
             if (isInDB)
             {
-               await Device.InvokeOnMainThreadAsync( () =>
-               {
-                    Current.MainPage.Navigation.PushModalAsync(new AppShell());
-                    Current.MainPage.Navigation.PopModalAsync();
-               });
-
+                _ = Device.InvokeOnMainThreadAsync(() => { NavigateToNextPage(new ChatPage()); });
                 User = myAccount.Name;
             }
             else
-            {
-                await Device.InvokeOnMainThreadAsync( () =>
-                {
-                     Current.MainPage.Navigation.PushModalAsync(new RegistrationPage());
-                     Current.MainPage.Navigation.PopModalAsync();
-                });
-            }
+                _ = Device.InvokeOnMainThreadAsync(() => { NavigateToNextPage(new RegistrationPage()); });
         }
-        public async Task<List<Account>> GettALlAccountsFromDB()
+        public async Task<List<Account>> GettAllAccountsFromDB()
         {
             try
             {
@@ -111,9 +104,15 @@ namespace LaVida
             }
             return null;
         }
+        private void NavigateToNextPage(Page page)
+        {
+            MainPage.Navigation.PushAsync(page);
+            NavigationPage.SetHasBackButton(page, false);
+
+        }
         protected override void OnStart()
         {
-
+            // MainPage.Navigation.PushModalAsync(new ChatPage());
         }
 
         protected override void OnSleep()

@@ -8,7 +8,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <Color x:Key="Primary">#8479E1</Color>
-            <Style TargetType="Button">
+            <Color x:Key="primary-back-title-color">#00308F</Color>
+            <Color x:Key="primary-title-color">#FFFFFF</Color>
+            <!-- Pallete-end -->
+               
+                <Style TargetType="Button">
                 <Setter Property="TextColor" Value="Black"></Setter>
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
@@ -26,10 +30,27 @@
                         </VisualStateGroup>
                     </VisualStateGroupList>
                 </Setter>
+           
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.ForegroundColor" Value="White" />
+                <Setter Property="Shell.TitleColor" Value="White" />
+                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+
             </Style>
             <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
                 <Setter Property="BackgroundColor" Value="WhiteSmoke"></Setter>
             </Style>
+            <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource Key=primary-back-title-color}"/>
+                <Setter Property="BarTextColor" Value="{StaticResource Key=primary-title-color}"/>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
+
 </Application>
+
