@@ -60,27 +60,42 @@ namespace LaVida.ViewModels
                 }
 
             });
-
-
-         
-
-
         }
+
         private async Task LoadNewConnections()
         {
+
             ContactsCollection = await ContactCore.GetContactCollection();
             foreach (var contactFromIntern in ContactsCollection)
                 foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
                     foreach (var accountFromDB in App.AccountsFromDB)
-                        if (phoneFromIntern.PhoneNumber == accountFromDB.PhoneNumber )
+                        if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber))
                         {
-                            foreach (var existingConnecetion in App.myAccount.Connections)
-                                if ((phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString() == existingConnecetion.chatId || App.myAccount.PhoneNumber == phoneFromIntern.PhoneNumber) continue;
-                            Connection = new Connection() { chatId = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), chatPartner = accountFromDB.Name, chatType = ChatType.PRIVATECHAT };
-                            App.myAccount.Connections.Add(Connection);
+                            if (App.myAccount.PhoneNumber == phoneFromIntern.PhoneNumber) continue;
+
+                            if (App.myAccount.Connections.Count > 0)
+                            {
+                                foreach (var existingConnecetion in App.myAccount.Connections)
+                                    if ((phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString() == existingConnecetion.chatId) continue; 
+                                Connection = new Connection() { chatId = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), chatPartner = accountFromDB.Name, chatType = ChatType.PRIVATECHAT };
+                                App.myAccount.Connections.Add(Connection);
+                                await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
+                            }
+                            else
+                            {
+
+                                Connection = new Connection() { chatId = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), chatPartner = accountFromDB.Name, chatType = ChatType.PRIVATECHAT };
+                                App.myAccount.Connections.Add(Connection);
+                                await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
+                            }
+                       
+
                         }
+
             StreamMessagesFromServer();
+
         }
+      
         private void StreamMessagesFromServer()
         {
 
