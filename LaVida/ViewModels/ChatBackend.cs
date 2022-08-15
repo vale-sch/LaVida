@@ -8,6 +8,7 @@ using Firebase.Database;
 using Firebase.Database.Query;
 using LaVida.Models;
 using MongoDB.Driver;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace LaVida.ViewModels
@@ -26,11 +27,15 @@ namespace LaVida.ViewModels
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
         private readonly FirebaseClient firebaseClient;
-        private readonly Connection connection;
-        private readonly ContactCore contactsFromIntern;
+        private  Connection Connection;
+        private ObservableCollection<Contact> ContactsCollection = new ObservableCollection<Contact>();
 
         public ChatBackend()
         {
+            Task.Run(async () =>
+            {
+                await LoadNewConnections();
+            });
             Console.WriteLine("Try to connect to Server...");
             try
             {
@@ -41,7 +46,7 @@ namespace LaVida.ViewModels
                 throw ex;
             }
             Console.WriteLine("...Connection established!");
-            StreamMessagesFromServer();
+      
             MessageAppearingCommand = new Xamarin.Forms.Command<MessageModel>(OnMessageAppearing);
             MessageDisappearingCommand = new Xamarin.Forms.Command<MessageModel>(OnMessageDisappearing);
 
@@ -54,25 +59,29 @@ namespace LaVida.ViewModels
                 }
 
             });
-            contactsFromIntern = new ContactCore();
 
 
-            LoadPossibleConnections();
+         
 
 
         }
-        private void LoadPossibleConnections()
+        private async Task LoadNewConnections()
         {
-            foreach (var contactFromIntern in contactsFromIntern.GetContacts())
+            ContactsCollection = await ContactCore.GetContactCollection();
+            foreach (var contactFromIntern in ContactsCollection)
                 foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
                     foreach (var accountFromDB in App.AccountsFromDB)
                         if (phoneFromIntern.PhoneNumber == accountFromDB.PhoneNumber)
-                            Console.WriteLine("TREFFER");
+                        {
+                            Connection = new Connection() { chatId = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), chatPartner = accountFromDB.Name, chatType = ChatType.PRIVATECHAT };
+                            App.myAccount.Connections.Add(Connection);
+                        }
+            StreamMessagesFromServer();
         }
         private void StreamMessagesFromServer()
         {
 
-            var collection = firebaseClient.Child("Message").AsObservable<MessageModel>().Subscribe((dbevent) =>
+            var collection = firebaseClient.Child(Connection.chatId).AsObservable<MessageModel>().Subscribe((dbevent) =>
             {
                 if (dbevent.Object != null)
                 {
@@ -97,14 +106,10 @@ namespace LaVida.ViewModels
                 }
             }
         }
-
-        /* private void SendMessageFirstTime(string myUsername, string UsernameFromOther, string text)
-         {
-         }*/
         private void SendMessage(string username, string message, DateTime dateTime)
         {
 
-            firebaseClient.Child("Message").PostAsync(new MessageModel() { Message = message, UserName = username, DateTime = dateTime });
+            firebaseClient.Child(Connection.chatId).PostAsync(new MessageModel() { Message = message, UserName = username, DateTime = dateTime });
             TextToSend = string.Empty;
 
         }

@@ -4,7 +4,7 @@
              x:Class="LaVida.Views.Partials.ChatInputBarView" 
              xmlns:controls="clr-namespace:LaVida.Controls">
      <ContentView.BackgroundColor>
-        <OnPlatform x:TypeArguments="Color" iOS="WhiteSmoke"/>
+        <OnPlatform x:TypeArguments="Color" Default="WhiteSmoke"/>
     </ContentView.BackgroundColor>
     <Grid RowSpacing="0" 
            ColumnSpacing="0">
@@ -18,7 +18,7 @@
         <controls:ExtendedEditorControl x:Name="chatTextInput" 
                  HasRoundedCorner="True"
                  Text="{Binding TextToSend}" 
-                 Margin="30,2,10,2"  
+                 Margin="30,5,10,5"  
                  TextColor="Black" 
                  Keyboard="Chat"  
                  IsExpandable="true"
@@ -27,7 +27,7 @@
                  Placeholder="Type your message here"
                  Grid.Row="0" 
                  Grid.Column="0" IsTextPredictionEnabled="True" />
-        <Image Source="sendIcon.png" MinimumHeightRequest="55" MinimumWidthRequest="55"  Grid.Row="0" 
+        <Image Source="sendIcon.png" HeightRequest="45"  Grid.Row="0" 
                Grid.Column="1"
                VerticalOptions="Center">
             <Image.GestureRecognizers>

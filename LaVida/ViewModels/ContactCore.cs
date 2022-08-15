@@ -11,20 +11,15 @@ namespace LaVida.ViewModels
 {
     public  class ContactCore
     {
-        private readonly ObservableCollection<Contact> ContactsCollect = new ObservableCollection<Contact>();
 
         public ContactCore()
         {
-            Task.Run(async () => { await GetContactCollection(); });
          
         }
 
-        public ObservableCollection<Contact> GetContacts()
+        public static async Task <ObservableCollection<Contact>> GetContactCollection()
         {
-            return ContactsCollect;
-        }
-        public  async Task GetContactCollection()
-        {
+            var newContactsCollection = new ObservableCollection<Contact>();
             try
             {
                 // cancellationToken parameter is optional
@@ -32,15 +27,18 @@ namespace LaVida.ViewModels
                 var contacts = await Contacts.GetAllAsync(cancellationToken);
 
                 if (contacts == null)
-                    return;
+                    return null;
 
                 foreach (var contact in contacts)
-                    ContactsCollect.Add(contact);
+                    newContactsCollection.Add(contact);
+
+                return newContactsCollection;
             }
             catch (Exception ex)
             {
                Console.WriteLine(ex);
             }
+            return newContactsCollection;
         }
     }
 }

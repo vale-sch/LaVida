@@ -85,7 +85,7 @@ namespace LaVida.Droid.Renderers
         void ApplyBorder()
         {
             GradientDrawable gd = new GradientDrawable();
-            gd.SetCornerRadius(25);
+            gd.SetCornerRadius(35);
             gd.SetStroke(1, Color.Gray.ToAndroid());
             this.Control.Background = gd;
         }
