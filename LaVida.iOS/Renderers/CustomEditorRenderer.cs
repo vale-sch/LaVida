@@ -40,7 +40,7 @@ namespace LaVida.iOS.Renderers
                     Control.ScrollEnabled = true;
 
                 if (customControl.HasRoundedCorner)
-                    Control.Layer.CornerRadius = 25;
+                    Control.Layer.CornerRadius = 5;
                 else
                     Control.Layer.CornerRadius = 0;
 

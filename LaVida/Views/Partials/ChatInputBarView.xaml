@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="LaVida.Views.Partials.ChatInputBarView" 
              xmlns:controls="clr-namespace:LaVida.Controls">
+     <ContentView.BackgroundColor>
+        <OnPlatform x:TypeArguments="Color" iOS="WhiteSmoke"/>
+    </ContentView.BackgroundColor>
     <Grid RowSpacing="0" 
            ColumnSpacing="0">
         <Grid.RowDefinitions>
@@ -15,16 +18,16 @@
         <controls:ExtendedEditorControl x:Name="chatTextInput" 
                  HasRoundedCorner="True"
                  Text="{Binding TextToSend}" 
-                 Margin="5,2"  
+                 Margin="30,2,10,2"  
                  TextColor="Black" 
                  Keyboard="Chat"  
                  IsExpandable="true"
-                 HorizontalOptions="FillAndExpand" 
+                 HorizontalOptions="FillAndExpand"             
                  PlaceholderColor="White"
                  Placeholder="Type your message here"
                  Grid.Row="0" 
-                 Grid.Column="0" />
-        <Image Source="sendIcon.png" HeightRequest="50"  Grid.Row="0" 
+                 Grid.Column="0" IsTextPredictionEnabled="True" />
+        <Image Source="sendIcon.png" MinimumHeightRequest="45" MinimumWidthRequest="45"  Grid.Row="0" 
                Grid.Column="1"
                VerticalOptions="Center">
             <Image.GestureRecognizers>
