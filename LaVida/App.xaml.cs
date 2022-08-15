@@ -108,7 +108,8 @@ namespace LaVida
         {
             MainPage.Navigation.PushAsync(page);
             NavigationPage.SetHasBackButton(page, false);
-            if (page.GetType() == typeof(ChatPage) && Device.RuntimePlatform == Device.iOS) { MainPage.Padding = new Thickness(0, 20, 0, 0); }
+            if (page.GetType() == typeof(ChatPage) && Device.RuntimePlatform == Device.iOS)
+            { MainPage.Padding = new Thickness(0, 20, 0, 0); MainPage.BackgroundColor = (Color)Application.Current.Resources["BackgroundColor"]; };
 
 
         }
