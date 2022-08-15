@@ -10,7 +10,13 @@
             <local:ChatTemplateSelector x:Key="MessageTemplateSelector"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-     <Grid RowSpacing="0" 
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0"/>
+    </ContentPage.Padding>
+    <ContentPage.BackgroundColor>
+        <OnPlatform x:TypeArguments="Color" iOS="{StaticResource Primary}"/>
+    </ContentPage.BackgroundColor>
+    <Grid RowSpacing="0" 
            ColumnSpacing="0" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

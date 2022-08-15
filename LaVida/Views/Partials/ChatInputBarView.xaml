@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="LaVida.Views.Partials.ChatInputBarView" 
              xmlns:controls="clr-namespace:LaVida.Controls">
-    
     <Grid RowSpacing="0" 
            ColumnSpacing="0">
         <Grid.RowDefinitions>
