@@ -15,7 +15,7 @@
         <controls:ExtendedEditorControl x:Name="chatTextInput" 
                  HasRoundedCorner="True"
                  Text="{Binding TextToSend}" 
-                 Margin="1"  
+                 Margin="5,2"  
                  TextColor="Black" 
                  Keyboard="Chat"  
                  IsExpandable="true"

@@ -15,21 +15,21 @@ namespace LaVida
 {
     public partial class App : Application
     {
-        public static string User = "";
         public static IMongoCollection<Account> mongoCollection;
         public static ObservableCollection<Account> AccountsFromDB = new ObservableCollection<Account>();
         public static DeviceIDMessage DeviceIdentifier = new DeviceIDMessage();
+        public static Account myAccount;
+
         private MongoClient Client;
         private IMongoDatabase Database;
         private readonly string dbName = "AccountsDB";
         private readonly string collectionName = "Account";
-        private Account myAccount;
         public App()
         {
             InitializeComponent();
             MainPage = new NavigationPage(new MainPage());
-            MainPage.Padding = new Thickness(0, 20, 0, 0);
-           
+            
+
 
             Connect();
         }
@@ -82,7 +82,6 @@ namespace LaVida
             if (isInDB)
             {
                 _ = Device.InvokeOnMainThreadAsync(() => { NavigateToNextPage(new ChatPage()); });
-                User = myAccount.Name;
             }
             else
                 _ = Device.InvokeOnMainThreadAsync(() => { NavigateToNextPage(new RegistrationPage()); });

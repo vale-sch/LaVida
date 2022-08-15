@@ -18,21 +18,25 @@ namespace LaVida.Views
 
         private async void NavigateToChatRoom(object sender, EventArgs e)
         {
-            App.User = userName.Text;
-            ChatPage chatPage = new ChatPage();
-           _ =  App.Current.MainPage.Navigation.PushAsync(chatPage);
-            NavigationPage.SetHasBackButton(chatPage, false);
+       
 
-
+            if (String.IsNullOrEmpty(userName.Text) || String.IsNullOrEmpty(phoneNumber.Text))
+            {
+                await App.Current.MainPage.DisplayAlert("Info", "You must enter your contact details to continue", "OK");
+                return;
+            }
             if (String.IsNullOrEmpty(App.DeviceIdentifier.DeviceID))
             {
-               await App.Current.MainPage.DisplayAlert("Info", "Device Identifier couldnt be recognized! Please restart the App.", "OK");
+               await App.Current.MainPage.DisplayAlert("Info", "Device Identifier could not be found! Please restart the App.", "OK");
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
                 return;
             }
-
-            Account test = new Account() { Name = userName.Text, Password = password.Text, PhoneNumber = phoneNumber.Text, AccountID = App.DeviceIdentifier.DeviceID, Connections = new List<Connection>() };
-            await App.mongoCollection.InsertOneAsync(test);
+            ChatPage chatPage = new ChatPage();
+            _ = App.Current.MainPage.Navigation.PushAsync(chatPage);
+            NavigationPage.SetHasBackButton(chatPage, false);
+            Account newAccount = new Account() { Name = userName.Text, Password = password.Text, PhoneNumber = phoneNumber.Text, AccountID = App.DeviceIdentifier.DeviceID, Connections = new List<Connection>() };
+            App.myAccount = newAccount;
+            await App.mongoCollection.InsertOneAsync(newAccount);
         }
 
     }

@@ -21,7 +21,7 @@ namespace LaVida.Helpers
                 return null;
 
 
-            return (messageVm.UserName == App.User)? outgoingDataTemplate: incomingDataTemplate;
+            return (messageVm.UserName == App.myAccount.Name)? outgoingDataTemplate: incomingDataTemplate;
         }
 
     }

@@ -50,7 +50,7 @@ namespace LaVida.ViewModels
 
                 if (!string.IsNullOrEmpty(TextToSend))
                 {
-                    SendMessage(App.User, TextToSend, DateTime.Now);
+                    SendMessage(App.myAccount.Name, TextToSend, DateTime.Now);
                 }
 
             });
