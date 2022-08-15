@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Firebase.Database;
 using Firebase.Database.Query;
 using LaVida.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -77,6 +78,8 @@ namespace LaVida.ViewModels
                             App.myAccount.Connections.Add(Connection);
                         }
             StreamMessagesFromServer();
+            await App.mongoCollection.ReplaceOneAsync(b => b.Id ==  App.myAccount.Id, App.myAccount);
+
         }
         private void StreamMessagesFromServer()
         {
