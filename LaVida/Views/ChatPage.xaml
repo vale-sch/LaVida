@@ -14,7 +14,7 @@
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 0, 0, 20"/>
     </ContentPage.Padding>
     <ContentPage.BackgroundColor>
-        <OnPlatform x:TypeArguments="Color" iOS="WhiteSmoke"/>
+        <OnPlatform x:TypeArguments="Color" Default="WhiteSmoke"/>
     </ContentPage.BackgroundColor>
     <Grid RowSpacing="0" 
            ColumnSpacing="0" >
