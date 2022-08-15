@@ -23,15 +23,15 @@
                  Placeholder="Type your message here"
                  Grid.Row="0" 
                  Grid.Column="0" />
-        <Label Text="Send"
-               Grid.Row="0"
+        <Image Source="sendIcon.png" HeightRequest="35"  Grid.Row="0" 
                Grid.Column="1"
-               VerticalTextAlignment="Center">
-            <Label.GestureRecognizers>
+               VerticalOptions="Center" Margin="5,0,0,0">
+            <Image.GestureRecognizers>
                 <TapGestureRecognizer
                       Command="{Binding OnSendCommand}"
                       Tapped="Handle_Completed"/>
-            </Label.GestureRecognizers>
-        </Label>
+            </Image.GestureRecognizers>
+        </Image>
+    
     </Grid>
 </ContentView>
