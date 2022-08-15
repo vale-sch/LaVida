@@ -27,7 +27,7 @@
                  Placeholder="Type your message here"
                  Grid.Row="0" 
                  Grid.Column="0" IsTextPredictionEnabled="True" />
-        <Image Source="sendIcon.png" MinimumHeightRequest="45" MinimumWidthRequest="45"  Grid.Row="0" 
+        <Image Source="sendIcon.png" MinimumHeightRequest="55" MinimumWidthRequest="55"  Grid.Row="0" 
                Grid.Column="1"
                VerticalOptions="Center">
             <Image.GestureRecognizers>
