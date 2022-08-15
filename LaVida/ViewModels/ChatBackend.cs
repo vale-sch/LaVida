@@ -72,14 +72,14 @@ namespace LaVida.ViewModels
             foreach (var contactFromIntern in ContactsCollection)
                 foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
                     foreach (var accountFromDB in App.AccountsFromDB)
-                        if (phoneFromIntern.PhoneNumber == accountFromDB.PhoneNumber)
+                        if (phoneFromIntern.PhoneNumber == accountFromDB.PhoneNumber )
                         {
+                            foreach (var existingConnecetion in App.myAccount.Connections)
+                                if ((phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString() == existingConnecetion.chatId || App.myAccount.PhoneNumber == phoneFromIntern.PhoneNumber) continue;
                             Connection = new Connection() { chatId = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), chatPartner = accountFromDB.Name, chatType = ChatType.PRIVATECHAT };
                             App.myAccount.Connections.Add(Connection);
                         }
             StreamMessagesFromServer();
-            await App.mongoCollection.ReplaceOneAsync(b => b.Id ==  App.myAccount.Id, App.myAccount);
-
         }
         private void StreamMessagesFromServer()
         {
