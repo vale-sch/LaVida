@@ -28,6 +28,7 @@ namespace LaVida
         {
             InitializeComponent();
             MainPage = new NavigationPage(new MainPage());
+            MainPage.Padding = new Thickness(0, 20, 0, 0);
            
 
             Connect();

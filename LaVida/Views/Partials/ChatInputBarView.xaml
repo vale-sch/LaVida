@@ -13,6 +13,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <controls:ExtendedEditorControl x:Name="chatTextInput" 
+                 HasRoundedCorner="True"
                  Text="{Binding TextToSend}" 
                  Margin="1"  
                  TextColor="Black" 
