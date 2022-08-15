@@ -2,30 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="LaVida.MainPage"
-     
-             
-             
-             
-             NavigationPage.HasNavigationBar="False" Padding="5,1"
-  >
-    <ContentView>
-        <ContentView.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0"/>
-    </ContentView.Padding>
-    <ContentView.BackgroundColor>
-            <OnPlatform x:TypeArguments="Color" iOS="{StaticResource Primary}"/>
-    </ContentView.BackgroundColor>
+             NavigationPage.HasNavigationBar="False"
+             >
+    
 
-
-  
+    <ContentPage.Content >
 
         <StackLayout BackgroundColor="#C4D7E0" VerticalOptions="FillAndExpand"  >
             <Image Source="logo_transparent.png"  VerticalOptions="Center" Margin="15,100,15,0"  ></Image>
-
+     
         </StackLayout>
-
-    </ContentView> 
-    
-
+    </ContentPage.Content>
 
 </ContentPage>
