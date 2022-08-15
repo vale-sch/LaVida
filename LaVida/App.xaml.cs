@@ -108,6 +108,8 @@ namespace LaVida
         {
             MainPage.Navigation.PushAsync(page);
             NavigationPage.SetHasBackButton(page, false);
+            if (page.GetType() == typeof(ChatPage) && Device.RuntimePlatform == Device.iOS) { MainPage.Padding = new Thickness(0, 20, 0, 0); }
+
 
         }
         protected override void OnStart()
