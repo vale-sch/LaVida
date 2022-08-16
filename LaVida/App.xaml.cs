@@ -25,7 +25,7 @@ namespace LaVida
         private MongoClient Client;
         private IMongoDatabase Database;
         private readonly string dbName = "AccountsDB";
-        private readonly string collectionName = "Account";
+        private readonly string collectionName = "Accounts";
         private FirebaseClient firebaseClient;
         private ObservableCollection<Contact> ContactsCollection = new ObservableCollection<Contact>();
         public App()
@@ -127,10 +127,10 @@ namespace LaVida
 
 
                         if (!hasNewConnection) return;
-                        Boolean isSetted = false;
+                        Boolean hasAlreadyConnection = false;
                         foreach (var alreadyConnected in myAccount.Connections)
-                            if (WhiteSpace.RemoveWhitespace(alreadyConnected.ChatPhoneNumber) == WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber)) isSetted = true;
-                        if (!isSetted && WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber) && WhiteSpace.RemoveWhitespace(App.myAccount.PhoneNumber) != WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber))
+                            if (WhiteSpace.RemoveWhitespace(alreadyConnected.ChatPhoneNumber) == WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber)) hasAlreadyConnection = true;
+                        if (!hasAlreadyConnection && WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber) && WhiteSpace.RemoveWhitespace(App.myAccount.PhoneNumber) != WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber))
                         {
                             Console.WriteLine("TREFFER");
 
