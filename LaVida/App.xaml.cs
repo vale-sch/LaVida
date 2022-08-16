@@ -26,14 +26,12 @@ namespace LaVida
         private IMongoDatabase Database;
         private readonly string dbName = "AccountsDB";
         private readonly string collectionName = "Account";
-        private readonly MockDataStore store;
         private FirebaseClient firebaseClient;
         private ObservableCollection<Contact> ContactsCollection = new ObservableCollection<Contact>();
         public App()
         {
             InitializeComponent();
             DependencyService.Register<MockDataStore>();
-            store = new MockDataStore();
             MainPage = new NavigationPage(new MainPage());
 
 
@@ -99,10 +97,9 @@ namespace LaVida
 
             if (isInDB)
             {
-                await Task.Run(async () =>
-                {
-                    await LoadNewConnections();
-                });
+
+                await LoadNewConnections();
+
                 _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new ChatsOverviewPage(firebaseClient)); });
             }
             else
@@ -132,26 +129,40 @@ namespace LaVida
         {
             Console.WriteLine("BINHIERANGEKOMMEN");
             ContactsCollection = await ContactCore.GetContactCollection();
+            bool hasNewConnection = false;
             foreach (var contactFromIntern in ContactsCollection)
                 foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
                     foreach (var accountFromDB in App.AccountsFromDB)
+                    {
+                        hasNewConnection = true;
+                        foreach (var connection in MockDataStore.connections)
+                        {
+                            if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber) && connection.ChatPhoneNumber == WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber))
+                                hasNewConnection = false;
+                        }
+                        if (!hasNewConnection) return;
                         if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber))
                         {
-                            if (App.myAccount.PhoneNumber == phoneFromIntern.PhoneNumber) break;
-                            foreach (var existingConnecetion in App.myAccount.Connections)
-                                if (phoneFromIntern.PhoneNumber == existingConnecetion.ChatPhoneNumber) break;
-                            var connection = new Connection() { ChatID = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), ChatPartner = accountFromDB.Name, ChatType = ChatType.PRIVATECHAT, ChatPhoneNumber = phoneFromIntern.PhoneNumber, IsActive = false };
+                            if (App.myAccount.PhoneNumber != phoneFromIntern.PhoneNumber)
+                            {
+                                foreach (var existingConnecetion in App.myAccount.Connections)
+                                    if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) != existingConnecetion.ChatPhoneNumber)
+                                    {
+                                        var connection = new Connection() { ChatID = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), ChatPartner = accountFromDB.Name, ChatType = ChatType.PRIVATECHAT, ChatPhoneNumber = WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber), IsActive = false };
 
-                            App.myAccount.Connections.Add(connection);
-                            accountFromDB.Connections.Add(connection);
+                                        App.myAccount.Connections.Add(connection);
+                                        accountFromDB.Connections.Add(connection);
 
-                            await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
-
+                                        await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
+                                    }
+                            }
                         }
+                    }
+                      
 
 
             foreach (var connection in myAccount.Connections)
-                store.connections.Add(connection);
+                MockDataStore.connections.Add(connection);
             Console.WriteLine("BINHIERANGEKOMMEN");
         }
         protected override void OnStart()

@@ -7,11 +7,10 @@ namespace LaVida.Helpers
 {
     public class MockDataStore : IDataStore<Connection>
     {
-        public List<Connection> connections;
+        public static List<Connection> connections = new List<Connection>();
 
         public MockDataStore()
         {
-          connections = new List<Connection>();
           
         }
 

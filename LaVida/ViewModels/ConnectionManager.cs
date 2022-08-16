@@ -17,7 +17,7 @@ namespace LaVida.ViewModels
     public class ConnectionManager: BaseViewModel
     {
   
-        private Connection _selectedConneciton;
+        private Connection _selectedConnection;
         public ObservableCollection<Connection> Connections { get; }
         public Command LoadConnectionsCommand { get; }
         public Command AddConnectionCommand { get; }
@@ -57,7 +57,7 @@ namespace LaVida.ViewModels
                 IsBusy = false;
             }
         }
-        private  void OnConnectionAdd(object obj)
+        private void OnConnectionAdd(object obj)
         {
             _ = Device.InvokeOnMainThreadAsync(() =>
             {
@@ -72,21 +72,22 @@ namespace LaVida.ViewModels
         }
         public Connection SelectedConnection
         {
-            get => _selectedConneciton;
+            get => _selectedConnection;
             set
             {
-                SetProperty(ref _selectedConneciton, value);
+                SetProperty(ref _selectedConnection, value);
                 OnConnectionSelected(value);
             }
         }
          void OnConnectionSelected(Connection connection)
         {
+            //Console.WriteLine(connection.ChatPartner);
             if (connection == null)
                 return;
 
             _ = Device.InvokeOnMainThreadAsync(() =>
             {
-                NavigationManager.NextPageWithoutBack(new ChatPage(firebaseClient, _selectedConneciton));
+                NavigationManager.NextPageWithoutBack(new ChatPage(firebaseClient, connection));
 
             });
         }
