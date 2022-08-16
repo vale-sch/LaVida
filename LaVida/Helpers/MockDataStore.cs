@@ -7,13 +7,11 @@ namespace LaVida.Helpers
 {
     public class MockDataStore : IDataStore<Connection>
     {
-        readonly List<Connection> connections;
+        public List<Connection> connections;
 
         public MockDataStore()
         {
-            connections = new List<Connection>() {  new Connection { ChatID = "asojdpoasjdopjasd", ChatPartner = "Julian", ChatType=ChatType.PRIVATECHAT },
-                 new Connection { ChatID = "asojdpoasjdopjasd", ChatPartner = "Stefan", ChatType=ChatType.PRIVATECHAT },
-                 new Connection { ChatID = "asojdpoasjdopjasd", ChatPartner = "Crazy Linde", ChatType=ChatType.PRIVATECHAT }};
+         
           
         }
 

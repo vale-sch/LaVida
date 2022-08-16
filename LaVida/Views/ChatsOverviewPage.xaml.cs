@@ -1,4 +1,5 @@
-﻿using LaVida.ViewModels;
+﻿using Firebase.Database;
+using LaVida.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,11 @@ namespace LaVida.Views
     {
         readonly ConnectionManager _connectionManager;
 
-        public ChatsOverviewPage()
+        public ChatsOverviewPage(FirebaseClient firebaseClient)
         {
             InitializeComponent();
             Title = "Chats";
-            BindingContext = _connectionManager = new ConnectionManager();
+            BindingContext = _connectionManager = new ConnectionManager(firebaseClient);
 
         }
         protected override void OnAppearing()

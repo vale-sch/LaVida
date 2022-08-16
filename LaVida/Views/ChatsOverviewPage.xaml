@@ -7,8 +7,10 @@
              xmlns:model="clr-namespace:LaVida.Models"
              x:Name="BrowseConnectionPage"
              >
-
-    <RefreshView x:DataType="local:ConnectionManager" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddConnectionCommand}" />
+    </ContentPage.ToolbarItems>
+    <RefreshView x:DataType="local:ConnectionManager" Command="{Binding LoadConnectionsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="ItemsListView"
                 ItemsSource="{Binding Connections}"
                 SelectionMode="None">

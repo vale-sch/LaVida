@@ -11,6 +11,7 @@ namespace LaVida.Models
         public ChatType ChatType { get; set; }
 
         public string ChatID { get; set; }
+        public bool IsActive { get; set; }
 
     }
 

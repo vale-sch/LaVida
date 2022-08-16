@@ -16,41 +16,26 @@ namespace LaVida.ViewModels
 {
     public class ConnectionManager: BaseViewModel
     {
-        private readonly FirebaseClient firebaseClient;
-        private ObservableCollection<Contact> ContactsCollection = new ObservableCollection<Contact>();
+  
         private Connection _selectedConneciton;
         public ObservableCollection<Connection> Connections { get; }
-        public Command LoadItemsCommand { get; }
-        public Command AddItemCommand { get; }
+        public Command LoadConnectionsCommand { get; }
+        public Command AddConnectionCommand { get; }
         public Xamarin.Forms.Command<Connection> ConnectionTapped { get; }
-
-        public ConnectionManager()
+        private readonly FirebaseClient firebaseClient;
+        public ConnectionManager(FirebaseClient firebaseClient)
         {
             Connections = new ObservableCollection<Connection>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            LoadConnectionsCommand = new Command(async () => await ExecuteLoadConnectionCommand());
 
-            ConnectionTapped = new Xamarin.Forms.Command<Connection>(OnItemSelected);
+            ConnectionTapped = new Xamarin.Forms.Command<Connection>(OnConnectionSelected);
 
-            AddItemCommand = new Command(OnAddItem);
+            AddConnectionCommand = new Command(OnConnectionAdd);
 
-            Task.Run(async () =>
-            {
-                await LoadNewConnections();
-            });
-            Console.WriteLine("Try to connect to Server...");
-
-            try
-            {
-                firebaseClient = new FirebaseClient("https://lavida-b6aca-default-rtdb.europe-west1.firebasedatabase.app/");
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            Console.WriteLine("...Connection established!");
+           this.firebaseClient = firebaseClient;
 
         }
-        async Task ExecuteLoadItemsCommand()
+        async Task ExecuteLoadConnectionCommand()
         {
             IsBusy = true;
 
@@ -72,9 +57,13 @@ namespace LaVida.ViewModels
                 IsBusy = false;
             }
         }
-        private  void OnAddItem(object obj)
+        private  void OnConnectionAdd(object obj)
         {
-           
+            _ = Device.InvokeOnMainThreadAsync(() =>
+            {
+                NavigationManager.NextPageWithBack(new PossibleNewChats());
+
+            });
         }
         public void OnAppearing()
         {
@@ -87,52 +76,21 @@ namespace LaVida.ViewModels
             set
             {
                 SetProperty(ref _selectedConneciton, value);
-                OnItemSelected(value);
+                OnConnectionSelected(value);
             }
         }
-         void OnItemSelected(Connection connection)
+         void OnConnectionSelected(Connection connection)
         {
             if (connection == null)
                 return;
 
             _ = Device.InvokeOnMainThreadAsync(() =>
             {
-                NavigationManager.NavigateToNextPage(new ChatPage(firebaseClient, _selectedConneciton));
+                NavigationManager.NextPageWithoutBack(new ChatPage(firebaseClient, _selectedConneciton));
 
             });
         }
-        private async Task LoadNewConnections()
-        {
-
-            ContactsCollection = await ContactCore.GetContactCollection();
-            foreach (var contactFromIntern in ContactsCollection)
-                foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
-                    foreach (var accountFromDB in App.AccountsFromDB)
-                        if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber))
-                        {
-                            if (App.myAccount.PhoneNumber == phoneFromIntern.PhoneNumber) continue;
-
-                            if (App.myAccount.Connections.Count > 0)
-                            {
-                                foreach (var existingConnecetion in App.myAccount.Connections)
-                                    if ((phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString() == existingConnecetion.ChatID) continue;
-                                _selectedConneciton = new Connection() { ChatID = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), ChatPartner = accountFromDB.Name, ChatType = ChatType.PRIVATECHAT };
-                                App.myAccount.Connections.Add(_selectedConneciton);
-                                await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
-                            }
-                            else
-                            {
-
-                                _selectedConneciton = new Connection() { ChatID = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), ChatPartner = accountFromDB.Name, ChatType = ChatType.PRIVATECHAT };
-                                App.myAccount.Connections.Add(_selectedConneciton);
-                                await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
-                            }
-
-
-                        }
-        
-
-        }
+      
 
     }
 }

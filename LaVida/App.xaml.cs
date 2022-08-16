@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Firebase.Database;
 using LaVida.Helpers;
 using LaVida.Models;
 using LaVida.ViewModels;
 using LaVida.Views;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 namespace LaVida
@@ -24,13 +26,16 @@ namespace LaVida
         private IMongoDatabase Database;
         private readonly string dbName = "AccountsDB";
         private readonly string collectionName = "Account";
+        private readonly MockDataStore store;
+        private  FirebaseClient firebaseClient;
+        private ObservableCollection<Contact> ContactsCollection = new ObservableCollection<Contact>();
         public App()
         {
             InitializeComponent();
             DependencyService.Register<MockDataStore>();
-
+            store = new MockDataStore();
             MainPage = new NavigationPage(new MainPage());
-            
+          
 
 
             Connect();
@@ -76,17 +81,33 @@ namespace LaVida
                 if (DeviceIdentifier.DeviceID == accountFromDB.AccountID)
                 {
                     myAccount = accountFromDB;
+                    
                     isInDB = true;
                 }
             }
+            Console.WriteLine("Try to connect to RealtimeDB...");
 
-
+            try
+            {
+                firebaseClient = new FirebaseClient("https://lavida-b6aca-default-rtdb.europe-west1.firebasedatabase.app/");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            Console.WriteLine("...Connection established!");
+            await Task.Run(async () =>
+            {
+                await LoadNewConnections();
+            });
             if (isInDB)
             {
-                _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NavigateToNextPage(new ChatsOverviewPage()); });
+                _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new ChatsOverviewPage(firebaseClient)); });
             }
             else
-                _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NavigateToNextPage(new RegistrationPage()); });
+                _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new RegistrationPage(firebaseClient)); });
+       
+           
         }
         public async Task<List<Account>> GettAllAccountsFromDB()
         {
@@ -106,7 +127,35 @@ namespace LaVida
             }
             return null;
         }
-       
+        private async Task LoadNewConnections()
+        {
+
+            ContactsCollection = await ContactCore.GetContactCollection();
+            foreach (var contactFromIntern in ContactsCollection)
+                foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
+                    foreach (var accountFromDB in App.AccountsFromDB)
+                        if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber))
+                        {
+                            if (App.myAccount.PhoneNumber == phoneFromIntern.PhoneNumber) continue;
+                            var connection = new Connection() { ChatID = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), ChatPartner = accountFromDB.Name, ChatType = ChatType.PRIVATECHAT };
+
+                            if (App.myAccount.Connections.Count > 0)
+                            {
+                                foreach (var existingConnecetion in App.myAccount.Connections)
+                                    if ((phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString() == existingConnecetion.ChatID) continue;
+                                App.myAccount.Connections.Add(connection);
+                                await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
+                            }
+                            else
+                            {
+                                App.myAccount.Connections.Add(connection);
+                                await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
+                            }
+                        }
+
+            foreach (var connection in myAccount.Connections)
+                store.connections.Add(connection);
+        }
         protected override void OnStart()
         {
             // MainPage.Navigation.PushModalAsync(new ChatPage());
