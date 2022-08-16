@@ -7,7 +7,7 @@ namespace LaVida.Models
     public class Connection
     {
         public string ChatPartner { get; set; }
-
+        public string ChatPhoneNumber { get; set; }
         public ChatType ChatType { get; set; }
 
         public string ChatID { get; set; }

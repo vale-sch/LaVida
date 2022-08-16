@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="LaVida.Views.ChatPage" 
              xmlns:local="clr-namespace:LaVida.Helpers" 
+             
              xmlns:partials="clr-namespace:LaVida.Views.Partials" 
-             xmlns:controls="clr-namespace:LaVida.Controls" xmlns:viewmodels="clr-namespace:LaVida.ViewModels" x:DataType="viewmodels:ChatBackend">
+             xmlns:controls="clr-namespace:LaVida.Controls" xmlns:viewmodels="clr-namespace:LaVida.ViewModels" x:DataType="viewmodels:ChatBackend" >
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:ChatTemplateSelector x:Key="MessageTemplateSelector"/>

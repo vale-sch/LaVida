@@ -11,7 +11,7 @@ namespace LaVida.Helpers
 
         public MockDataStore()
         {
-         
+          connections = new List<Connection>();
           
         }
 
