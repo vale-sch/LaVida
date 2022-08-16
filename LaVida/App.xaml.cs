@@ -27,6 +27,8 @@ namespace LaVida
         public App()
         {
             InitializeComponent();
+            DependencyService.Register<MockDataStore>();
+
             MainPage = new NavigationPage(new MainPage());
             
 
@@ -81,10 +83,10 @@ namespace LaVida
 
             if (isInDB)
             {
-                _ = Device.InvokeOnMainThreadAsync(() => { NavigateToNextPage(new ChatPage()); });
+                _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NavigateToNextPage(new ChatsOverviewPage()); });
             }
             else
-                _ = Device.InvokeOnMainThreadAsync(() => { NavigateToNextPage(new RegistrationPage()); });
+                _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NavigateToNextPage(new RegistrationPage()); });
         }
         public async Task<List<Account>> GettAllAccountsFromDB()
         {
@@ -104,11 +106,7 @@ namespace LaVida
             }
             return null;
         }
-        private void NavigateToNextPage(Page page)
-        {
-            MainPage.Navigation.PushAsync(page);
-            NavigationPage.SetHasBackButton(page, false);
-        }
+       
         protected override void OnStart()
         {
             // MainPage.Navigation.PushModalAsync(new ChatPage());

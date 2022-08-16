@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Firebase.Database;
+using LaVida.Models;
 using LaVida.ViewModels;
 using Xamarin.Forms;
 
@@ -11,11 +13,11 @@ namespace LaVida.Views
     public partial class ChatPage : ContentPage
     {
 
-        public ChatPage()
+        public ChatPage(FirebaseClient firebaseClient, Connection connection)
         {
             InitializeComponent();
             Title = "LAVIDA - DemoChat";
-            BindingContext = new ChatBackend();
+            BindingContext = new ChatBackend(firebaseClient, connection);
         }
 
         public void ScrollTap(object sender, System.EventArgs e)

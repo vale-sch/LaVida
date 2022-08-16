@@ -1,4 +1,5 @@
 ﻿using LaVida.Models;
+using LaVida.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,9 +32,8 @@ namespace LaVida.Views
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
                 return;
             }
-            ChatPage chatPage = new ChatPage();
-            _ = App.Current.MainPage.Navigation.PushAsync(chatPage);
-            NavigationPage.SetHasBackButton(chatPage, false);
+       
+            NavigationManager.NavigateToNextPage(new ChatsOverviewPage());
             Account newAccount = new Account() { Name = userName.Text, Password = password.Text, PhoneNumber = phoneNumber.Text, AccountID = App.DeviceIdentifier.DeviceID, Connections = new List<Connection>() };
             App.myAccount = newAccount;
             await App.mongoCollection.InsertOneAsync(newAccount);

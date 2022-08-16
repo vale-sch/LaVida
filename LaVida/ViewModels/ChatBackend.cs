@@ -7,8 +7,7 @@ using System.Windows.Input;
 using Firebase.Database;
 using Firebase.Database.Query;
 using LaVida.Models;
-using MongoDB.Bson;
-using MongoDB.Driver;
+
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -27,26 +26,13 @@ namespace LaVida.ViewModels
         public ICommand OnSendCommand { get; set; }
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
+        private readonly  Connection Connection;
         private readonly FirebaseClient firebaseClient;
-        private  Connection Connection;
-        private ObservableCollection<Contact> ContactsCollection = new ObservableCollection<Contact>();
-
-        public ChatBackend()
+        public ChatBackend(FirebaseClient _firebaseClient, Connection _connection)
         {
-            Task.Run(async () =>
-            {
-                await LoadNewConnections();
-            });
-            Console.WriteLine("Try to connect to Server...");
-            try
-            {
-                firebaseClient = new FirebaseClient("https://lavida-b6aca-default-rtdb.europe-west1.firebasedatabase.app/");
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            Console.WriteLine("...Connection established!");
+            Connection = _connection;
+            firebaseClient = _firebaseClient;
+          
       
             MessageAppearingCommand = new Xamarin.Forms.Command<MessageModel>(OnMessageAppearing);
             MessageDisappearingCommand = new Xamarin.Forms.Command<MessageModel>(OnMessageDisappearing);
@@ -60,46 +46,17 @@ namespace LaVida.ViewModels
                 }
 
             });
-        }
-
-        private async Task LoadNewConnections()
-        {
-
-            ContactsCollection = await ContactCore.GetContactCollection();
-            foreach (var contactFromIntern in ContactsCollection)
-                foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
-                    foreach (var accountFromDB in App.AccountsFromDB)
-                        if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber))
-                        {
-                            if (App.myAccount.PhoneNumber == phoneFromIntern.PhoneNumber) continue;
-
-                            if (App.myAccount.Connections.Count > 0)
-                            {
-                                foreach (var existingConnecetion in App.myAccount.Connections)
-                                    if ((phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString() == existingConnecetion.chatId) continue; 
-                                Connection = new Connection() { chatId = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), chatPartner = accountFromDB.Name, chatType = ChatType.PRIVATECHAT };
-                                App.myAccount.Connections.Add(Connection);
-                                await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
-                            }
-                            else
-                            {
-
-                                Connection = new Connection() { chatId = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), chatPartner = accountFromDB.Name, chatType = ChatType.PRIVATECHAT };
-                                App.myAccount.Connections.Add(Connection);
-                                await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
-                            }
-                       
-
-                        }
-
             StreamMessagesFromServer();
 
         }
+       
+
+       
       
         private void StreamMessagesFromServer()
         {
 
-            var collection = firebaseClient.Child(Connection.chatId).AsObservable<MessageModel>().Subscribe((dbevent) =>
+            var collection = firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe((dbevent) =>
             {
                 if (dbevent.Object != null)
                 {
@@ -127,7 +84,7 @@ namespace LaVida.ViewModels
         private void SendMessage(string username, string message, DateTime dateTime)
         {
 
-            firebaseClient.Child(Connection.chatId).PostAsync(new MessageModel() { Message = message, UserName = username, DateTime = dateTime });
+            firebaseClient.Child(Connection.ChatID).PostAsync(new MessageModel() { Message = message, UserName = username, DateTime = dateTime });
             TextToSend = string.Empty;
 
         }
