@@ -110,7 +110,6 @@ namespace LaVida
      
         private async Task LoadNewConnections()
         {
-            Console.WriteLine("MOCKETDATALENGTH: " + MockDataStore.connections.Count);
             ContactsCollection = await ContactCore.GetContactCollection();
             bool hasNewConnection = false;
             foreach (var contactFromIntern in ContactsCollection)
@@ -128,28 +127,32 @@ namespace LaVida
                       
 
                         if (!hasNewConnection) return;
-                        Console.WriteLine("MOCKETDATALENGTH: " + MockDataStore.connections.Count);
-                        if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber) && App.myAccount.PhoneNumber != WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber))
+                        if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber) && WhiteSpace.RemoveWhitespace(App.myAccount.PhoneNumber) != WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber))
                         {
+                            Console.WriteLine("TREFFER");
+
                             var connection = new Connection();
                             var connectionForPartner = new Connection();
+                            //existing connection partner
                             if (accountFromDB.Connections.Count > 0)
                             {
                                 foreach (var existingConnection in accountFromDB.Connections)
-                                    if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) != WhiteSpace.RemoveWhitespace(existingConnection.ChatPhoneNumber))
+                                    if (WhiteSpace.RemoveWhitespace(myAccount.PhoneNumber) == WhiteSpace.RemoveWhitespace(existingConnection.ChatPhoneNumber))
                                     {
-                                        connection = new Connection() { ChatID = existingConnection.ChatID, ChatPartner = accountFromDB.Name, ChatType = ChatType.PRIVATECHAT, ChatPhoneNumber = WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber), IsActive = false };
+                                        connection = new Connection() { ChatID = existingConnection.ChatID, ChatPartner = accountFromDB.Name, ChatType = ChatType.PRIVATECHAT, ChatPhoneNumber = WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber), IsActive = false };
                                         Console.WriteLine("EXISTINGCONNECTION-PARTNER");
-
+                                        App.myAccount.Connections.Add(connection);
                                         await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
                                     }
-                                    else break;
+                                  
                             }
+                            //existing connection self
+
                             else if (App.myAccount.Connections.Count > 0)
                             {
 
                                 foreach (var existingConnection in App.myAccount.Connections)
-                                    if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) != existingConnection.ChatPhoneNumber)
+                                    if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == existingConnection.ChatPhoneNumber)
                                     {
                                         Console.WriteLine("EXISTINGCONNECTION-SELF");
 
@@ -160,10 +163,10 @@ namespace LaVida
                                         await App.mongoCollection.ReplaceOneAsync(b => b.Id == accountFromDB.Id, accountFromDB);
                                         await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
                                     }
-                                    else break;
-                             
+                                   
                                 
                             }
+                            //no connection at this time
                             else
                             {
                                 Console.WriteLine("NO EXISTING CONNECTION");
@@ -176,15 +179,12 @@ namespace LaVida
                             }
                         }
                     }
-            Console.WriteLine("MOCKETDATALENGTH: " + MockDataStore.connections.Count);
             foreach (var connection in myAccount.Connections)
             {
                 if (!MockDataStore.connections.Contains(connection))
                     MockDataStore.connections.Add(connection);
             }
             Console.WriteLine("MOCKETDATALENGTH: " + MockDataStore.connections.Count);
-
-
         }
 
         public async Task<List<Account>> GettAllAccountsFromDB()
