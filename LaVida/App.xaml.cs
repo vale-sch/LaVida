@@ -140,30 +140,43 @@ namespace LaVida
                             if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber) && connection.ChatPhoneNumber == WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber))
                                 hasNewConnection = false;
                         }
+                        foreach (var connection in myAccount.Connections)
+                            MockDataStore.connections.Add(connection);
                         if (!hasNewConnection) return;
-                        if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber))
+
+                        if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber) && App.myAccount.PhoneNumber != WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber))
                         {
-                            if (App.myAccount.PhoneNumber != phoneFromIntern.PhoneNumber)
+                            var connection = new Connection();
+                            var connectionForPartner = new Connection();
+                            if (App.myAccount.Connections.Count > 0)
                             {
-                                foreach (var existingConnecetion in App.myAccount.Connections)
-                                    if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) != existingConnecetion.ChatPhoneNumber)
+                                foreach (var existingConnection in App.myAccount.Connections)
+                                    if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) != existingConnection.ChatPhoneNumber)
                                     {
-                                        var connection = new Connection() { ChatID = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), ChatPartner = accountFromDB.Name, ChatType = ChatType.PRIVATECHAT, ChatPhoneNumber = WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber), IsActive = false };
-
-                                        App.myAccount.Connections.Add(connection);
-                                        accountFromDB.Connections.Add(connection);
-
-                                        await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
+                                        connection = new Connection() { ChatID = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), ChatPartner = accountFromDB.Name, ChatType = ChatType.PRIVATECHAT, ChatPhoneNumber = WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber), IsActive = false };
+                                        connectionForPartner = new Connection() { ChatID = connection.ChatID, ChatPartner = myAccount.Name, ChatType = ChatType.PRIVATECHAT, ChatPhoneNumber = WhiteSpace.RemoveWhitespace(myAccount.PhoneNumber), IsActive = false };
                                     }
-                            }
-                        }
-                    }
-                      
 
+                            }
+                            else
+                            {
+                                connection = new Connection() { ChatID = (phoneFromIntern.PhoneNumber + accountFromDB.PhoneNumber).GetHashCode().ToString(), ChatPartner = accountFromDB.Name, ChatType = ChatType.PRIVATECHAT, ChatPhoneNumber = WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber), IsActive = false };
+                                connectionForPartner = new Connection() { ChatID = connection.ChatID, ChatPartner = myAccount.Name, ChatType = ChatType.PRIVATECHAT, ChatPhoneNumber = WhiteSpace.RemoveWhitespace(myAccount.PhoneNumber), IsActive = false };
+                            }
+
+                            App.myAccount.Connections.Add(connection);
+                            accountFromDB.Connections.Add(connectionForPartner);
+                            await App.mongoCollection.ReplaceOneAsync(b => b.Id == accountFromDB.Id, accountFromDB);
+                            await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
+                        }
+
+
+
+                    }
 
             foreach (var connection in myAccount.Connections)
                 MockDataStore.connections.Add(connection);
-            Console.WriteLine("BINHIERANGEKOMMEN");
+            Console.WriteLine("BINHIERDURCHGEKOMMEN");
         }
         protected override void OnStart()
         {
