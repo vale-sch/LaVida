@@ -87,7 +87,7 @@ namespace LaVida.ViewModels
 
             _ = Device.InvokeOnMainThreadAsync(() =>
             {
-                NavigationManager.NextPageWithoutBack(new ChatPage(firebaseClient, connection));
+                NavigationManager.NextPageWithBack(new ChatPage(firebaseClient, connection));
 
             });
         }
