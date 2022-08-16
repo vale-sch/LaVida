@@ -71,7 +71,7 @@ namespace LaVida
             {
                 await Task.Delay(1);
             }
-                
+
 
             Boolean isInDB = false;
             foreach (var accountFromDB in AccountsFromDB)
@@ -107,7 +107,7 @@ namespace LaVida
 
 
         }
-     
+
         private async Task LoadNewConnections()
         {
             ContactsCollection = await ContactCore.GetContactCollection();
@@ -119,21 +119,25 @@ namespace LaVida
                         hasNewConnection = true;
                         foreach (var connection in MockDataStore.connections)
                         {
-                           
+
                             if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber) && connection.ChatPhoneNumber == WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) || WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == myAccount.PhoneNumber)
                                 hasNewConnection = false;
-                            
+
                         }
-                      
+
 
                         if (!hasNewConnection) return;
-                        if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber) && WhiteSpace.RemoveWhitespace(App.myAccount.PhoneNumber) != WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber))
+                        Boolean isSetted = false;
+                        foreach (var alreadyConnected in myAccount.Connections)
+                            if (WhiteSpace.RemoveWhitespace(alreadyConnected.ChatPhoneNumber) == WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber)) isSetted = true;
+                        if (!isSetted && WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber) && WhiteSpace.RemoveWhitespace(App.myAccount.PhoneNumber) != WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber))
                         {
                             Console.WriteLine("TREFFER");
 
                             var connection = new Connection();
                             var connectionForPartner = new Connection();
                             //existing connection partner
+
                             if (accountFromDB.Connections.Count > 0)
                             {
                                 foreach (var existingConnection in accountFromDB.Connections)
@@ -144,7 +148,7 @@ namespace LaVida
                                         App.myAccount.Connections.Add(connection);
                                         await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
                                     }
-                                  
+
                             }
                             //existing connection self
 
@@ -163,8 +167,8 @@ namespace LaVida
                                         await App.mongoCollection.ReplaceOneAsync(b => b.Id == accountFromDB.Id, accountFromDB);
                                         await App.mongoCollection.ReplaceOneAsync(b => b.Id == App.myAccount.Id, App.myAccount);
                                     }
-                                   
-                                
+
+
                             }
                             //no connection at this time
                             else
