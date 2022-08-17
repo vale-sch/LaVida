@@ -16,7 +16,7 @@ namespace LaVida.Views
         public ChatPage( Connection connection)
         {
             InitializeComponent();
-            Title = "LAVIDA - DemoChat";
+            Title = connection.ChatPartner;
             BindingContext = new ChatPageViewModel(connection);
         }
 
