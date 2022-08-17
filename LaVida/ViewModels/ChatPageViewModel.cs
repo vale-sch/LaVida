@@ -40,11 +40,11 @@ namespace LaVida.ViewModels
                 }
 
             });
-            Task.Run(() =>
-            {
-                Task.Delay(1000);
-                StreamMessagesFromServer();
-            });
+
+
+            Task.Delay(1000);
+            StreamMessagesFromServer();
+
 
 
         }
@@ -67,6 +67,7 @@ namespace LaVida.ViewModels
                    }
                }
            });
+
         }
         private void SendMessage(string username, string message, DateTime dateTime)
         {
