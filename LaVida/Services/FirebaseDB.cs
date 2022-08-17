@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LaVida.Services
 {
-    public static  class FirebaseRealTimeDB
+    public static  class FirebaseDB
     {
         public static FirebaseClient firebaseClient;
 

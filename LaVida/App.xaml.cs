@@ -1,63 +1,72 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
-using Firebase.Database;
 using LaVida.Helpers;
 using LaVida.Models;
 using LaVida.Services;
 using LaVida.Views;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 namespace LaVida
 {
     public partial class App : Application
     {
         public static DeviceIDMessage DeviceIdentifier = new DeviceIDMessage();
         public static Account myAccount;
+        private static SQLLocalDB sQLLocalDB;
 
+        public static SQLLocalDB SQLLLocalDB
+        {
+            get
+            {
+                if (sQLLocalDB == null)
+                    sQLLocalDB = new SQLLocalDB(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "myAccount.db3"));
+
+                return sQLLocalDB;
+            }
+        }
         public App()
         {
             InitializeComponent();
             DependencyService.Register<MockDataStore>();
             MainPage = new NavigationPage(new MainPage());
-            MessagingCenter.Send(DeviceIdentifier, "GetDeviceID");
-            Task.Run(async () =>
-            {
-                await ConnectToAccount();
-            });
+            ConnectToAccount();
         }
-        private async Task ConnectToAccount()
+        private async void ConnectToAccount()
         {
-           
-            MongoAccountDB.Connect();
-            await MongoAccountDB.GetAllAccountsFromDB();
 
-            while (DeviceIdentifier.DeviceID == null)
+            var account = await SQLLLocalDB.GetMyAccount();
+            Console.WriteLine("JOJO1");
+            Console.WriteLine(account == null);
+            if (account == null)
             {
-                await Task.Delay(1);
-            }
-            Boolean isInDB = false;
-            foreach (var accountFromDB in MongoAccountDB.AccountsFromDB)
-            {
-                if (DeviceIdentifier.DeviceID == accountFromDB.AccountID)
+                MessagingCenter.Send(DeviceIdentifier, "GetDeviceID");
+                while (DeviceIdentifier.DeviceID == null)
                 {
-                    myAccount = accountFromDB;
-                    isInDB = true;
+                    await Task.Delay(1);
+                    Console.WriteLine(DeviceIdentifier.DeviceID == null);
+
+                }
+                Console.WriteLine("Peter");
+
+                _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new RegistrationPage()); });
+                MongoAccountDB.Connect();
+                await MongoAccountDB.GetAllAccountsFromDB();
+
+            }
+            else
+            {
+                Console.WriteLine("JOJO");
+
+                foreach (var accountFromSQL in account)
+                {
+                    myAccount = accountFromSQL;
+                    _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new ChatsOverviewPage()); });
+
                 }
             }
-            if (isInDB)
-                _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new ChatsOverviewPage()); });
-
-            else
-                _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new RegistrationPage()); });
         }
 
-        
+
 
 
         protected override void OnStart()

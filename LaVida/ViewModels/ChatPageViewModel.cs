@@ -54,7 +54,7 @@ namespace LaVida.ViewModels
         private void StreamMessagesFromServer()
         {
 
-            var collection = FirebaseRealTimeDB.firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe((dbevent) =>
+            var collection = FirebaseDB.firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe((dbevent) =>
             {
                 if (dbevent.Object != null)
                 {
@@ -82,7 +82,7 @@ namespace LaVida.ViewModels
         private void SendMessage(string username, string message, DateTime dateTime)
         {
 
-            FirebaseRealTimeDB.firebaseClient.Child(Connection.ChatID).PostAsync(new MessageModel() { Message = message, UserName = username, DateTime = dateTime });
+            FirebaseDB.firebaseClient.Child(Connection.ChatID).PostAsync(new MessageModel() { Message = message, UserName = username, DateTime = dateTime });
             TextToSend = string.Empty;
 
         }

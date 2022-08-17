@@ -25,7 +25,7 @@ namespace LaVida.ViewModels
         public Xamarin.Forms.Command<Connection> ConnectionTapped { get; set; }
         public ChatsViewModel()
         {
-            FirebaseRealTimeDB.Connect();
+            FirebaseDB.Connect();
 
             Task.Run(async () =>
             {
