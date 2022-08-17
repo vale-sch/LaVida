@@ -66,7 +66,7 @@
                  BackgroundColor="LightGray"
                  Grid.Row="1"/>
         <partials:ChatInputBarView Grid.Row="2"
-                                   Margin="0,0,5,0"
+                                   Margin="5,0,0,0"
                                    x:Name="chatInput" Padding="0,5,0,25"/>
     </Grid>
     

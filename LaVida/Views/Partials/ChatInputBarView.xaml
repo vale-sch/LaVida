@@ -18,7 +18,7 @@
         <controls:ExtendedEditorControl x:Name="chatTextInput" 
                  HasRoundedCorner="True"
                  Text="{Binding TextToSend}" 
-                 Margin="25,0,0,0"  
+                 Margin="15,0,0,0"  
                  TextColor="Black" 
                  Keyboard="Chat"  
                  IsExpandable="true"
@@ -29,7 +29,7 @@
                  Grid.Column="0" IsTextPredictionEnabled="True" />
         <Image Source="sendIcon.png" HeightRequest="35"  Grid.Row="0" 
                Grid.Column="1"
-               VerticalOptions="Center" Margin="10,0,2,0">
+               VerticalOptions="Center" Margin="5,0,5,0">
             <Image.GestureRecognizers>
                 <TapGestureRecognizer
                       Command="{Binding OnSendCommand}"
