@@ -15,6 +15,7 @@ namespace LaVida.ViewModels
 {
     public class ChatPageViewModel : BaseViewModel
     {
+
         public bool LastMessageVisible { get; set; } = true;
         public int PendingMessageCount { get; set; } = 0;
 
@@ -48,6 +49,7 @@ namespace LaVida.ViewModels
             {
                 if (dbevent.Object != null && !string.IsNullOrEmpty(dbevent.Object.Message))
                 {
+                    Console.WriteLine(dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message);
                     if (LastMessageVisible)
                     {
                         Messages.Insert(0, new MessageModel() { Message = dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message, UserName = dbevent.Object.UserName, DateTime = dbevent.Object.DateTime });
