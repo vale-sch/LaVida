@@ -25,8 +25,8 @@ namespace LaVida.ViewModels
         public ICommand OnSendCommand { get; set; }
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
-        private readonly  Connection Connection;
-        public ChatPageViewModel( Connection _connection)
+        private readonly Connection Connection;
+        public ChatPageViewModel(Connection _connection)
         {
             Connection = _connection;
             MessageAppearingCommand = new Command<MessageModel>(OnMessageAppearing);
@@ -40,27 +40,33 @@ namespace LaVida.ViewModels
                 }
 
             });
-            StreamMessagesFromServer();
+            Task.Run(() =>
+            {
+                Task.Delay(1000);
+                StreamMessagesFromServer();
+            });
+
+
         }
         private void StreamMessagesFromServer()
         {
 
-            FirebaseDB.firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe( (dbevent) =>
-            {
-                if (dbevent.Object != null && !string.IsNullOrEmpty(dbevent.Object.Message))
-                {
-                    Console.WriteLine(dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message);
-                    if (LastMessageVisible)
-                    {
-                        Messages.Insert(0, new MessageModel() { Message = dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message, UserName = dbevent.Object.UserName, DateTime = dbevent.Object.DateTime });
-                    }
-                    else
-                    {
-                        Messages.Insert(0, new MessageModel() { Message = dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message, UserName = dbevent.Object.UserName, DateTime = dbevent.Object.DateTime });
-                        PendingMessageCount++;
-                    }
-                }
-            });
+            FirebaseDB.firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe((dbevent) =>
+           {
+               if (dbevent.Object != null && !string.IsNullOrEmpty(dbevent.Object.Message))
+               {
+                   Console.WriteLine(dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message);
+                   if (LastMessageVisible)
+                   {
+                       Messages.Insert(0, new MessageModel() { Message = dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message, UserName = dbevent.Object.UserName, DateTime = dbevent.Object.DateTime });
+                   }
+                   else
+                   {
+                       Messages.Insert(0, new MessageModel() { Message = dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message, UserName = dbevent.Object.UserName, DateTime = dbevent.Object.DateTime });
+                       PendingMessageCount++;
+                   }
+               }
+           });
         }
         private void SendMessage(string username, string message, DateTime dateTime)
         {
