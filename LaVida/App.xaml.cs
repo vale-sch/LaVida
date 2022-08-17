@@ -27,42 +27,35 @@ namespace LaVida
         public App()
         {
             InitializeComponent();
-            DependencyService.Register<MockDataStore>();
             MainPage = new NavigationPage(new MainPage());
-            ConnectToAccount();
+            Initialize();
         }
-        private async void ConnectToAccount()
+        private async void Initialize()
         {
-
+          
             var account = await SQLLLocalDB.GetMyAccount();
-            Console.WriteLine("JOJO1");
-            Console.WriteLine(account == null);
-            if (account == null)
+            if (account.Count == 0)
             {
+                MongoAccountDB.Connect();
+                await MongoAccountDB.GetAllAccountsFromDB();
                 MessagingCenter.Send(DeviceIdentifier, "GetDeviceID");
                 while (DeviceIdentifier.DeviceID == null)
                 {
                     await Task.Delay(1);
-                    Console.WriteLine(DeviceIdentifier.DeviceID == null);
 
                 }
-                Console.WriteLine("Peter");
-
                 _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new RegistrationPage()); });
-                MongoAccountDB.Connect();
-                await MongoAccountDB.GetAllAccountsFromDB();
-
             }
             else
             {
-                Console.WriteLine("JOJO");
+                var mySQLAccount = account.ToArray()[0];
+                MongoAccountDB.Connect();
+                await MongoAccountDB.GetAllAccountsFromDB();
+                foreach (var accountDB in MongoAccountDB.AccountsFromDB)
+                    if (mySQLAccount.Id == accountDB.Id)
+                        myAccount = accountDB;
+                _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new ChatsOverviewPage()); });
 
-                foreach (var accountFromSQL in account)
-                {
-                    myAccount = accountFromSQL;
-                    _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new ChatsOverviewPage()); });
-
-                }
             }
         }
 

@@ -10,7 +10,6 @@ namespace LaVida.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Connection> DataStore => DependencyService.Get<IDataStore<Connection>>();
 
         bool isBusy = false;
         public bool IsBusy

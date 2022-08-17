@@ -14,16 +14,15 @@ namespace LaVida.Services
         public SQLLocalDB(string dbPath)
         {
             SQLClient = new SQLiteAsyncConnection(dbPath);
-            SQLClient.CreateTableAsync<Account>();
+            SQLClient.CreateTableAsync<SQLAccount>().Wait();
         }
 
-        public  Task<List<Account>> GetMyAccount()
+        public  Task<List<SQLAccount>> GetMyAccount()
         {
-            Console.WriteLine("WIR SIND DRIN");
-            return SQLClient.Table<Account>().ToListAsync();
+            return SQLClient.Table<SQLAccount>().ToListAsync();
 
         }
-        public  Task SaveMyAccount(Account account)
+        public  Task SaveMyAccount(SQLAccount account)
         {
             return SQLClient.InsertAsync(account);
         }

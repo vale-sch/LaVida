@@ -37,6 +37,8 @@ namespace LaVida.ViewModels
                             accountFromDB.HasToRefreshConnections = true;
                             await MongoAccountDB.UpdateOneItem(accountFromDB);
                             await MongoAccountDB.UpdateOneItem(App.myAccount);
+ 
+
 
                         }
                     }

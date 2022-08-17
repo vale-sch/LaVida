@@ -27,41 +27,40 @@ namespace LaVida.ViewModels
         {
             FirebaseDB.Connect();
 
-            Task.Run(async () =>
-            {
-                await StartChatRoutine();
-            });
-
-
-        }
-        async Task StartChatRoutine()
-        {
             Connections = new ObservableCollection<Connection>();
+            LoadConnections();
             LoadConnectionsCommand = new Command(async () => await ExecuteLoadConnectionCommand());
 
 
             AddConnectionCommand = new Command(OnConnectionAdd);
-            foreach (var connection in App.myAccount.Connections)
-            {
-                if (!DataStore.Equals(connection))
-                    await DataStore.AddItemAsync(connection);
-            }
+
             ConnectionTapped = new Xamarin.Forms.Command<Connection>(OnConnectionSelected);
 
-
         }
-
-        async Task ExecuteLoadConnectionCommand()
+ 
+        void LoadConnections()
+        {
+            foreach (var connection in App.myAccount.Connections)
+                Connections.Add(connection);
+        }
+         async Task ExecuteLoadConnectionCommand()
         {
             IsBusy = true;
 
             try
             {
-                Connections.Clear();
-                var connections = await DataStore.GetItemsAsync(true);
-                foreach (var connection in connections)
-                    Connections.Add(connection);
+                foreach (var accountDB in MongoAccountDB.AccountsFromDB)
+                    if (App.myAccount.Id == accountDB.Id)
+                    {
+                        App.myAccount = accountDB;
+                        foreach (var connection in App.myAccount.Connections)
+                        {
+                            if(!Connections.Contains(connection))
+                                Connections.Add(connection);
+                        }
 
+                    }
+               
             }
             catch (Exception ex)
             {
@@ -79,7 +78,7 @@ namespace LaVida.ViewModels
         }
         public void OnAppearing()
         {
-            IsBusy = true;
+            IsBusy = false;
             SelectedConnection = null;
         }
         public Connection SelectedConnection

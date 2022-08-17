@@ -16,7 +16,8 @@ namespace LaVida.Models
         public string PhoneNumber { get; set; }
         public string AccountID { get; set; }
         public bool HasToRefreshConnections { get; set; }
-        public List< Connection> Connections { get; set; }
+        public List<Connection> Connections { get; set; }
+   
 
     }
 }
