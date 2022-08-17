@@ -18,20 +18,29 @@
                 SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="25" x:DataType="model:Connection">
-                        <Label Text="{Binding ChatPartner}" 
-                            LineBreakMode="NoWrap" 
-                            Style="{DynamicResource ListItemTextStyle}" 
-                            FontSize="24" 
-                               FontAttributes="Bold"/>
-                      
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer 
-                                NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ChatsViewModel}}, Path=ConnectionTapped}"		
-                                CommandParameter="{Binding .}">
-                            </TapGestureRecognizer>
-                        </StackLayout.GestureRecognizers>
+                    <StackLayout Spacing="8" HorizontalOptions="EndAndExpand"   >
+                        <Frame Style="{StaticResource outerFrame}">
+                            <Frame Style="{StaticResource innerFrame}">
+                            <StackLayout Style="{StaticResource itemsCardViewStackLayoutStyle}">
+                                <StackLayout Style="{StaticResource itemsInsideCardViewStackLayoutStyle}">
+
+                                    <StackLayout Padding="25" x:DataType="model:Connection" >
+                                        <Label Text="{Binding ChatPartner}" 
+                                               LineBreakMode="NoWrap" 
+                                               Style="{StaticResource NameLabel}"
+                                               />
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                                NumberOfTapsRequired="1"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ChatsViewModel}}, Path=ConnectionTapped}"		
+                                                CommandParameter="{Binding .}">
+                                            </TapGestureRecognizer>
+                                        </StackLayout.GestureRecognizers>
+                                    </StackLayout>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                        </Frame>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
