@@ -22,7 +22,7 @@
                         <Frame Style="{StaticResource outerFrame}">
                             <Frame Style="{StaticResource innerFrame}">
                             <StackLayout Style="{StaticResource itemsCardViewStackLayoutStyle}">
-                                <StackLayout Style="{StaticResource itemsInsideCardViewStackLayoutStyle}">
+                                <StackLayout >
 
                                     <StackLayout Padding="25" x:DataType="model:Connection" >
                                         <Label Text="{Binding ChatPartner}" 

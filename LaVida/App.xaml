@@ -8,7 +8,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <Color x:Key="Primary">#277BC0</Color>
-            <Color x:Key="primary-back-title-color">#4CACBC</Color>
+            <Color x:Key="primary-back-title-color">#006E7F</Color>
             <Color x:Key="primary-title-color">#FFFFFF</Color>
             <!-- Pallete-end -->
                
@@ -76,15 +76,12 @@
             </Style>
 
             <Style x:Key="itemsCardViewStackLayoutStyle" TargetType="StackLayout">
-                <Setter Property="Margin" Value="5,5,5,5" />
+                <Setter Property="Margin" Value="15,0,0,0" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="Spacing" Value="8" />
             </Style>
 
-            <Style x:Key="itemsInsideCardViewStackLayoutStyle" TargetType="StackLayout">
-                <Setter Property="Orientation" Value="Horizontal" />
-                <Setter Property="Spacing" Value="8" />
-            </Style>
+           
         </ResourceDictionary>
     </Application.Resources>
 
