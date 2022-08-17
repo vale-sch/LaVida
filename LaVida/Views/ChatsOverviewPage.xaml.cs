@@ -14,13 +14,13 @@ namespace LaVida.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ChatsOverviewPage : ContentPage
     {
-        readonly ConnectionManager _connectionManager;
+        readonly ChatsViewModel _connectionManager;
 
-        public ChatsOverviewPage(FirebaseClient firebaseClient)
+        public ChatsOverviewPage()
         {
             InitializeComponent();
             Title = "Chats";
-            BindingContext = _connectionManager = new ConnectionManager(firebaseClient);
+            BindingContext = _connectionManager = new ChatsViewModel();
 
         }
         protected override void OnAppearing()

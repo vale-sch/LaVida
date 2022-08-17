@@ -1,5 +1,6 @@
 ﻿using Firebase.Database;
 using LaVida.Models;
+using LaVida.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,27 +15,42 @@ using System.Diagnostics;
 
 namespace LaVida.ViewModels
 {
-    public class ConnectionManager: BaseViewModel
+    public class ChatsViewModel : BaseViewModel
     {
-  
+
         private Connection _selectedConnection;
-        public ObservableCollection<Connection> Connections { get; }
-        public Command LoadConnectionsCommand { get; }
-        public Command AddConnectionCommand { get; }
-        public Xamarin.Forms.Command<Connection> ConnectionTapped { get; }
-        private readonly FirebaseClient firebaseClient;
-        public ConnectionManager(FirebaseClient firebaseClient)
+        public ObservableCollection<Connection> Connections { get; set; }
+        public Command LoadConnectionsCommand { get; set; }
+        public Command AddConnectionCommand { get; set; }
+        public Xamarin.Forms.Command<Connection> ConnectionTapped { get; set; }
+        public ChatsViewModel()
+        {
+            FirebaseRealTimeDB.Connect();
+
+            Task.Run(async () =>
+            {
+                await StartChatRoutine();
+            });
+
+
+        }
+        async Task StartChatRoutine()
         {
             Connections = new ObservableCollection<Connection>();
             LoadConnectionsCommand = new Command(async () => await ExecuteLoadConnectionCommand());
 
-            ConnectionTapped = new Xamarin.Forms.Command<Connection>(OnConnectionSelected);
 
             AddConnectionCommand = new Command(OnConnectionAdd);
+            foreach (var connection in App.myAccount.Connections)
+            {
+                if (!DataStore.Equals(connection))
+                    await DataStore.AddItemAsync(connection);
+            }
+            ConnectionTapped = new Xamarin.Forms.Command<Connection>(OnConnectionSelected);
 
-           this.firebaseClient = firebaseClient;
 
         }
+
         async Task ExecuteLoadConnectionCommand()
         {
             IsBusy = true;
@@ -44,9 +60,8 @@ namespace LaVida.ViewModels
                 Connections.Clear();
                 var connections = await DataStore.GetItemsAsync(true);
                 foreach (var connection in connections)
-                {
                     Connections.Add(connection);
-                }
+
             }
             catch (Exception ex)
             {
@@ -59,11 +74,8 @@ namespace LaVida.ViewModels
         }
         private void OnConnectionAdd(object obj)
         {
-            _ = Device.InvokeOnMainThreadAsync(() =>
-            {
-                NavigationManager.NextPageWithBack(new PossibleNewChats());
 
-            });
+            NavigationManager.NextPageWithBack(new PossibleNewChats());
         }
         public void OnAppearing()
         {
@@ -79,19 +91,18 @@ namespace LaVida.ViewModels
                 OnConnectionSelected(value);
             }
         }
-         void OnConnectionSelected(Connection connection)
+        void OnConnectionSelected(Connection connection)
         {
-            //Console.WriteLine(connection.ChatPartner);
             if (connection == null)
                 return;
+            Console.WriteLine("HALLLO");
 
-            _ = Device.InvokeOnMainThreadAsync(() =>
-            {
-                NavigationManager.NextPageWithBack(new ChatPage(firebaseClient, connection));
 
-            });
+            NavigationManager.NextPageWithBack(new ChatPage(connection));
+
+
         }
-      
+
 
     }
 }

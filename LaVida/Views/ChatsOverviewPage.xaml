@@ -6,11 +6,13 @@
              xmlns:local="clr-namespace:LaVida.ViewModels"  
              xmlns:model="clr-namespace:LaVida.Models"
              x:Name="BrowseConnectionPage"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
              >
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddConnectionCommand}" />
     </ContentPage.ToolbarItems>
-    <RefreshView x:DataType="local:ConnectionManager" Command="{Binding LoadConnectionsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+    <RefreshView x:DataType="local:ChatsViewModel" Command="{Binding LoadConnectionsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="ItemsListView"
                 ItemsSource="{Binding Connections}"
                 SelectionMode="None">
@@ -26,7 +28,7 @@
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer 
                                 NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ConnectionManager}}, Path=ConnectionTapped}"		
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ChatsViewModel}}, Path=ConnectionTapped}"		
                                 CommandParameter="{Binding .}">
                             </TapGestureRecognizer>
                         </StackLayout.GestureRecognizers>

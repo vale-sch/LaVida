@@ -13,11 +13,11 @@ namespace LaVida.Views
     public partial class ChatPage : ContentPage
     {
 
-        public ChatPage(FirebaseClient firebaseClient, Connection connection)
+        public ChatPage( Connection connection)
         {
             InitializeComponent();
             Title = "LAVIDA - DemoChat";
-            BindingContext = new ChatBackend(firebaseClient, connection);
+            BindingContext = new ChatPageViewModel(connection);
         }
 
         public void ScrollTap(object sender, System.EventArgs e)
@@ -26,7 +26,7 @@ namespace LaVida.Views
             {
                 if (BindingContext != null)
                 {
-                    var vm = BindingContext as ChatBackend;
+                    var vm = BindingContext as ChatPageViewModel;
 
                     Device.BeginInvokeOnMainThread(() =>
                     {

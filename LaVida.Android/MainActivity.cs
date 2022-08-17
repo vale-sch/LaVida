@@ -23,15 +23,15 @@ namespace LaVida.Droid
         {
            
             base.OnCreate(savedInstanceState);
-          
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
             MessagingCenter.Subscribe<DeviceIDMessage>(this, "GetDeviceID", message =>
             {
                 message.DeviceID = Android.Provider.Settings.Secure.GetString(Android.App.Application.Context.ContentResolver, Android.Provider.Settings.Secure.AndroidId);
 
             });
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            LoadApplication(new App());
+           
             RequestPermissions(ContactsPermissions, 0);
 
         }

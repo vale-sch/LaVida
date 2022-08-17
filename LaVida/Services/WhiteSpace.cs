@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LaVida.ViewModels
+namespace LaVida.Services
 {
     public static class WhiteSpace
     {

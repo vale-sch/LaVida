@@ -7,13 +7,13 @@ using System.Windows.Input;
 using Firebase.Database;
 using Firebase.Database.Query;
 using LaVida.Models;
-
+using LaVida.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace LaVida.ViewModels
 {
-    public class ChatBackend : INotifyPropertyChanged
+    public class ChatPageViewModel : INotifyPropertyChanged
     {
         public bool ShowScrollTap { get; set; } = false;
         public bool LastMessageVisible { get; set; } = true;
@@ -27,11 +27,9 @@ namespace LaVida.ViewModels
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
         private readonly  Connection Connection;
-        private readonly FirebaseClient firebaseClient;
-        public ChatBackend(FirebaseClient _firebaseClient, Connection _connection)
+        public ChatPageViewModel( Connection _connection)
         {
             Connection = _connection;
-            firebaseClient = _firebaseClient;
           
       
             MessageAppearingCommand = new Xamarin.Forms.Command<MessageModel>(OnMessageAppearing);
@@ -56,7 +54,7 @@ namespace LaVida.ViewModels
         private void StreamMessagesFromServer()
         {
 
-            var collection = firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe((dbevent) =>
+            var collection = FirebaseRealTimeDB.firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe((dbevent) =>
             {
                 if (dbevent.Object != null)
                 {
@@ -84,7 +82,7 @@ namespace LaVida.ViewModels
         private void SendMessage(string username, string message, DateTime dateTime)
         {
 
-            firebaseClient.Child(Connection.ChatID).PostAsync(new MessageModel() { Message = message, UserName = username, DateTime = dateTime });
+            FirebaseRealTimeDB.firebaseClient.Child(Connection.ChatID).PostAsync(new MessageModel() { Message = message, UserName = username, DateTime = dateTime });
             TextToSend = string.Empty;
 
         }

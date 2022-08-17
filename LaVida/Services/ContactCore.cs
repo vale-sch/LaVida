@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
-namespace LaVida.ViewModels
+namespace LaVida.Services
 {
     public  class ContactCore
     {

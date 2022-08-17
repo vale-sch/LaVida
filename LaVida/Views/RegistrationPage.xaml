@@ -31,7 +31,7 @@
 
                 <Label Text="Phone Number:" FontSize="Large" FontAttributes="Bold"/>
 
-                <Entry Placeholder="e.g. 1590394931" x:Name="phoneNumber" />
+                <Entry Placeholder="e.g. +491590394931" x:Name="phoneNumber" />
                 <Button Margin="0,10,0,0" Text="Join" FontAttributes="Bold"
                         Clicked="NavigateToChatRoom"
                         BackgroundColor="{StaticResource Primary}"

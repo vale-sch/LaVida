@@ -19,11 +19,11 @@ namespace LaVida.ViewModels
             set { SetProperty(ref isBusy, value); }
         }
 
-        string title = string.Empty;
-        public string Title
+        string name = string.Empty;
+        public string Name
         {
-            get { return title; }
-            set { SetProperty(ref title, value); }
+            get { return name; }
+            set { SetProperty(ref name, value); }
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
