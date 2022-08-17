@@ -94,14 +94,8 @@ namespace LaVida.ViewModels
         {
             if (connection == null)
                 return;
-            Console.WriteLine("HALLLO");
-
 
             NavigationManager.NextPageWithBack(new ChatPage(connection));
-
-
         }
-
-
     }
 }

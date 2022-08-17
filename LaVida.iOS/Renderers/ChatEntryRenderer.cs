@@ -44,7 +44,7 @@ namespace LaVida.iOS.Renderers
             CGSize keyboardSize = result.RectangleFValue.Size;
             if (Element != null)
             {
-                Element.Margin = new Thickness(0, 0, 0, keyboardSize.Height); //push the entry up to keyboard height when keyboard is activated
+                Element.Margin = new Thickness(0, 0, 0, keyboardSize.Height -20); //push the entry up to keyboard height when keyboard is activated
 
             }
         }
