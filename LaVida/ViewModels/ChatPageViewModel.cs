@@ -13,7 +13,7 @@ using Xamarin.Forms;
 
 namespace LaVida.ViewModels
 {
-    public class ChatPageViewModel : INotifyPropertyChanged
+    public class ChatPageViewModel : BaseViewModel
     {
 
         public ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
@@ -24,10 +24,6 @@ namespace LaVida.ViewModels
         public ChatPageViewModel( Connection _connection)
         {
             Connection = _connection;
-          
-      
-
-
             OnSendCommand = new Command(() =>
             {
 
@@ -38,12 +34,7 @@ namespace LaVida.ViewModels
 
             });
             StreamMessagesFromServer();
-
         }
-       
-
-       
-      
         private void StreamMessagesFromServer()
         {
 
@@ -55,9 +46,8 @@ namespace LaVida.ViewModels
                     RefreshMessages(dbevent.Object.UserName, dbevent.Object.Message, dbevent.Object.DateTime);
                 }
             });
-
-
         }
+
         public void RefreshMessages(string userName, string message, DateTime dateTime)
         {
             if (!string.IsNullOrEmpty(message))
@@ -74,12 +64,5 @@ namespace LaVida.ViewModels
             TextToSend = string.Empty;
 
         }
-     
-
-     
-        
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
