@@ -54,10 +54,11 @@ namespace LaVida.ViewModels
         private void StreamMessagesFromServer()
         {
 
-            var collection = FirebaseDB.firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe((dbevent) =>
+            var collection = FirebaseDB.firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe(async (dbevent) =>
             {
                 if (dbevent.Object != null)
                 {
+                    await Task.Delay(5);
                     RefreshMessages(dbevent.Object.UserName, dbevent.Object.Message, dbevent.Object.DateTime);
                 }
             });
