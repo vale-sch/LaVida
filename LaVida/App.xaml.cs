@@ -36,6 +36,7 @@ namespace LaVida
            
             MongoAccountDB.Connect();
             await MongoAccountDB.GetAllAccountsFromDB();
+
             while (DeviceIdentifier.DeviceID == null)
             {
                 await Task.Delay(1);

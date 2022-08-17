@@ -24,12 +24,14 @@ namespace LaVida.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
             MessagingCenter.Subscribe<DeviceIDMessage>(this, "GetDeviceID", message =>
             {
                 message.DeviceID = UIDevice.CurrentDevice.IdentifierForVendor.ToString();
             });
+            global::Xamarin.Forms.Forms.Init();
+          
+            LoadApplication(new App());
+          
             return base.FinishedLaunching(app, options);
         }
     }

@@ -135,45 +135,25 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\LaVida\LaVida.csproj">
-      <Project>{42A748BB-D389-414C-90B6-1E613BE028CB}</Project>
+      <Project>{84D05A28-942D-42A4-ADB7-7F8622751B17}</Project>
       <Name>LaVida</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\ic_scrolldown.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\icon_about.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\icon_about%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\icon_about%403x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\icon_feed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\icon_feed%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\icon_feed%403x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\logo_cover.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\logo_transparent.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\coverphoto.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\favicon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_scrolldown.png" />
+    <BundleResource Include="Resources\icon_about.png" />
+    <BundleResource Include="Resources\icon_about%402x.png" />
+    <BundleResource Include="Resources\icon_about%403x.png" />
+    <BundleResource Include="Resources\icon_feed.png" />
+    <BundleResource Include="Resources\icon_feed%402x.png" />
+    <BundleResource Include="Resources\icon_feed%403x.png" />
+    <BundleResource Include="Resources\coverphoto.png" />
+    <BundleResource Include="Resources\favicon.png" />
+    <BundleResource Include="Resources\logo_cover.png" />
+    <BundleResource Include="Resources\logo_transparent.png" />
     <BundleResource Include="Resources\sendIcon.png" />
   </ItemGroup>
 </Project>
