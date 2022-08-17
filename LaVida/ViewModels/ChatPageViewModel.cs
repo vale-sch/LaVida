@@ -38,24 +38,13 @@ namespace LaVida.ViewModels
         private void StreamMessagesFromServer()
         {
 
-            var collection = FirebaseDB.firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe( (dbevent) =>
+            FirebaseDB.firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe( (dbevent) =>
             {
-                if (dbevent.Object != null)
+                if (dbevent.Object != null && !string.IsNullOrEmpty(dbevent.Object.Message))
                 {
-                     
-                    RefreshMessages(dbevent.Object.UserName, dbevent.Object.Message, dbevent.Object.DateTime);
+                    Messages.Insert(0, new MessageModel() { Message = dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message, UserName = dbevent.Object.UserName, DateTime = dbevent.Object.DateTime });
                 }
             });
-        }
-
-        public void RefreshMessages(string userName, string message, DateTime dateTime)
-        {
-            if (!string.IsNullOrEmpty(message))
-            {
-                
-                   Messages.Insert(0, new MessageModel() { Message = dateTime.ToString() + "\n" + message, UserName = userName, DateTime = dateTime });
-              
-            }
         }
         private void SendMessage(string username, string message, DateTime dateTime)
         {
