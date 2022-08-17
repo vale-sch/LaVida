@@ -12,7 +12,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0, 0, 0, 20"/>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 0, 0, 35"/>
     </ContentPage.Padding>
     <ContentPage.BackgroundColor>
         <OnPlatform x:TypeArguments="Color" Default="WhiteSmoke"/>
