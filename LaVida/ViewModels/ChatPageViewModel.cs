@@ -15,25 +15,18 @@ namespace LaVida.ViewModels
 {
     public class ChatPageViewModel : INotifyPropertyChanged
     {
-        public bool ShowScrollTap { get; set; } = false;
-        public bool LastMessageVisible { get; set; } = true;
-        public int PendingMessageCount { get; set; } = 0;
-        public bool PendingMessageCountVisible { get { return PendingMessageCount > 0; } }
 
-        public Queue<MessageModel> DelayedMessages { get; set; } = new Queue<MessageModel>();
         public ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
         public string TextToSend { get; set; }
         public ICommand OnSendCommand { get; set; }
-        public ICommand MessageAppearingCommand { get; set; }
-        public ICommand MessageDisappearingCommand { get; set; }
+ 
         private readonly  Connection Connection;
         public ChatPageViewModel( Connection _connection)
         {
             Connection = _connection;
           
       
-            MessageAppearingCommand = new Xamarin.Forms.Command<MessageModel>(OnMessageAppearing);
-            MessageDisappearingCommand = new Xamarin.Forms.Command<MessageModel>(OnMessageDisappearing);
+
 
             OnSendCommand = new Command(() =>
             {
@@ -69,15 +62,9 @@ namespace LaVida.ViewModels
         {
             if (!string.IsNullOrEmpty(message))
             {
-                if (LastMessageVisible)
-                {
-                    Messages.Insert(0, new MessageModel() { Message = dateTime.ToString() + "\n" + message, UserName = userName, DateTime = dateTime });
-                }
-                else
-                {
-                    DelayedMessages.Enqueue(new MessageModel() { Message = dateTime.ToString() + "\n" + message, UserName = userName, DateTime = dateTime });
-                    PendingMessageCount++;
-                }
+                
+                   Messages.Insert(0, new MessageModel() { Message = dateTime.ToString() + "\n" + message, UserName = userName, DateTime = dateTime });
+              
             }
         }
         private void SendMessage(string username, string message, DateTime dateTime)
@@ -87,37 +74,10 @@ namespace LaVida.ViewModels
             TextToSend = string.Empty;
 
         }
-        void OnMessageAppearing(MessageModel message)
-        {
-            var idx = Messages.IndexOf(message);
-            if (idx <= 6)
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    while (DelayedMessages.Count > 0)
-                    {
-                          Messages.Insert(0, DelayedMessages.Dequeue());
-                    }
-                    ShowScrollTap = false;
-                    LastMessageVisible = true;
-                    PendingMessageCount = 0;
-                });
-            }
-        }
+     
 
-        void OnMessageDisappearing(MessageModel message)
-        {
-            var idx = Messages.IndexOf(message);
-            if (idx >= 6)
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    ShowScrollTap = true;
-                    LastMessageVisible = false;
-                });
-
-            }
-        }
+     
+        
 
 
         public event PropertyChangedEventHandler PropertyChanged;
