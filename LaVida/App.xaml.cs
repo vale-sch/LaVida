@@ -32,22 +32,21 @@ namespace LaVida
         }
         private async void Initialize()
         {
-          
+            MongoAccountDB.Connect();
+            
             var account = await SQLLLocalDB.GetMyAccount();
             if (account.Count == 0)
             {
-                MongoAccountDB.Connect();
-                await MongoAccountDB.GetAllAccountsFromDB();
                 MessagingCenter.Send(DeviceIdentifier, "GetDeviceID");
                 while (DeviceIdentifier.DeviceID == null)
                 {
                     await Task.Delay(1);
-
                 }
                 _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new RegistrationPage()); });
             }
             else
             {
+                await MongoAccountDB.GetAllAccountsFromDB();
                 var mySQLAccount = account.ToArray()[0];
                 MongoAccountDB.Connect();
                 await MongoAccountDB.GetAllAccountsFromDB();
