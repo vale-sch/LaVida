@@ -11,6 +11,7 @@
             <local:ChatTemplateSelector x:Key="MessageTemplateSelector"/>
         </ResourceDictionary>
     </ContentPage.Resources>
+  
     <ContentPage.BackgroundColor>
         <OnPlatform x:TypeArguments="Color" Default="WhiteSmoke"/>
     </ContentPage.BackgroundColor>
@@ -65,9 +66,8 @@
                  BackgroundColor="LightGray"
                  Grid.Row="1"/>
         <partials:ChatInputBarView Grid.Row="2"
-                                   Margin="0,0,10,0"
-                                   x:Name="chatInput"
-                                   />
+                                   Margin="0,0,5,0"
+                                   x:Name="chatInput" Padding="0,5,0,25"/>
     </Grid>
     
 </ContentPage>

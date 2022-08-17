@@ -7,7 +7,7 @@
     -->
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#00308F</Color>
+            <Color x:Key="Primary">#54BAB9</Color>
             <Color x:Key="primary-back-title-color">#6E85B7</Color>
             <Color x:Key="primary-title-color">#FFFFFF</Color>
             <!-- Pallete-end -->
