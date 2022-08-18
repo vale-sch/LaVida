@@ -24,7 +24,7 @@ namespace LaVida.Services
             {
                 if (dbevent.Object != null && !string.IsNullOrEmpty(dbevent.Object.Message))
                 {
-                    Messages.Insert(0,dbevent.Object);
+                    Messages.Add(dbevent.Object);
                 }
             });
         }

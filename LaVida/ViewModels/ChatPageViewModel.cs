@@ -67,7 +67,7 @@ namespace LaVida.ViewModels
                             Device.BeginInvokeOnMainThread(() => { Messages.Insert(0, message); });
                             PendingMessageCount++;
                         }
-                        await Task.Delay(50);
+                        await Task.Delay(75);
                     }
 
                 }
