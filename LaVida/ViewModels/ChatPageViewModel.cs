@@ -59,11 +59,12 @@ namespace LaVida.ViewModels
 
                         if (LastMessageVisible)
                         {
-                            Messages.Insert(0, message);
+                            Device.BeginInvokeOnMainThread(() => { Messages.Insert(0, message); });
+                            
                         }
                         else
                         {
-                            Messages.Insert(0, message);
+                            Device.BeginInvokeOnMainThread(() => { Messages.Insert(0, message); });
                             PendingMessageCount++;
                         }
                         await Task.Delay(50);
