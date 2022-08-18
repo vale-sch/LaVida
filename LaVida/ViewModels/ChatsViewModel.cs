@@ -41,9 +41,13 @@ namespace LaVida.ViewModels
         void LoadConnections()
         {
             foreach (var connection in App.myAccount.Connections)
-                RealTimeMessages.Add(new RealTimeMessageStream( connection, new ObservableCollection<MessageModel>()));
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    RealTimeMessages.Add(new RealTimeMessageStream(connection, new ObservableCollection<MessageModel>()));
+                });
+
         }
-         async Task ExecuteLoadConnectionCommand()
+        async Task ExecuteLoadConnectionCommand()
         {
             IsBusy = true;
 
