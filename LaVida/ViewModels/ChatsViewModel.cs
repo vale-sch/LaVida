@@ -18,30 +18,30 @@ namespace LaVida.ViewModels
     public class ChatsViewModel : BaseViewModel
     {
 
-        private Connection _selectedConnection;
-        public ObservableCollection<Connection> Connections { get; set; }
+        private RealTimeMessageStream _selectedChat;
+        public ObservableCollection<RealTimeMessageStream> RealTimeMessages { get; set; }
         public Command LoadConnectionsCommand { get; set; }
         public Command AddConnectionCommand { get; set; }
-        public Xamarin.Forms.Command<Connection> ConnectionTapped { get; set; }
+        public Xamarin.Forms.Command<RealTimeMessageStream> ChatTapped { get; set; }
         public ChatsViewModel()
         {
             FirebaseDB.Connect();
 
-            Connections = new ObservableCollection<Connection>();
+            RealTimeMessages = new ObservableCollection<RealTimeMessageStream>();
             LoadConnections();
             LoadConnectionsCommand = new Command(async () => await ExecuteLoadConnectionCommand());
 
 
             AddConnectionCommand = new Command(OnConnectionAdd);
 
-            ConnectionTapped = new Xamarin.Forms.Command<Connection>(OnConnectionSelected);
+            ChatTapped = new Xamarin.Forms.Command<RealTimeMessageStream>(OnConnectionSelected);
 
         }
  
         void LoadConnections()
         {
             foreach (var connection in App.myAccount.Connections)
-                Connections.Add(connection);
+                RealTimeMessages.Add(new RealTimeMessageStream( connection, new ObservableCollection<MessageModel>()));
         }
          async Task ExecuteLoadConnectionCommand()
         {
@@ -55,8 +55,11 @@ namespace LaVida.ViewModels
                         App.myAccount = accountDB;
                         foreach (var connection in App.myAccount.Connections)
                         {
-                            if(!Connections.Contains(connection))
-                                Connections.Add(connection);
+                            Boolean isAlreadyConnected = false;
+                            foreach(var realTimeMsg in RealTimeMessages)
+                                if(realTimeMsg.Connection == connection) isAlreadyConnected = true;
+
+                            if (isAlreadyConnected) RealTimeMessages.Add(new RealTimeMessageStream(connection, new ObservableCollection<MessageModel>()));
                         }
 
                     }
@@ -81,21 +84,20 @@ namespace LaVida.ViewModels
             IsBusy = false;
             SelectedConnection = null;
         }
-        public Connection SelectedConnection
+        public RealTimeMessageStream SelectedConnection
         {
-            get => _selectedConnection;
+            get => _selectedChat;
             set
             {
-                SetProperty(ref _selectedConnection, value);
+                SetProperty(ref _selectedChat, value);
                 OnConnectionSelected(value);
             }
         }
-        void OnConnectionSelected(Connection connection)
+        void OnConnectionSelected(RealTimeMessageStream realTimeMessageStream)
         {
-            if (connection == null)
+            if (realTimeMessageStream == null)
                 return;
-
-            NavigationManager.NextPageWithBack(new ChatPage(connection));
+            NavigationManager.NextPageWithBack(new ChatPage(realTimeMessageStream));
         }
     }
 }

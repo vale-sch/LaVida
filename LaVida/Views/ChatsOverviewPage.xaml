@@ -4,7 +4,7 @@
              x:Class="LaVida.Views.ChatsOverviewPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:LaVida.ViewModels"  
-             xmlns:model="clr-namespace:LaVida.Models"
+             xmlns:model="clr-namespace:LaVida.Services"
              x:Name="BrowseConnectionPage"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="true"
@@ -14,7 +14,7 @@
     </ContentPage.ToolbarItems>
     <RefreshView x:DataType="local:ChatsViewModel" Command="{Binding LoadConnectionsCommand}" IsRefreshing="{Binding IsBusy, Mode=Default}" IsEnabled="False">
         <CollectionView x:Name="ItemsListView"
-                ItemsSource="{Binding Connections}"
+                ItemsSource="{Binding RealTimeMessages}"
                 SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
@@ -24,15 +24,15 @@
                             <StackLayout Style="{StaticResource itemsCardViewStackLayoutStyle}">
                                 <StackLayout >
 
-                                    <StackLayout Padding="25" x:DataType="model:Connection" >
-                                        <Label Text="{Binding ChatPartner}" 
+                                    <StackLayout Padding="25" x:DataType="model:RealTimeMessageStream" >
+                                        <Label Text="{Binding Connection.ChatPartner}" 
                                                LineBreakMode="NoWrap" 
                                                Style="{StaticResource NameLabel}"
                                                />
                                         <StackLayout.GestureRecognizers>
                                             <TapGestureRecognizer 
                                                 NumberOfTapsRequired="1"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ChatsViewModel}}, Path=ConnectionTapped}"		
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ChatsViewModel}}, Path=ChatTapped}"		
                                                 CommandParameter="{Binding .}">
                                             </TapGestureRecognizer>
                                         </StackLayout.GestureRecognizers>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Firebase.Database;
 using LaVida.Models;
+using LaVida.Services;
 using LaVida.ViewModels;
 using Xamarin.Forms;
 
@@ -13,11 +14,11 @@ namespace LaVida.Views
     public partial class ChatPage : ContentPage
     {
 
-        public ChatPage( Connection connection)
+        public ChatPage(RealTimeMessageStream realTimeMessageStream)
         {
             InitializeComponent();
-            Title = connection.ChatPartner;
-            BindingContext = new ChatPageViewModel(connection);
+            Title = realTimeMessageStream.Connection.ChatPartner;
+            BindingContext = new ChatPageViewModel(realTimeMessageStream);
         }
 
         public void OnListTapped(object sender, ItemTappedEventArgs e)
@@ -25,6 +26,6 @@ namespace LaVida.Views
             chatInput.UnFocusEntry();
         }
 
-      
+
     }
 }

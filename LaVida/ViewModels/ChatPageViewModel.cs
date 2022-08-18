@@ -25,10 +25,10 @@ namespace LaVida.ViewModels
         public ICommand OnSendCommand { get; set; }
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
-        private readonly Connection Connection;
-        public ChatPageViewModel(Connection _connection)
+        private readonly RealTimeMessageStream MessageStream;
+        public ChatPageViewModel(RealTimeMessageStream _messageStream)
         {
-            Connection = _connection;
+            MessageStream = _messageStream;
             MessageAppearingCommand = new Command<MessageModel>(OnMessageAppearing);
             MessageDisappearingCommand = new Command<MessageModel>(OnMessageDisappearing);
             OnSendCommand = new Command(() =>
@@ -36,45 +36,48 @@ namespace LaVida.ViewModels
 
                 if (!string.IsNullOrEmpty(TextToSend))
                 {
-                    SendMessage(App.myAccount.Name, TextToSend, DateTime.Now);
+                    SendMessage( new MessageModel() { Message = DateTime.Now.ToString() + "\n" + TextToSend, UserName = App.myAccount.Name, DateTime = DateTime.Now });
+                    TextToSend = String.Empty;
                 }
 
             });
-
-
-            Task.Delay(1000);
-            StreamMessagesFromServer();
-
+            Task.Run(async () =>
+            {
+                _ = await GetMessagesFromStream();
+            });
 
 
         }
-        private void StreamMessagesFromServer()
+
+        private async Task<bool> GetMessagesFromStream()
         {
+            if (Messages.Count < MessageStream.Messages.Count)
+                foreach (var message in MessageStream.Messages)
+                {
+                    if (!Messages.Contains(message))
+                    {
 
-            FirebaseDB.firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe((dbevent) =>
-           {
-               if (dbevent.Object != null && !string.IsNullOrEmpty(dbevent.Object.Message))
-               {
-                   Console.WriteLine(dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message);
-                   if (LastMessageVisible)
-                   {
-                       Messages.Insert(0, new MessageModel() { Message = dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message, UserName = dbevent.Object.UserName, DateTime = dbevent.Object.DateTime });
-                   }
-                   else
-                   {
-                       Messages.Insert(0, new MessageModel() { Message = dbevent.Object.DateTime.ToString() + "\n" + dbevent.Object.Message, UserName = dbevent.Object.UserName, DateTime = dbevent.Object.DateTime });
-                       PendingMessageCount++;
-                   }
-               }
-           });
+                        if (LastMessageVisible)
+                        {
+                            Messages.Insert(0, message);
+                        }
+                        else
+                        {
+                            Messages.Insert(0, message);
+                            PendingMessageCount++;
+                        }
+                        await Task.Delay(50);
+                    }
 
+                }
+            await Task.Delay(250);
+            _ = await GetMessagesFromStream();
+            return true;
         }
-        private void SendMessage(string username, string message, DateTime dateTime)
+
+        private void SendMessage(MessageModel newMessage)
         {
-
-            FirebaseDB.firebaseClient.Child(Connection.ChatID).PostAsync(new MessageModel() { Message = message, UserName = username, DateTime = dateTime });
-            TextToSend = string.Empty;
-
+            FirebaseDB.firebaseClient.Child(MessageStream.Connection.ChatID).PostAsync(newMessage, false);
         }
         void OnMessageAppearing(MessageModel message)
         {
