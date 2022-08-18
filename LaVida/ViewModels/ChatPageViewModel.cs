@@ -41,7 +41,7 @@ namespace LaVida.ViewModels
                 }
 
             });
-            Task.Run(async () =>
+            Device.BeginInvokeOnMainThread(async() =>
             {
                 _ = await GetMessagesFromStream();
             });
@@ -59,12 +59,12 @@ namespace LaVida.ViewModels
 
                         if (LastMessageVisible)
                         {
-                            Device.BeginInvokeOnMainThread(() => { Messages.Insert(0, message); });
+                            Messages.Insert(0, message);
                             
                         }
                         else
                         {
-                            Device.BeginInvokeOnMainThread(() => { Messages.Insert(0, message); });
+                           Messages.Insert(0, message);
                             PendingMessageCount++;
                         }
                         await Task.Delay(75);
@@ -72,8 +72,10 @@ namespace LaVida.ViewModels
 
                 }
             await Task.Delay(250);
-            _ = await GetMessagesFromStream();
-            return true;
+            Device.BeginInvokeOnMainThread(async () => {
+                _ = await GetMessagesFromStream();
+            });
+                    return true;
         }
 
         private void SendMessage(MessageModel newMessage)
