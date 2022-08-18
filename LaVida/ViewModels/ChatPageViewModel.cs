@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Firebase.Database;
@@ -36,12 +37,12 @@ namespace LaVida.ViewModels
 
                 if (!string.IsNullOrEmpty(TextToSend))
                 {
-                    SendMessage( new MessageModel() { Message = DateTime.Now.ToString() + "\n" + TextToSend, UserName = App.myAccount.Name, DateTime = DateTime.Now });
+                    SendMessage(new MessageModel() { Message = DateTime.Now.ToString() + "\n" + TextToSend, UserName = App.myAccount.Name, DateTime = DateTime.Now });
                     TextToSend = String.Empty;
                 }
 
             });
-            Device.BeginInvokeOnMainThread(async() =>
+            Device.BeginInvokeOnMainThread(async () =>
             {
                 _ = await GetMessagesFromStream();
             });
@@ -51,31 +52,31 @@ namespace LaVida.ViewModels
 
         private async Task<bool> GetMessagesFromStream()
         {
-            if (Messages.Count < MessageStream.Messages.Count)
-                foreach (var message in MessageStream.Messages)
+
+            foreach (var message in MessageStream.Messages.Reverse().Take(15))
+            {
+                if (!Messages.Contains(message))
                 {
-                    if (!Messages.Contains(message))
+                    if (LastMessageVisible)
                     {
+                        Messages.Insert(0, message);
 
-                        if (LastMessageVisible)
-                        {
-                            Messages.Insert(0, message);
-                            
-                        }
-                        else
-                        {
-                           Messages.Insert(0, message);
-                            PendingMessageCount++;
-                        }
-                        await Task.Delay(75);
                     }
-
+                    else
+                    {
+                        Messages.Insert(0, message);
+                        PendingMessageCount++;
+                    }
+                    await Task.Delay(75);
                 }
+
+            }
             await Task.Delay(250);
-            Device.BeginInvokeOnMainThread(async () => {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
                 _ = await GetMessagesFromStream();
             });
-                    return true;
+            return true;
         }
 
         private void SendMessage(MessageModel newMessage)
