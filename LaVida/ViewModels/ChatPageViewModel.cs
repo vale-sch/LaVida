@@ -22,7 +22,6 @@ namespace LaVida.ViewModels
         public int PendingMessageCount { get; set; } = 0;
 
         public Queue<MessageModel> DelayedMessages { get; set; } = new Queue<MessageModel>();
-        public List<MessageModel> AllMessages { get; set; } = new List<MessageModel>();
 
         public ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
         public string TextToSend { get; set; }
@@ -30,7 +29,7 @@ namespace LaVida.ViewModels
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
         private readonly RealTimeMessageStream MessageStream;
-        private int ScrollOrigin = 0;
+        private readonly int ScrollOrigin = 0;
         private int RenderedMessageFactor = 0;
         public ChatPageViewModel(RealTimeMessageStream _messageStream)
         {
@@ -55,37 +54,26 @@ namespace LaVida.ViewModels
 
         private bool GetMessagesFromStream()
         {
-            foreach (var message in MessageStream.Messages)
-                if (!AllMessages.Contains(message))
-                    AllMessages.Insert(0, message);
             Device.BeginInvokeOnMainThread(async () =>
             {
-
-                if (Messages.Count <= RenderedMessageFactor)
+                foreach (var renderedMessage in MessageStream.Messages.Take(RenderedMessageFactor))
                 {
-                    foreach (var renderedMessage in AllMessages.Take(RenderedMessageFactor))
+                    if (!Messages.Contains(renderedMessage))
                     {
-
-                        if (!Messages.Contains(renderedMessage))
+                        if (LastMessageVisible)
+                            Messages.Insert(Messages.Count, renderedMessage);
+                        else
                         {
-                            Console.WriteLine(renderedMessage.Message);
-                            if (LastMessageVisible)
-                                Messages.Insert(Messages.Count, renderedMessage);
-                            else
-                            {
-                                Messages.Insert(Messages.Count, renderedMessage);
-                                PendingMessageCount++;
-                            }
+                            Messages.Insert(Messages.Count, renderedMessage);
+                            PendingMessageCount++;
                         }
-                        await Task.Delay(5);
                     }
+                    if (Messages.Count > RenderedMessageFactor)
+                        Messages.RemoveAt(0);
                 }
-                else
-                    Messages.RemoveAt(0);
 
                 if (ChatPage.ScrollingFactor == ScrollOrigin)
                     RenderedMessageFactor = ScrollOrigin;
-
                 if (RenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
                 {
                     await Task.Delay(150);
@@ -94,7 +82,6 @@ namespace LaVida.ViewModels
                 await Task.Delay(50);
                 GetMessagesFromStream();
             });
-
             return true;
         }
 
