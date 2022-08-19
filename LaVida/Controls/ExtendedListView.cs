@@ -80,7 +80,7 @@ namespace LaVida.Controls
         }
 
 
-        public void ScrollToFirst()
+     /*   public void ScrollToFirst()
         {
 
             Device.BeginInvokeOnMainThread(() =>
@@ -127,6 +127,6 @@ namespace LaVida.Controls
                 }
 
             });
-        }
+        }*/
     }
 }

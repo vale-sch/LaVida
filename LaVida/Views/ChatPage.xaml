@@ -25,6 +25,7 @@
         </Grid.RowDefinitions>
 
         <controls:ExtendedListView Grid.Row="0" 
+                 Scrolled="ChatList_Scrolled"
                  ItemTemplate="{StaticResource MessageTemplateSelector}" 
                  ItemsSource="{Binding Messages}" 
                  Margin="0"
@@ -34,7 +35,7 @@
                  HasUnevenRows="True" x:Name="ChatList"
                  VerticalOptions="FillAndExpand" 
                  SeparatorColor="Transparent"
-ItemAppearingCommand="{Binding MessageAppearingCommand}"
+                 ItemAppearingCommand="{Binding MessageAppearingCommand}"
                  ItemDisappearingCommand="{Binding MessageDisappearingCommand}">
         </controls:ExtendedListView>
 

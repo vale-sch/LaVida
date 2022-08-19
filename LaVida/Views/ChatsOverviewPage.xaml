@@ -12,7 +12,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddConnectionCommand}" />
     </ContentPage.ToolbarItems>
-    <RefreshView x:DataType="local:ChatsViewModel" Command="{Binding LoadConnectionsCommand}" IsRefreshing="{Binding IsBusy, Mode=Default}" IsEnabled="False">
+    <ContentView x:DataType="local:ChatsViewModel">
         <CollectionView x:Name="ItemsListView"
                 ItemsSource="{Binding RealTimeMessages}"
                 SelectionMode="None">
@@ -45,5 +45,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </RefreshView>
+    </ContentView>
 </ContentPage>

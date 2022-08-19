@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LaVida.Helpers
+namespace LaVida.Messages
 {
     public class DeviceIDMessage
     {

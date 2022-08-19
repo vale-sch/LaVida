@@ -20,16 +20,15 @@ namespace LaVida.ViewModels
 
         private RealTimeMessageStream _selectedChat;
         public ObservableCollection<RealTimeMessageStream> RealTimeMessages { get; set; }
-        public Command LoadConnectionsCommand { get; set; }
         public Command AddConnectionCommand { get; set; }
         public Xamarin.Forms.Command<RealTimeMessageStream> ChatTapped { get; set; }
+        private readonly Dictionary<RealTimeMessageStream, Page> chatPages = new Dictionary<RealTimeMessageStream, Page>();
         public ChatsViewModel()
         {
             FirebaseDB.Connect();
 
             RealTimeMessages = new ObservableCollection<RealTimeMessageStream>();
             LoadConnections();
-            LoadConnectionsCommand = new Command(async () => await ExecuteLoadConnectionCommand());
 
 
             AddConnectionCommand = new Command(OnConnectionAdd);
@@ -37,7 +36,7 @@ namespace LaVida.ViewModels
             ChatTapped = new Xamarin.Forms.Command<RealTimeMessageStream>(OnConnectionSelected);
 
         }
- 
+
         void LoadConnections()
         {
             foreach (var connection in App.myAccount.Connections)
@@ -47,7 +46,7 @@ namespace LaVida.ViewModels
                 });
 
         }
-        async Task ExecuteLoadConnectionCommand()
+        /* void ExecuteLoadConnectionCommand()
         {
             IsBusy = true;
 
@@ -77,15 +76,13 @@ namespace LaVida.ViewModels
             {
                 IsBusy = false;
             }
-        }
+        }*/
         private void OnConnectionAdd(object obj)
         {
-
             NavigationManager.NextPageWithBack(new PossibleNewChats());
         }
         public void OnAppearing()
         {
-            IsBusy = false;
             SelectedConnection = null;
         }
         public RealTimeMessageStream SelectedConnection
@@ -101,7 +98,11 @@ namespace LaVida.ViewModels
         {
             if (realTimeMessageStream == null)
                 return;
-            NavigationManager.NextPageWithBack(new ChatPage(realTimeMessageStream));
+            if (!chatPages.ContainsKey(realTimeMessageStream))
+                chatPages.Add(realTimeMessageStream, new ChatPage(realTimeMessageStream));
+            foreach (var chatPage in chatPages)
+                if (chatPage.Key == realTimeMessageStream)
+                    NavigationManager.NextPageWithBack(chatPage.Value);
         }
     }
 }

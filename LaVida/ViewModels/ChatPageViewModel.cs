@@ -9,6 +9,7 @@ using Firebase.Database;
 using Firebase.Database.Query;
 using LaVida.Models;
 using LaVida.Services;
+using LaVida.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -21,6 +22,8 @@ namespace LaVida.ViewModels
         public int PendingMessageCount { get; set; } = 0;
 
         public Queue<MessageModel> DelayedMessages { get; set; } = new Queue<MessageModel>();
+        public List<MessageModel> AllMessages { get; set; } = new List<MessageModel>();
+
         public ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
         public string TextToSend { get; set; }
         public ICommand OnSendCommand { get; set; }
@@ -42,40 +45,40 @@ namespace LaVida.ViewModels
                 }
 
             });
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                _ = await GetMessagesFromStream();
-            });
-
-
+             GetMessagesFromStream();
+             
         }
 
-        private async Task<bool> GetMessagesFromStream()
+        private bool GetMessagesFromStream()
         {
 
-            foreach (var message in MessageStream.Messages.Reverse().Take(15))
-            {
-                if (!Messages.Contains(message))
-                {
-                    if (LastMessageVisible)
-                    {
-                        Messages.Insert(0, message);
+            foreach (var message in MessageStream.Messages)
+                if (!AllMessages.Contains(message))
+                    AllMessages.Insert(0, message);
 
-                    }
-                    else
-                    {
-                        Messages.Insert(0, message);
-                        PendingMessageCount++;
-                    }
-                    await Task.Delay(75);
-                }
-
-            }
-            await Task.Delay(250);
+           
             Device.BeginInvokeOnMainThread(async () =>
             {
-                _ = await GetMessagesFromStream();
+                foreach (var displayMessage in AllMessages.Take(ChatPage.MessageShowFactor))
+                {
+                    if (!Messages.Contains(displayMessage))
+                    {
+                        if(Messages.Count >= ChatPage.MessageShowFactor)
+                            Messages.RemoveAt(0);
+                        if (LastMessageVisible)
+                            Messages.Insert(Messages.Count, displayMessage);
+                        else
+                        {
+                            Messages.Insert(Messages.Count, displayMessage);
+                            PendingMessageCount++;
+                        }
+                    }
+                    await Task.Delay(5);
+                }
+                await Task.Delay(250);
+                GetMessagesFromStream();
             });
+
             return true;
         }
 

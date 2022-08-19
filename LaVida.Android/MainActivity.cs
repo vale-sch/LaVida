@@ -5,7 +5,7 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using Xamarin.Forms;
-using LaVida.Helpers;
+using LaVida.Messages;
 using Android;
 
 namespace LaVida.Droid
