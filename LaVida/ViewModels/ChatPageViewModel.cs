@@ -76,6 +76,7 @@ namespace LaVida.ViewModels
                                 PendingMessageCount++;
                             }
                         }
+                        await Task.Delay(5);
                     }
                 else
                 {
@@ -93,16 +94,19 @@ namespace LaVida.ViewModels
                             }
                         }
                     }
+                    await Task.Delay(5);
+
                 }
 
                 if (ChatPage.ScrollingFactor == MessagesAmountOnScrollOrigin && hasScrolledUp)
                 {
+                    await Task.Delay(150);
                     foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)))
                     {
                         if (Messages.Count > MessagesAmountOnScrollOrigin)
                             Messages.RemoveAt(Messages.Count - 1);
                     }
-                    await Task.Delay(150);
+                   
                     hasScrolledUp = false;
                     ToBeRenderedMessageFactor = MessagesAmountOnScrollOrigin;
 
