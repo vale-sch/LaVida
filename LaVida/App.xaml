@@ -7,8 +7,8 @@
     -->
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#000957</Color>
-            <Color x:Key="primary-back-title-color">#0F3D3E</Color>
+            <Color x:Key="Primary">#001E6C</Color>
+            <Color x:Key="primary-back-title-color">#000957</Color>
             <Color x:Key="primary-title-color">White</Color>
             <!-- Light colors -->
 
