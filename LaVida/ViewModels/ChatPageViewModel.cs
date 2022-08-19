@@ -64,16 +64,21 @@ namespace LaVida.ViewModels
             Device.BeginInvokeOnMainThread(async () =>
             {
                 if (ChatPage.ScrollingFactor == ScrollOrigin)
-                    RenderedMessageFactor = ChatPage.ScrollingFactor;
+                {
+                    await Task.Delay(100);
+                    RenderedMessageFactor = ScrollOrigin;
+
+                }
                 if (RenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
                 {
-                    await Task.Delay(25);
+                    await Task.Delay(100);
                     RenderedMessageFactor = ChatPage.ScrollingFactor;
                 }
                    
                 foreach (var renderedMessage in AllMessages.Take(RenderedMessageFactor))
                 {
-
+                    if (Messages.Count > RenderedMessageFactor)
+                        Messages.RemoveAt(0);
                     if (!Messages.Contains(renderedMessage))
                     {
                         if (LastMessageVisible)
@@ -85,8 +90,8 @@ namespace LaVida.ViewModels
                         }
                     }
                     if (ChatPage.ScrollingFactor == ScrollOrigin)
-                        if (Messages.Count >= ScrollOrigin)
-                            Messages.RemoveAt(Messages.Count - 1);
+                        if (Messages.Count > RenderedMessageFactor)
+                            Messages.RemoveAt(0);
                 }
                 await Task.Delay(50);
                 GetMessagesFromStream();
