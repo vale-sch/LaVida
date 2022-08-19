@@ -90,9 +90,8 @@ namespace LaVida.ViewModels
                         }
                     }
                     if (ChatPage.ScrollingFactor == ScrollOrigin)
-                    
                         if (Messages.Count > RenderedMessageFactor)
-                            Messages.RemoveAt(0);
+                            Messages.RemoveAt(Messages.Count);
                     await Task.Delay(5);
                 }
                 await Task.Delay(50);
