@@ -4,7 +4,7 @@
              x:Class="LaVida.Views.PossibleNewChats">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
+            <Label Text="This function will come soon! Be patient :)"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
         </StackLayout>

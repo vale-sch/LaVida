@@ -2,7 +2,7 @@
 <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
           x:Class="LaVida.Views.Cells.IncomingViewCell">
-       <Frame BackgroundColor="LightBlue"
+    <Frame BackgroundColor= "{AppThemeBinding Light={StaticResource LightPartnerCellColor}, Dark={StaticResource DarkPartnerCellColor}}"
               Rotation="180"
               FlowDirection="LeftToRight"
               Padding="10"
