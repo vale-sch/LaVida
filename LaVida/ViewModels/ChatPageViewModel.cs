@@ -29,8 +29,8 @@ namespace LaVida.ViewModels
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
         private readonly RealTimeMessageStream MessageStream;
-        private readonly int ScrollOrigin = 0;
-        private int RenderedMessageFactor = 0;
+        private readonly int MessagesAmountOnScrollOrigin = 0;
+        private int ToBeRenderedMessageFactor = 0;
         public ChatPageViewModel(RealTimeMessageStream _messageStream)
         {
             MessageStream = _messageStream;
@@ -46,38 +46,72 @@ namespace LaVida.ViewModels
                 }
 
             });
-            ScrollOrigin = ChatPage.ScrollingFactor;
-            RenderedMessageFactor = ChatPage.ScrollingFactor;
+            MessagesAmountOnScrollOrigin = ChatPage.ScrollingFactor;
+            ToBeRenderedMessageFactor = ChatPage.ScrollingFactor;
             GetMessagesFromStream();
 
         }
+        private bool hasScrolledUp = false;
 
         private bool GetMessagesFromStream()
         {
+
             Device.BeginInvokeOnMainThread(async () =>
             {
-                foreach (var renderedMessage in MessageStream.Messages.Take(RenderedMessageFactor))
-                {
-                    if (!Messages.Contains(renderedMessage))
+                if (!hasScrolledUp)
+                    foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)))
                     {
-                        if (LastMessageVisible)
-                            Messages.Insert(Messages.Count, renderedMessage);
-                        else
+
+                        if (!Messages.Contains(renderedMessage))
                         {
-                            Messages.Insert(Messages.Count, renderedMessage);
-                            PendingMessageCount++;
+                            if (Messages.Count >= ToBeRenderedMessageFactor)
+                                Messages.RemoveAt(Messages.Count - 1);
+
+
+                            if (LastMessageVisible)
+                                Messages.Insert(0, renderedMessage);
+                            else
+                            {
+                                Messages.Insert(0, renderedMessage);
+                                PendingMessageCount++;
+                            }
                         }
                     }
-                    if (Messages.Count > RenderedMessageFactor)
-                        Messages.RemoveAt(0);
+                else
+                {
+                    foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)).Reverse())
+                    {
+
+                        if (!Messages.Contains(renderedMessage))
+                        {
+                            if (LastMessageVisible)
+                                Messages.Insert(Messages.Count, renderedMessage);
+                            else
+                            {
+                                Messages.Insert(Messages.Count, renderedMessage);
+                                PendingMessageCount++;
+                            }
+                        }
+                    }
                 }
 
-                if (ChatPage.ScrollingFactor == ScrollOrigin)
-                    RenderedMessageFactor = ScrollOrigin;
-                if (RenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
+                if (ChatPage.ScrollingFactor == MessagesAmountOnScrollOrigin && hasScrolledUp)
                 {
+                    foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)))
+                    {
+                        if (Messages.Count > MessagesAmountOnScrollOrigin)
+                            Messages.RemoveAt(Messages.Count - 1);
+                    }
                     await Task.Delay(150);
-                    RenderedMessageFactor = ChatPage.ScrollingFactor;
+                    hasScrolledUp = false;
+                    ToBeRenderedMessageFactor = MessagesAmountOnScrollOrigin;
+
+                }
+                if (ToBeRenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
+                {
+                    hasScrolledUp = true;
+                    await Task.Delay(150);
+                    ToBeRenderedMessageFactor = ChatPage.ScrollingFactor;
                 }
                 await Task.Delay(50);
                 GetMessagesFromStream();
@@ -87,6 +121,7 @@ namespace LaVida.ViewModels
 
         private void SendMessage(MessageModel newMessage)
         {
+
             FirebaseDB.firebaseClient.Child(MessageStream.Connection.ChatID).PostAsync(newMessage, false);
         }
         void OnMessageAppearing(MessageModel message)
