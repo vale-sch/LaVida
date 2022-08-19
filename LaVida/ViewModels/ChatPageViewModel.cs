@@ -61,7 +61,7 @@ namespace LaVida.ViewModels
 
                 if (ChatPage.ScrollingFactor == MessagesAmountOnScrollOrigin && hasScrolledUp)
                 {
-                    await Task.Delay(150);
+                    await Task.Delay(500);
                     foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)))
                     {
                         if (Messages.Count > MessagesAmountOnScrollOrigin)
@@ -74,7 +74,7 @@ namespace LaVida.ViewModels
 
                 if (ToBeRenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
                 {
-                    await Task.Delay(150);
+                    await Task.Delay(500);
                     hasScrolledUp = true;
                     ToBeRenderedMessageFactor = ChatPage.ScrollingFactor;
                 }
@@ -96,7 +96,8 @@ namespace LaVida.ViewModels
                                     Messages.Insert(0, renderedMessage);
                                     PendingMessageCount++;
                                 }
-                                await Task.Delay(5);
+                                await Task.Delay(2);
+
                             }
                         }
                     else
@@ -112,7 +113,8 @@ namespace LaVida.ViewModels
                                     Messages.Insert(Messages.Count, renderedMessage);
                                     PendingMessageCount++;
                                 }
-                                await Task.Delay(5);
+                                await Task.Delay(2);
+
                             }
                         }
                     }
