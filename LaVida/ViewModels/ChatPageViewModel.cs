@@ -45,28 +45,26 @@ namespace LaVida.ViewModels
                 }
 
             });
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                GetMessagesFromStream();
-            });
+             GetMessagesFromStream();
+             
         }
 
-        private void GetMessagesFromStream()
+        private bool GetMessagesFromStream()
         {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                foreach (var message in MessageStream.Messages)
+
+            foreach (var message in MessageStream.Messages)
                 if (!AllMessages.Contains(message))
                     AllMessages.Insert(0, message);
 
            
-            
+            Device.BeginInvokeOnMainThread(async () =>
+            {
                 foreach (var displayMessage in AllMessages.Take(ChatPage.MessageShowFactor))
                 {
                     if (!Messages.Contains(displayMessage))
                     {
                         if(Messages.Count >= ChatPage.MessageShowFactor)
-                            Messages.RemoveAt(0);
+                            Messages.RemoveAt(Messages.Count -1);
                         if (LastMessageVisible)
                             Messages.Insert(Messages.Count, displayMessage);
                         else
@@ -80,6 +78,8 @@ namespace LaVida.ViewModels
                 await Task.Delay(250);
                 GetMessagesFromStream();
             });
+
+            return true;
         }
 
         private void SendMessage(MessageModel newMessage)

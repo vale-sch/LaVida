@@ -15,7 +15,7 @@
     <ContentPage.BackgroundColor>
         <OnPlatform x:TypeArguments="Color" Default="WhiteSmoke"/>
     </ContentPage.BackgroundColor>
-
+    <ContentView>
     <Grid RowSpacing="0" 
            ColumnSpacing="0" >
         <Grid.RowDefinitions>
@@ -48,7 +48,7 @@
                                    x:Name="chatInput" Padding="0,5,0,25"/>
     </Grid>
 
-
+    </ContentView>
 
 </ContentPage>
 
