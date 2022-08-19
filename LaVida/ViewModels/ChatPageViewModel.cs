@@ -59,14 +59,18 @@ namespace LaVida.ViewModels
             foreach (var message in MessageStream.Messages)
                 if (!AllMessages.Contains(message))
                     AllMessages.Insert(0, message);
-            if (ChatPage.ScrollingFactor == ScrollOrigin)
-                RenderedMessageFactor = ChatPage.ScrollingFactor;
-            if (RenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
-                RenderedMessageFactor = ChatPage.ScrollingFactor;
+         
 
             Device.BeginInvokeOnMainThread(async () =>
             {
-
+                if (ChatPage.ScrollingFactor == ScrollOrigin)
+                    RenderedMessageFactor = ChatPage.ScrollingFactor;
+                if (RenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
+                {
+                    await Task.Delay(25);
+                    RenderedMessageFactor = ChatPage.ScrollingFactor;
+                }
+                   
                 foreach (var renderedMessage in AllMessages.Take(RenderedMessageFactor))
                 {
 
