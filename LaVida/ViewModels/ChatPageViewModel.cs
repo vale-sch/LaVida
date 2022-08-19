@@ -30,7 +30,8 @@ namespace LaVida.ViewModels
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
         private readonly RealTimeMessageStream MessageStream;
-        private int startMessageFactor = 0;
+        private int ScrollOrigin = 0;
+        private int RenderedMessageFactor = 0;
         public ChatPageViewModel(RealTimeMessageStream _messageStream)
         {
             MessageStream = _messageStream;
@@ -46,7 +47,8 @@ namespace LaVida.ViewModels
                 }
 
             });
-            startMessageFactor = ChatPage.MessageShowFactor;
+            ScrollOrigin = ChatPage.ScrollingFactor;
+            RenderedMessageFactor = ChatPage.ScrollingFactor;
             GetMessagesFromStream();
 
         }
@@ -57,11 +59,15 @@ namespace LaVida.ViewModels
             foreach (var message in MessageStream.Messages)
                 if (!AllMessages.Contains(message))
                     AllMessages.Insert(0, message);
-
+            if (ChatPage.ScrollingFactor == ScrollOrigin)
+                RenderedMessageFactor = ChatPage.ScrollingFactor;
+            if (RenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
+                RenderedMessageFactor = ChatPage.ScrollingFactor;
 
             Device.BeginInvokeOnMainThread(async () =>
             {
-                foreach (var renderedMessage in AllMessages.Take(ChatPage.MessageShowFactor))
+
+                foreach (var renderedMessage in AllMessages.Take(RenderedMessageFactor))
                 {
 
                     if (!Messages.Contains(renderedMessage))
@@ -74,8 +80,8 @@ namespace LaVida.ViewModels
                             PendingMessageCount++;
                         }
                     }
-                    if (ChatPage.MessageShowFactor == startMessageFactor)
-                        if (Messages.Count >= ChatPage.MessageShowFactor)
+                    if (ChatPage.ScrollingFactor == ScrollOrigin)
+                        if (Messages.Count >= ScrollOrigin)
                             Messages.RemoveAt(Messages.Count - 1);
                 }
                 await Task.Delay(50);

@@ -13,7 +13,7 @@ namespace LaVida.Views
 {
     public partial class ChatPage : ContentPage
     {
-        public static int MessageShowFactor = 15;
+        public static int ScrollingFactor = 15;
         public ChatPage(RealTimeMessageStream realTimeMessageStream)
         {
             InitializeComponent();
@@ -28,8 +28,8 @@ namespace LaVida.Views
 
         private void ChatList_Scrolled(object sender, ScrolledEventArgs e)
         {
-            MessageShowFactor =  15 + (int)(e.ScrollY / 50);
-            Console.WriteLine(MessageShowFactor);
+            ScrollingFactor =  15 + (int)(e.ScrollY / 50);
+            Console.WriteLine(ScrollingFactor);
         }
     }
 }
