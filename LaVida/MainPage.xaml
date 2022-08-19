@@ -8,7 +8,7 @@
 
     <ContentPage.Content >
 
-        <StackLayout BackgroundColor="#C4D7E0" VerticalOptions="FillAndExpand"  >
+        <StackLayout BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" VerticalOptions="FillAndExpand"  >
             <Image Source="logo_transparent.png"  VerticalOptions="Center" Margin="15,100,15,0"  ></Image>
      
         </StackLayout>

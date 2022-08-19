@@ -7,17 +7,18 @@
     -->
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#001E6C</Color>
-            <Color x:Key="primary-back-title-color">#000957</Color>
-            <Color x:Key="primary-title-color">White</Color>
+           
             <!-- Light colors -->
-
+            <Color x:Key="LightPrimary">#577BC1</Color>
+            <Color x:Key="light-primary-back-title-color">#2666CF</Color>
             <Color x:Key="LightPrimaryColor">White</Color>
             <Color x:Key="LightSecondaryColor">Black</Color>
             <Color x:Key="LightOwnCellColor">#8CC0DE</Color>
             <Color x:Key="LightPartnerCellColor">White</Color>
 
             <!-- Dark colors -->
+            <Color x:Key="DarkPrimary">#001E6C</Color>
+            <Color x:Key="dark-primary-back-title-color">#293B5F</Color>
             <Color x:Key="DarkPrimaryColor">Black</Color>
             <Color x:Key="DarkSecondaryColor">White</Color>
             <Color x:Key="DarkOwnCellColor">#293B5F</Color>
@@ -32,7 +33,7 @@
                         <VisualStateGroup x:Name="CommonStates">
                             <VisualState x:Name="Normal">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}"  />
+                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimary}, Dark={StaticResource DarkPrimary}}"  />
                                 </VisualState.Setters>
                             </VisualState>
                             <VisualState x:Name="Disabled">
@@ -43,13 +44,13 @@
                         </VisualStateGroup>
                     </VisualStateGroupList>
                 </Setter>
-           
-                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
+
+                <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimary}, Dark={StaticResource DarkPrimary}}" />
                 <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
                 <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
                 <Setter Property="Shell.DisabledColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
                 <Setter Property="Shell.UnselectedColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
-                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimary}, Dark={StaticResource DarkPrimary}}" />
                 <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
                 <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
                 <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}"/>
@@ -59,7 +60,7 @@
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"></Setter>
             </Style>
             <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
-                <Setter Property="BarBackgroundColor" Value="{StaticResource Key=primary-back-title-color}"/>
+                <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource light-primary-back-title-color}, Dark={StaticResource dark-primary-back-title-color}}"/>
                 <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}"/>
             </Style>
 
@@ -71,21 +72,19 @@
 
 
             <Style x:Key="outerFrame" TargetType="Frame">
-                <Setter Property="CornerRadius" Value="18" />
-                <Setter Property="Margin" Value="10" />
+                <Setter Property="Margin" Value="0,10,0,0" />
                 <Setter Property="Padding" Value="0" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="OutlineColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
-                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightOwnCellColor}, Dark={StaticResource DarkSecondaryColor}}" />
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkOwnCellColor}}"/>
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightOwnCellColor}, Dark={StaticResource DarkOwnCellColor}}"/>
                 <Setter Property="HasShadow" Value="True" />
             </Style>
             
             <Style x:Key="innerFrame" TargetType="Frame">
-                <Setter Property="CornerRadius" Value="15" />
                 <Setter Property="Margin" Value="4" />
                 <Setter Property="Padding" Value="0" />
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkInputFieldColor}}"/>
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource dark-primary-back-title-color}}"/>
 
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
             </Style>
