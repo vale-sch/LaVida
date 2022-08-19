@@ -55,43 +55,41 @@ namespace LaVida.ViewModels
 
         private bool GetMessagesFromStream()
         {
-
             foreach (var message in MessageStream.Messages)
                 if (!AllMessages.Contains(message))
                     AllMessages.Insert(0, message);
-         
-
             Device.BeginInvokeOnMainThread(async () =>
             {
-                if (ChatPage.ScrollingFactor == ScrollOrigin)
+                if (Messages.Count <= RenderedMessageFactor)
                 {
-                    await Task.Delay(150);
+                    foreach (var renderedMessage in AllMessages.Take(RenderedMessageFactor).Reverse())
+                    {
+
+                        if (!Messages.Contains(renderedMessage))
+                        {
+                            if (LastMessageVisible)
+                                Messages.Insert(0, renderedMessage);
+                            else
+                            {
+                                Messages.Insert(0, renderedMessage);
+                                PendingMessageCount++;
+                            }
+                        }
+                    }
+                }
+                else
+                        Messages.RemoveAt(Messages.Count - 1);
+
+                if (ChatPage.ScrollingFactor == ScrollOrigin)
                     RenderedMessageFactor = ScrollOrigin;
 
-                }
                 if (RenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
                 {
+                    Console.WriteLine("Hellio");
+
                     await Task.Delay(150);
                     RenderedMessageFactor = ChatPage.ScrollingFactor;
                 }
-                   
-                foreach (var renderedMessage in AllMessages.Take(RenderedMessageFactor))
-                {
-                    if (Messages.Count > RenderedMessageFactor)
-                        Messages.RemoveAt(Messages.Count-1);
-                    if (!Messages.Contains(renderedMessage))
-                    {
-                        if (LastMessageVisible)
-                            Messages.Insert(Messages.Count, renderedMessage);
-                        else
-                        {
-                            Messages.Insert(Messages.Count, renderedMessage);
-                            PendingMessageCount++;
-                        }
-                    }
-                    await Task.Delay(5);
-                }
-                await Task.Delay(50);
                 GetMessagesFromStream();
             });
 
@@ -111,7 +109,7 @@ namespace LaVida.ViewModels
                 {
                     while (DelayedMessages.Count > 0)
                     {
-                        Messages.Insert(0, DelayedMessages.Dequeue());
+                        Messages.Insert(Messages.Count, DelayedMessages.Dequeue());
                     }
                     LastMessageVisible = true;
                     PendingMessageCount = 0;

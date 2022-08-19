@@ -29,7 +29,6 @@ namespace LaVida.Views
         private void ChatList_Scrolled(object sender, ScrolledEventArgs e)
         {
             ScrollingFactor =  15 + (int)(e.ScrollY / 50);
-            Console.WriteLine(ScrollingFactor);
         }
     }
 }
