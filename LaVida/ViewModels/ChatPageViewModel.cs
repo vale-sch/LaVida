@@ -30,6 +30,7 @@ namespace LaVida.ViewModels
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
         private readonly RealTimeMessageStream MessageStream;
+        private int startMessageFactor = 0;
         public ChatPageViewModel(RealTimeMessageStream _messageStream)
         {
             MessageStream = _messageStream;
@@ -45,6 +46,7 @@ namespace LaVida.ViewModels
                 }
 
             });
+            startMessageFactor = ChatPage.MessageShowFactor;
             GetMessagesFromStream();
 
         }
@@ -61,8 +63,7 @@ namespace LaVida.ViewModels
             {
                 foreach (var renderedMessage in AllMessages.Take(ChatPage.MessageShowFactor))
                 {
-                    if (Messages.Count >= ChatPage.MessageShowFactor)
-                        Messages.RemoveAt(Messages.Count - 1);
+
                     if (!Messages.Contains(renderedMessage))
                     {
                         if (LastMessageVisible)
@@ -73,7 +74,9 @@ namespace LaVida.ViewModels
                             PendingMessageCount++;
                         }
                     }
-                    await Task.Delay(5);
+                    if (ChatPage.MessageShowFactor == startMessageFactor)
+                        if (Messages.Count >= ChatPage.MessageShowFactor)
+                            Messages.RemoveAt(Messages.Count - 1);
                 }
                 await Task.Delay(50);
                 GetMessagesFromStream();
