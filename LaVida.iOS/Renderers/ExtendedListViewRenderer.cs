@@ -17,9 +17,8 @@ namespace LaVida.iOS.Renderers
                 if (Control != null)
                 {
                     Control.AllowsSelection = true;
-                    Control.AlwaysBounceVertical = true;
+                    Control.AlwaysBounceVertical = false;
                     Control.Bounces = true;
-                    Control.UpdateFocusIfNeeded();
                 }
             }
         }
