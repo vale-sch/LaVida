@@ -78,7 +78,7 @@ namespace LaVida.ViewModels
                 foreach (var renderedMessage in AllMessages.Take(RenderedMessageFactor))
                 {
                     if (Messages.Count > RenderedMessageFactor)
-                        Messages.RemoveAt(0);
+                        Messages.RemoveAt(Messages.Count-1);
                     if (!Messages.Contains(renderedMessage))
                     {
                         if (LastMessageVisible)
@@ -89,9 +89,6 @@ namespace LaVida.ViewModels
                             PendingMessageCount++;
                         }
                     }
-                    if (ChatPage.ScrollingFactor == ScrollOrigin)
-                        if (Messages.Count > RenderedMessageFactor)
-                            Messages.RemoveAt(Messages.Count);
                     await Task.Delay(5);
                 }
                 await Task.Delay(50);
