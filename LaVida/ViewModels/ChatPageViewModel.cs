@@ -60,36 +60,38 @@ namespace LaVida.ViewModels
                     AllMessages.Insert(0, message);
             Device.BeginInvokeOnMainThread(async () =>
             {
+
                 if (Messages.Count <= RenderedMessageFactor)
                 {
-                    foreach (var renderedMessage in AllMessages.Take(RenderedMessageFactor).Reverse())
+                    foreach (var renderedMessage in AllMessages.Take(RenderedMessageFactor))
                     {
 
                         if (!Messages.Contains(renderedMessage))
                         {
+                            Console.WriteLine(renderedMessage.Message);
                             if (LastMessageVisible)
-                                Messages.Insert(0, renderedMessage);
+                                Messages.Insert(Messages.Count, renderedMessage);
                             else
                             {
-                                Messages.Insert(0, renderedMessage);
+                                Messages.Insert(Messages.Count, renderedMessage);
                                 PendingMessageCount++;
                             }
                         }
+                        await Task.Delay(5);
                     }
                 }
                 else
-                        Messages.RemoveAt(Messages.Count - 1);
+                    Messages.RemoveAt(0);
 
                 if (ChatPage.ScrollingFactor == ScrollOrigin)
                     RenderedMessageFactor = ScrollOrigin;
 
                 if (RenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
                 {
-                    Console.WriteLine("Hellio");
-
                     await Task.Delay(150);
                     RenderedMessageFactor = ChatPage.ScrollingFactor;
                 }
+                await Task.Delay(50);
                 GetMessagesFromStream();
             });
 
