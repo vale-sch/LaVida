@@ -9,9 +9,9 @@ namespace LaVida.Services
     public class RealTimeMessageStream
     {
         public Connection Connection { get; set; }
-        public ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
+        public List<MessageModel> Messages { get; set; } = new List<MessageModel>();
 
-        public RealTimeMessageStream(Connection connection, ObservableCollection<MessageModel> messageModels)
+        public RealTimeMessageStream(Connection connection, List<MessageModel> messageModels)
         {
             this.Connection = connection;
             this.Messages = messageModels;

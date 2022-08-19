@@ -42,7 +42,7 @@ namespace LaVida.ViewModels
             foreach (var connection in App.myAccount.Connections)
                 Device.InvokeOnMainThreadAsync(() =>
                 {
-                    RealTimeMessages.Add(new RealTimeMessageStream(connection, new ObservableCollection<MessageModel>()));
+                    RealTimeMessages.Add(new RealTimeMessageStream(connection, new List<MessageModel>()));
                 });
 
         }
