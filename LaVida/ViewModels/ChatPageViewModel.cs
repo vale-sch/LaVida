@@ -65,13 +65,13 @@ namespace LaVida.ViewModels
             {
                 if (ChatPage.ScrollingFactor == ScrollOrigin)
                 {
-                    await Task.Delay(100);
+                    await Task.Delay(150);
                     RenderedMessageFactor = ScrollOrigin;
 
                 }
                 if (RenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
                 {
-                    await Task.Delay(100);
+                    await Task.Delay(150);
                     RenderedMessageFactor = ChatPage.ScrollingFactor;
                 }
                    
@@ -90,8 +90,10 @@ namespace LaVida.ViewModels
                         }
                     }
                     if (ChatPage.ScrollingFactor == ScrollOrigin)
+                    
                         if (Messages.Count > RenderedMessageFactor)
                             Messages.RemoveAt(0);
+                    await Task.Delay(5);
                 }
                 await Task.Delay(50);
                 GetMessagesFromStream();
