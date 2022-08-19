@@ -12,9 +12,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.BackgroundColor>
-        <OnPlatform x:TypeArguments="Color" Default="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
-    </ContentPage.BackgroundColor>
+
     <ContentView>
     <Grid RowSpacing="0" 
            ColumnSpacing="0" >

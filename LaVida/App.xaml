@@ -20,12 +20,13 @@
             <!-- Dark colors -->
             <Color x:Key="DarkPrimaryColor">Black</Color>
             <Color x:Key="DarkSecondaryColor">White</Color>
-            <Color x:Key="DarkOwnCellColor">#001E6C</Color>
+            <Color x:Key="DarkOwnCellColor">#293B5F</Color>
             <Color x:Key="DarkPartnerCellColor">#040303</Color>
+            <Color x:Key="DarkInputFieldColor">#2B2B2B</Color>
             <!-- Pallete-end -->
                
                 <Style TargetType="Button">
-                <Setter Property="TextColor"  Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"></Setter>
+                <Setter Property="TextColor"  Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}"></Setter>
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
@@ -45,27 +46,27 @@
            
                 <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
                 <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
-                <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
+                <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
                 <Setter Property="Shell.DisabledColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
                 <Setter Property="Shell.UnselectedColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
                 <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
                 <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
                 <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
-
+                <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}"/>
+                <Setter Property="Text" Value="{AppThemeBinding Light={StaticResource LightSecondaryColor}, Dark={StaticResource DarkSecondaryColor}}"/>
             </Style>
             <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"></Setter>
             </Style>
             <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource Key=primary-back-title-color}"/>
-                <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
+                <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}"/>
             </Style>
 
             <Style x:Key="NameLabel" TargetType="Label">
                 <Setter Property="FontSize" Value="24" />
                 <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
             </Style>
 
 
@@ -74,9 +75,9 @@
                 <Setter Property="Margin" Value="10" />
                 <Setter Property="Padding" Value="0" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-                <Setter Property="OutlineColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
-                <Setter Property="BorderColor" Value="{StaticResource Primary}" />
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
+                <Setter Property="OutlineColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightOwnCellColor}, Dark={StaticResource DarkSecondaryColor}}" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkOwnCellColor}}"/>
                 <Setter Property="HasShadow" Value="True" />
             </Style>
             
@@ -84,6 +85,8 @@
                 <Setter Property="CornerRadius" Value="15" />
                 <Setter Property="Margin" Value="4" />
                 <Setter Property="Padding" Value="0" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkInputFieldColor}}"/>
+
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
             </Style>
 

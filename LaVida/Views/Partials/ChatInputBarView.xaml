@@ -3,10 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="LaVida.Views.Partials.ChatInputBarView" 
              xmlns:controls="clr-namespace:LaVida.Controls">
-     <ContentView.BackgroundColor>
-        <OnPlatform x:TypeArguments="Color" Default="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"/>
-    </ContentView.BackgroundColor>
-    <Grid RowSpacing="0" 
+    <Grid RowSpacing="0"     
            ColumnSpacing="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -19,11 +16,12 @@
                  HasRoundedCorner="True"
                  Text="{Binding TextToSend}" 
                  Margin="15,0,0,0"  
-                 TextColor= "{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"
+                 TextColor= "{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}"
+                  BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkInputFieldColor}}"
                  Keyboard="Chat"  
                  IsExpandable="true"
                  HorizontalOptions="FillAndExpand"             
-                 PlaceholderColor="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"
+                 PlaceholderColor="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}"
                  Placeholder="Type your message here"
                  Grid.Row="0" 
                  Grid.Column="0" IsTextPredictionEnabled="True" />
