@@ -7,7 +7,7 @@
             Rotation="180"
             FlowDirection="LeftToRight"
             HasShadow="false"
-            Margin="10,10,80,10"
+            Margin="5,10,80,10"
             CornerRadius="15"
             >
         <Label Text="{Binding Message}" 

@@ -14,7 +14,7 @@
             <Color x:Key="LightPrimaryColor">White</Color>
             <Color x:Key="LightSecondaryColor">#303841</Color>
             <Color x:Key="LightOwnCellColor">#8CC0DE</Color>
-            <Color x:Key="LightPartnerCellColor">White</Color>
+            <Color x:Key="LightPartnerCellColor">#E6E6E6</Color>
             <Color x:Key="LightWhiteSmoke">WhiteSmoke</Color>
             <!-- Dark colors -->
             <Color x:Key="DarkPrimary">#001E6C</Color>

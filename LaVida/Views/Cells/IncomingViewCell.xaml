@@ -7,7 +7,7 @@
               FlowDirection="LeftToRight"
               Padding="10"
               HasShadow="false"
-              Margin="80,10,10,10"
+              Margin="80,10,5,10"
               CornerRadius="15">
         <Label Text="{Binding Message}" BackgroundColor="Transparent"/>
         </Frame>
