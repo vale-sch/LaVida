@@ -24,6 +24,7 @@ namespace LaVida.ViewModels
         public async Task InitializeConnectionsInDB()
         {
             ContactsCollection = await ContactCore.GetContactCollection();
+            await MongoAccountDB.GetAllAccountsFromDB();
             foreach (var contactFromIntern in ContactsCollection)
                 foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
                     foreach (var accountFromDB in MongoAccountDB.AccountsFromDB)
@@ -37,9 +38,6 @@ namespace LaVida.ViewModels
                             accountFromDB.HasToRefreshConnections = true;
                             await MongoAccountDB.UpdateOneItem(accountFromDB);
                             await MongoAccountDB.UpdateOneItem(App.myAccount);
- 
-
-
                         }
                     }
         }

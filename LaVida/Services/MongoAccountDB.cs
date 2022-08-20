@@ -59,6 +59,7 @@ namespace LaVida.Services
                 var allAccounts = await mongoCollection
            .Find(new BsonDocument())
            .ToListAsync();
+                Console.WriteLine(allAccounts.Count);
                 foreach (var account in allAccounts)
                     AccountsFromDB.Add(account);
 
