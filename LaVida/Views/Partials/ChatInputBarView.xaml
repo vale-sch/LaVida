@@ -16,7 +16,7 @@
                  HasRoundedCorner="True"
                  Text="{Binding TextToSend}" 
                  Margin="15,0,0,0"  
-                 TextColor= "{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}"
+                 TextColor= "{AppThemeBinding Light={StaticResource LightSecondaryColor}, Dark={StaticResource DarkSecondaryColor}}"
                  BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkInputFieldColor}}"
                  Keyboard="Chat"  
                  IsExpandable="true"

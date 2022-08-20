@@ -39,11 +39,11 @@
 
         <BoxView HorizontalOptions="FillAndExpand"
                  HeightRequest="1"
-                 BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkInputFieldColor}}"
+                 BackgroundColor="{AppThemeBinding Light={StaticResource LightPartnerCellColor}, Dark={StaticResource DarkInputFieldColor}}"
                  Grid.Row="1"/>
         <partials:ChatInputBarView Grid.Row="2"
                                    Margin="0,0,0,0"
-                                   BackgroundColor="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkInputFieldColor}}"
+                                   BackgroundColor="{AppThemeBinding Light={StaticResource LightPartnerCellColor}, Dark={StaticResource DarkInputFieldColor}}"
                                    x:Name="chatInput" Padding="0,5,0,25"/>
     </Grid>
 
