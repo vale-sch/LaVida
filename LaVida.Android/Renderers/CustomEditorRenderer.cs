@@ -86,7 +86,11 @@ namespace LaVida.Droid.Renderers
         {
             GradientDrawable gd = new GradientDrawable();
             gd.SetCornerRadius(35);
-            gd.SetStroke(3, Color.WhiteSmoke.ToAndroid());
+            OSAppTheme currentTheme = Application.Current.RequestedTheme;
+            if (OSAppTheme.Light == currentTheme)
+                gd.SetStroke(3, Color.DarkGray.ToAndroid());
+            if (OSAppTheme.Dark == currentTheme)
+                gd.SetStroke(3, Color.WhiteSmoke.ToAndroid());
             this.Control.Background = gd;
         }
     }
