@@ -80,7 +80,6 @@
                 <Setter Property="OutlineColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
                 <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightOwnCellColor}, Dark={StaticResource DarkOwnCellColor}}"/>
-                <Setter Property="HasShadow" Value="True" />
             </Style>
             
             <Style x:Key="innerFrame" TargetType="Frame">
