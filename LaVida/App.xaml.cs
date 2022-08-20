@@ -48,8 +48,6 @@ namespace LaVida
             {
                 await MongoAccountDB.GetAllAccountsFromDB();
                 var mySQLAccount = account.ToArray()[0];
-                MongoAccountDB.Connect();
-                await MongoAccountDB.GetAllAccountsFromDB();
                 foreach (var accountDB in MongoAccountDB.AccountsFromDB)
                     if (mySQLAccount.Id == accountDB.Id)
                         myAccount = accountDB;

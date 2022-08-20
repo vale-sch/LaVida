@@ -5,6 +5,7 @@
              x:Class="LaVida.Views.RegistrationPage">
             
 
+ 
 
     <Grid>
         <Grid.RowDefinitions>
@@ -17,19 +18,16 @@
             <StackLayout Orientation="Vertical" Padding="15,40,15,0" Spacing="40">
 
                 <Label Text="Chat Name: " FontSize="Large" FontAttributes="Bold"/>
-                
-                 <Entry Placeholder=" e.g. John" x:Name="userName" />
-                
 
+                <Entry Placeholder="e.g. John" x:Name="userName"/>
                 <Label Text="Password:" FontSize="Large" FontAttributes="Bold"/>
                 <Entry Placeholder="password" x:Name="password" IsPassword="True"/>
 
                 <Label Text="Phone Number:" FontSize="Large" FontAttributes="Bold"/>
 
-                <Entry Placeholder="e.g. +491590394931" x:Name="phoneNumber" Keyboard="Telephone"/>
+                <Entry Placeholder="e.g. +491590394931" x:Name="phoneNumber" />
                 <Button Margin="0,10,0,0" Text="Join" FontAttributes="Bold"
-                        Clicked="NavigateToChatRoom"
-/>
+                        Clicked="NavigateToChatRoom" />
             </StackLayout>
         </ScrollView>
     </Grid>
