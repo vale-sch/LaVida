@@ -5,11 +5,6 @@
              x:Class="LaVida.Views.RegistrationPage">
             
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Color x:Key="Accent">#B6ADAF</Color>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -23,7 +18,7 @@
 
                 <Label Text="Chat Name: " FontSize="Large" FontAttributes="Bold"/>
                 
-                    <Entry Placeholder="e.g. John" x:Name="userName"/>
+                 <Entry Placeholder=" e.g. John" x:Name="userName" />
                 
 
                 <Label Text="Password:" FontSize="Large" FontAttributes="Bold"/>
@@ -31,11 +26,10 @@
 
                 <Label Text="Phone Number:" FontSize="Large" FontAttributes="Bold"/>
 
-                <Entry Placeholder="e.g. +491590394931" x:Name="phoneNumber" />
+                <Entry Placeholder="e.g. +491590394931" x:Name="phoneNumber" Keyboard="Telephone"/>
                 <Button Margin="0,10,0,0" Text="Join" FontAttributes="Bold"
                         Clicked="NavigateToChatRoom"
-                        BackgroundColor="{StaticResource Primary}"
-                        TextColor="White" />
+/>
             </StackLayout>
         </ScrollView>
     </Grid>
