@@ -22,7 +22,7 @@
             <Color x:Key="DarkPrimaryColor">#303841</Color>
             <Color x:Key="DarkSecondaryColor">White</Color>
             <Color x:Key="DarkOwnCellColor">#293B5F</Color>
-            <Color x:Key="DarkPartnerCellColor">#595260</Color>
+            <Color x:Key="DarkPartnerCellColor">#787A91</Color>
             <Color x:Key="DarkInputFieldColor">#2B2B2B</Color>
             <!-- Pallete-end -->
                
