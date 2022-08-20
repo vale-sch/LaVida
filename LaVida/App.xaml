@@ -12,17 +12,17 @@
             <Color x:Key="LightPrimary">#577BC1</Color>
             <Color x:Key="light-primary-back-title-color">#2666CF</Color>
             <Color x:Key="LightPrimaryColor">White</Color>
-            <Color x:Key="LightSecondaryColor">Black</Color>
+            <Color x:Key="LightSecondaryColor">#303841</Color>
             <Color x:Key="LightOwnCellColor">#8CC0DE</Color>
-            <Color x:Key="LightPartnerCellColor">WHiteSmoke</Color>
-
+            <Color x:Key="LightPartnerCellColor">White</Color>
+            <Color x:Key="LightWhiteSmoke">WhiteSmoke</Color>
             <!-- Dark colors -->
             <Color x:Key="DarkPrimary">#001E6C</Color>
             <Color x:Key="dark-primary-back-title-color">#293B5F</Color>
-            <Color x:Key="DarkPrimaryColor">Black</Color>
+            <Color x:Key="DarkPrimaryColor">#303841</Color>
             <Color x:Key="DarkSecondaryColor">White</Color>
             <Color x:Key="DarkOwnCellColor">#293B5F</Color>
-            <Color x:Key="DarkPartnerCellColor">#040303</Color>
+            <Color x:Key="DarkPartnerCellColor">#595260</Color>
             <Color x:Key="DarkInputFieldColor">#2B2B2B</Color>
             <!-- Pallete-end -->
                
@@ -58,7 +58,7 @@
 
             </Style>
             <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}"></Setter>
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightWhiteSmoke}, Dark={StaticResource DarkPrimaryColor}}"></Setter>
             </Style>
             <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource light-primary-back-title-color}, Dark={StaticResource dark-primary-back-title-color}}"/>
@@ -73,7 +73,8 @@
 
 
             <Style x:Key="outerFrame" TargetType="Frame">
-                <Setter Property="Margin" Value="0,10,0,0" />
+                <Setter Property="CornerRadius" Value="8"/>
+                <Setter Property="Margin" Value="5,10,5,0" />
                 <Setter Property="Padding" Value="0" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="OutlineColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
@@ -83,6 +84,7 @@
             </Style>
             
             <Style x:Key="innerFrame" TargetType="Frame">
+                <Setter Property="CornerRadius" Value="8"/>
                 <Setter Property="Margin" Value="4" />
                 <Setter Property="Padding" Value="0" />
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource dark-primary-back-title-color}}"/>
