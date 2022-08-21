@@ -22,7 +22,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <controls:ExtendedListView Grid.Row="0" 
+            <controls:ExtendedListView Grid.Row="0" 
                  Scrolled="ChatList_Scrolled"
                  ItemTemplate="{StaticResource MessageTemplateSelector}" 
                  ItemsSource="{Binding Messages}" 
@@ -32,10 +32,8 @@
                  FlowDirection="RightToLeft"
                  HasUnevenRows="True" x:Name="ChatList"
                  VerticalOptions="FillAndExpand" 
-                 SeparatorColor="Transparent"
-                 ItemAppearingCommand="{Binding MessageAppearingCommand}"
-                 ItemDisappearingCommand="{Binding MessageDisappearingCommand}">
-        </controls:ExtendedListView>
+                 SeparatorColor="Transparent">
+            </controls:ExtendedListView>
 
         <BoxView HorizontalOptions="FillAndExpand"
                  HeightRequest="1"

@@ -5,11 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LaVida.Services
+namespace LaVida.Database
 {
     public class FirebaseDB
     {
-        private static FirebaseClient firebaseClient;
+        private readonly FirebaseClient firebaseClient;
 
         public FirebaseDB(string dbPath)
         {

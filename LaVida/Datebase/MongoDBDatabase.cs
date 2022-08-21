@@ -7,12 +7,11 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LaVida.Services
+namespace LaVida.Database
 {
     public class MongoDBDatabase
     {
-        public static IMongoCollection<Account> mongoCollection;
-
+        private readonly IMongoCollection<Account> mongoCollection;
         private  readonly MongoClient Client;
         private  readonly IMongoDatabase Database;
         private  readonly string dbName = "AccountsDB";

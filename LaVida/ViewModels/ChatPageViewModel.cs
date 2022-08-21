@@ -26,16 +26,16 @@ namespace LaVida.ViewModels
         public ObservableCollection<MessageModel> Messages { get; set; } = new ObservableCollection<MessageModel>();
         public string TextToSend { get; set; }
         public ICommand OnSendCommand { get; set; }
-        public ICommand MessageAppearingCommand { get; set; }
-        public ICommand MessageDisappearingCommand { get; set; }
+      //  public ICommand MessageAppearingCommand { get; set; }
+      //  public ICommand MessageDisappearingCommand { get; set; }
         private readonly RealTimeMessageStream MessageStream;
         private readonly int MessagesAmountOnScrollOrigin = 0;
         private int ToBeRenderedMessageFactor = 0;
         public ChatPageViewModel(RealTimeMessageStream _messageStream)
         {
             MessageStream = _messageStream;
-            MessageAppearingCommand = new Command<MessageModel>(OnMessageAppearing);
-            MessageDisappearingCommand = new Command<MessageModel>(OnMessageDisappearing);
+          //  MessageAppearingCommand = new Command<MessageModel>(OnMessageAppearing);
+           // MessageDisappearingCommand = new Command<MessageModel>(OnMessageDisappearing);
             OnSendCommand = new Command(() =>
             {
 
@@ -82,17 +82,17 @@ namespace LaVida.ViewModels
                                 }
 
 
-                                if (LastMessageVisible)
-                                {
+                               // if (LastMessageVisible)
+                               // {
                                     Messages.Insert(0, renderedMessage);
                                     await DataStore.AddItemAsync(renderedMessage);
-                                }
-                                else
-                                {
-                                    Messages.Insert(0, renderedMessage);
-                                    await DataStore.AddItemAsync(renderedMessage);
-                                    PendingMessageCount++;
-                                }
+                               // }
+                               // else
+                               // {
+                              //      Messages.Insert(0, renderedMessage);
+                              //      await DataStore.AddItemAsync(renderedMessage);
+                               //     PendingMessageCount++;
+                              //  }
 
                             }
                         }
@@ -102,17 +102,17 @@ namespace LaVida.ViewModels
                         {
                             if (!DataStore.GetItemsAsync().Result.Contains(renderedMessage))
                             {
-                                if (LastMessageVisible)
-                                {
+                               // if (LastMessageVisible)
+                               // {
                                     Messages.Insert(Messages.Count, renderedMessage);
                                    await  DataStore.AddItemAsync(renderedMessage);
-                                }
-                                else
-                                {
-                                    Messages.Insert(Messages.Count, renderedMessage);
-                                    await DataStore.AddItemAsync(renderedMessage);
-                                    PendingMessageCount++;
-                                }
+                              //  }
+                               // else
+                               // {
+                                //    Messages.Insert(Messages.Count, renderedMessage);
+                                //    await DataStore.AddItemAsync(renderedMessage);
+                               //     PendingMessageCount++;
+                               // }
                             }
                         }
                     }
@@ -137,34 +137,34 @@ namespace LaVida.ViewModels
             });
             return true;
         }
-        void OnMessageAppearing(MessageModel message)
-        {
-            var idx = Messages.IndexOf(message);
-            if (idx <= 6)
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    while (DelayedMessages.Count > 0)
-                    {
-                        Messages.Insert(Messages.Count, DelayedMessages.Dequeue());
-                    }
-                    LastMessageVisible = true;
-                    PendingMessageCount = 0;
-                });
-            }
-        }
+        /*  void OnMessageAppearing(MessageModel message)
+          {
+              var idx = Messages.IndexOf(message);
+              if (idx <= 6)
+              {
+                  Device.BeginInvokeOnMainThread(() =>
+                  {
+                      while (DelayedMessages.Count > 0)
+                      {
+                          Messages.Insert(Messages.Count, DelayedMessages.Dequeue());
+                      }
+                      LastMessageVisible = true;
+                      PendingMessageCount = 0;
+                  });
+              }
+          }
 
-        void OnMessageDisappearing(MessageModel message)
-        {
-            var idx = Messages.IndexOf(message);
-            if (idx >= 6)
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    LastMessageVisible = false;
-                });
+          void OnMessageDisappearing(MessageModel message)
+          {
+              var idx = Messages.IndexOf(message);
+              if (idx >= 6)
+              {
+                  Device.BeginInvokeOnMainThread(() =>
+                  {
+                      LastMessageVisible = false;
+                  });
 
-            }
-        }
+              }
+          }*/
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LaVida.Messages;
 using LaVida.Models;
 using LaVida.Services;
+using LaVida.Database;
 using LaVida.Views;
 using Xamarin.Forms;
 namespace LaVida
