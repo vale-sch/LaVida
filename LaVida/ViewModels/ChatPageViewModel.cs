@@ -64,10 +64,10 @@ namespace LaVida.ViewModels
                     await Task.Delay(500);
                     foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)))
                     {
-                        if (Messages.Count > MessagesAmountOnScrollOrigin)
+                        if (DataStore.GetItemsAsync().Result.Count() > MessagesAmountOnScrollOrigin)
                         {
-                            Messages.RemoveAt(Messages.Count - 1);
                             await DataStore.DeleteItemAsync(Messages.ElementAt(Messages.Count - 1));
+                            Messages.RemoveAt(Messages.Count - 1);
                         }
                     }
 
@@ -82,7 +82,7 @@ namespace LaVida.ViewModels
                     ToBeRenderedMessageFactor = ChatPage.ScrollingFactor;
                 }
              
-                if (Messages.Count <= MessageStream.Messages.Count)
+                if (DataStore.GetItemsAsync().Result.Count() <= MessageStream.Messages.Count)
                 {
                     if (!hasScrolledUp)
                         foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)))
@@ -91,8 +91,8 @@ namespace LaVida.ViewModels
                             {
                                 if (Messages.Count >= ToBeRenderedMessageFactor)
                                 {
-                                    Messages.RemoveAt(Messages.Count - 1);
                                     await DataStore.DeleteItemAsync(Messages.ElementAt(Messages.Count - 1));
+                                    Messages.RemoveAt(Messages.Count - 1);
                                 }
 
 
