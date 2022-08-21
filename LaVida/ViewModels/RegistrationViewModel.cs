@@ -32,10 +32,11 @@ namespace LaVida.ViewModels
                         App.myAccount.NamePhoneIntern = contactFromIntern.GivenName;
 
 
-
+            await MongoAccountDB.UpdateOneItem(App.myAccount);
+            var accountsFromDB = await MongoAccountDB.GetAllAccounts();
             foreach (var contactFromIntern in ContactsCollection)
                 foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
-                    foreach (var accountFromDB in MongoAccountDB.AccountsFromDB)
+                    foreach (var accountFromDB in accountsFromDB)
                     {
                         if (WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber) == WhiteSpace.RemoveWhitespace(accountFromDB.PhoneNumber) && WhiteSpace.RemoveWhitespace(App.myAccount.PhoneNumber) != WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber))
                         {

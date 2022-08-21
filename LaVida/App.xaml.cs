@@ -50,9 +50,9 @@ namespace LaVida
             else
             {
                 var mySQLAccount = account.ToArray()[0];
-                await MongoAccountDB.GetAccountById(mySQLAccount.AccountID);
+               var myAccountFromDB =  await MongoAccountDB.GetAccountById(mySQLAccount.AccountID);
 
-                myAccount = MongoAccountDB.accountFromDB;
+                myAccount = myAccountFromDB;
                 _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new ChatsOverviewPage()); });
 
             }

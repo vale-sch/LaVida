@@ -53,19 +53,18 @@ namespace LaVida.Services
         {
             await mongoCollection.DeleteOneAsync(a => a.Id == accountToRemove.Id);
         }
-        public static async Task GetAllAccounts()
+        public static async Task<List<Account>> GetAllAccounts()
         {
-            var allItems = await mongoCollection
+            return await mongoCollection
         .Find(new BsonDocument())
         .ToListAsync();
-            foreach(var account in allItems)
-                AccountsFromDB.Add(account);
+     
         }
-        public static async Task GetAccountById(string accountId)
+        public static async Task <Account> GetAccountById(string accountId)
         {
-            var singleAccount = await mongoCollection.Find(a => a.AccountID.Equals(accountId))
+            return await mongoCollection.Find(a => a.AccountID.Equals(accountId))
                 .FirstOrDefaultAsync();
-            accountFromDB = singleAccount;
+          
         }
     }
 }
