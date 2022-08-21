@@ -9,22 +9,20 @@ using System.Threading.Tasks;
 
 namespace LaVida.Services
 {
-    public static class MongoAccountDB
+    public class MongoDBDatabase
     {
         public static IMongoCollection<Account> mongoCollection;
-        public static ObservableCollection<Account> AccountsFromDB = new ObservableCollection<Account>();
-        public static Account accountFromDB = new Account();
 
-        private static MongoClient Client;
-        private static IMongoDatabase Database;
-        private static readonly string dbName = "AccountsDB";
-        private static readonly string collectionName = "Accounts";
+        private  readonly MongoClient Client;
+        private  readonly IMongoDatabase Database;
+        private  readonly string dbName = "AccountsDB";
+        private  readonly string collectionName = "Accounts";
 
-        public static void Connect()
+        public MongoDBDatabase(string dbPath)
         {
             try
             {
-                var connectionString = "mongodb://LaVidaAdmin:pO85OZbNjw1iNxvV@ac-jhy5v3n-shard-00-00.x5tlyr9.mongodb.net:27017,ac-jhy5v3n-shard-00-01.x5tlyr9.mongodb.net:27017,ac-jhy5v3n-shard-00-02.x5tlyr9.mongodb.net:27017/?ssl=true&replicaSet=atlas-9uw66t-shard-0&authSource=admin&retryWrites=true&w=majority";
+                var connectionString = dbPath;
                 Client = new MongoClient(connectionString);
                 Database = Client.GetDatabase(dbName);
 
@@ -41,26 +39,26 @@ namespace LaVida.Services
 
 
         }
-        public static async Task InsertOne(Account accountToInsert)
+        public  async Task InsertOne(Account accountToInsert)
         {
             await mongoCollection.InsertOneAsync(accountToInsert);
         }
-        public static async Task UpdateOneItem(Account accountToUpdate)
+        public  async Task UpdateOneItem(Account accountToUpdate)
         {
             await mongoCollection.ReplaceOneAsync(b => b.Id == accountToUpdate.Id, accountToUpdate);
         }
-        public static async Task RemoveOneItem(Account accountToRemove)
+        public  async Task RemoveOneItem(Account accountToRemove)
         {
             await mongoCollection.DeleteOneAsync(a => a.Id == accountToRemove.Id);
         }
-        public static async Task<List<Account>> GetAllAccounts()
+        public  async Task<List<Account>> GetAllAccounts()
         {
             return await mongoCollection
         .Find(new BsonDocument())
         .ToListAsync();
      
         }
-        public static async Task <Account> GetAccountById(string accountId)
+        public  async Task <Account> GetAccountById(string accountId)
         {
             return await mongoCollection.Find(a => a.AccountID.Equals(accountId))
                 .FirstOrDefaultAsync();

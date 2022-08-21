@@ -1,4 +1,5 @@
 ﻿using LaVida.Models;
+using LaVida.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,13 +21,7 @@ namespace LaVida.Services
         private void StreamMessagesFromServer()
         {
 
-            FirebaseDB.firebaseClient.Child(Connection.ChatID).AsObservable<MessageModel>().Subscribe((dbevent) =>
-            {
-                if (dbevent.Object != null && !string.IsNullOrEmpty(dbevent.Object.Message))
-                {
-                    Messages.Add(dbevent.Object);
-                }
-            });
+            ChatsViewModel.FirebaseDB.StreamMessagesFromServer(Connection, Messages);
         }
     }
 }

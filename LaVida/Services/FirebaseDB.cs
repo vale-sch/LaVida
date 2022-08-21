@@ -1,21 +1,23 @@
 ﻿using Firebase.Database;
+using Firebase.Database.Query;
+using LaVida.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LaVida.Services
 {
-    public static  class FirebaseDB
+    public class FirebaseDB
     {
-        public static FirebaseClient firebaseClient;
+        private static FirebaseClient firebaseClient;
 
-        public static void Connect()
+        public FirebaseDB(string dbPath)
         {
             Console.WriteLine("Try to connect to RealtimeDB...");
 
             try
             {
-                firebaseClient = new FirebaseClient("https://lavida-b6aca-default-rtdb.europe-west1.firebasedatabase.app/");
+                firebaseClient = new FirebaseClient(dbPath);
             }
             catch (Exception ex)
             {
@@ -23,5 +25,21 @@ namespace LaVida.Services
             }
             Console.WriteLine("...Connection established!");
         }
+        public void SendMessageInStream(Connection connection, MessageModel message)
+        {
+            firebaseClient.Child(connection.ChatID).PostAsync(message, false);
+
+        }
+        public void StreamMessagesFromServer(Connection connection, List<MessageModel> messageModels)
+        {
+            firebaseClient.Child(connection.ChatID).AsObservable<MessageModel>().Subscribe((dbevent) =>
+            {
+                if (dbevent.Object != null && !string.IsNullOrEmpty(dbevent.Object.Message))
+                {
+                    messageModels.Add(dbevent.Object);
+                }
+            });
+        }
+
     }
 }

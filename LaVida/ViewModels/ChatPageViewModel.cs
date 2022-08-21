@@ -41,7 +41,7 @@ namespace LaVida.ViewModels
 
                 if (!string.IsNullOrEmpty(TextToSend))
                 {
-                    SendMessage(new MessageModel() { Message = DateTime.Now.ToString("HH:mm") + "\n" + TextToSend, UserName = App.myAccount.Name, DateTime = DateTime.Now });
+                    ChatsViewModel.FirebaseDB.SendMessageInStream(MessageStream.Connection, new MessageModel() { Message = DateTime.Now.ToString("HH:mm") + "\n" + TextToSend, UserName = App.myAccount.Name, DateTime = DateTime.Now });
                     TextToSend = String.Empty;
                 }
 
@@ -59,25 +59,11 @@ namespace LaVida.ViewModels
             Device.BeginInvokeOnMainThread(async () =>
             {
 
-                if (ChatPage.ScrollingFactor == MessagesAmountOnScrollOrigin && hasScrolledUp)
-                {
-                    await Task.Delay(500);
-                    foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)))
-                    {
-                        if (DataStore.GetItemsAsync().Result.Count() > MessagesAmountOnScrollOrigin)
-                        {
-                            await DataStore.DeleteItemAsync(Messages.ElementAt(Messages.Count - 1));
-                            Messages.RemoveAt(Messages.Count - 1);
-                        }
-                    }
-
-                    hasScrolledUp = false;
-                    ToBeRenderedMessageFactor = MessagesAmountOnScrollOrigin;
-                }
+               
 
                 if (ToBeRenderedMessageFactor + 9 <= ChatPage.ScrollingFactor)
                 {
-                    await Task.Delay(500);
+                    await Task.Delay(300);
                     hasScrolledUp = true;
                     ToBeRenderedMessageFactor = ChatPage.ScrollingFactor;
                 }
@@ -89,7 +75,7 @@ namespace LaVida.ViewModels
                         {
                             if (!DataStore.GetItemsAsync().Result.Contains(renderedMessage))
                             {
-                                if (Messages.Count >= ToBeRenderedMessageFactor)
+                                if (DataStore.GetItemsAsync().Result.Count() >= ToBeRenderedMessageFactor)
                                 {
                                     await DataStore.DeleteItemAsync(Messages.ElementAt(Messages.Count - 1));
                                     Messages.RemoveAt(Messages.Count - 1);
@@ -131,17 +117,25 @@ namespace LaVida.ViewModels
                         }
                     }
                 }
+                if (ChatPage.ScrollingFactor == MessagesAmountOnScrollOrigin && hasScrolledUp)
+                {
+                    await Task.Delay(500);
+                    foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)))
+                    {
+                        if (DataStore.GetItemsAsync().Result.Count() > MessagesAmountOnScrollOrigin)
+                        {
+                            await DataStore.DeleteItemAsync(Messages.ElementAt(Messages.Count - 1));
+                            Messages.RemoveAt(Messages.Count - 1);
+                        }
+                    }
 
+                    hasScrolledUp = false;
+                    ToBeRenderedMessageFactor = MessagesAmountOnScrollOrigin;
+                }
                 await Task.Delay(50);
                 GetMessagesFromStream();
             });
             return true;
-        }
-
-        private void SendMessage(MessageModel newMessage)
-        {
-
-            FirebaseDB.firebaseClient.Child(MessageStream.Connection.ChatID).PostAsync(newMessage, false);
         }
         void OnMessageAppearing(MessageModel message)
         {

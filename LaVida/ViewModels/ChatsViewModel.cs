@@ -23,10 +23,20 @@ namespace LaVida.ViewModels
         public Command AddConnectionCommand { get; set; }
         public Xamarin.Forms.Command<RealTimeMessageStream> ChatTapped { get; set; }
         private readonly Dictionary<RealTimeMessageStream, Page> chatPages = new Dictionary<RealTimeMessageStream, Page>();
+        private static FirebaseDB firebaseDB;
+
+        public static FirebaseDB FirebaseDB
+        {
+            get
+            {
+                if (firebaseDB == null)
+                    firebaseDB = new FirebaseDB("https://lavida-b6aca-default-rtdb.europe-west1.firebasedatabase.app/");
+
+                return firebaseDB;
+            }
+        }
         public ChatsViewModel()
         {
-            FirebaseDB.Connect();
-
             RealTimeMessages = new ObservableCollection<RealTimeMessageStream>();
             LoadConnections();
 

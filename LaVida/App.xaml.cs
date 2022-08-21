@@ -25,6 +25,18 @@ namespace LaVida
                 return sQLLocalDB;
             }
         }
+        private static MongoDBDatabase mongoDBDatabase;
+
+        public static MongoDBDatabase MongoDBDatabase
+        {
+            get
+            {
+                if (mongoDBDatabase == null)
+                    mongoDBDatabase = new MongoDBDatabase("mongodb://LaVidaAdmin:pO85OZbNjw1iNxvV@ac-jhy5v3n-shard-00-00.x5tlyr9.mongodb.net:27017,ac-jhy5v3n-shard-00-01.x5tlyr9.mongodb.net:27017,ac-jhy5v3n-shard-00-02.x5tlyr9.mongodb.net:27017/?ssl=true&replicaSet=atlas-9uw66t-shard-0&authSource=admin&retryWrites=true&w=majority");
+
+                return mongoDBDatabase;
+            }
+        }
         public App()
         {
             InitializeComponent();
@@ -35,7 +47,6 @@ namespace LaVida
         }
         private async void InitializeAccount()
         {
-            MongoAccountDB.Connect();
 
             var account = await SQLLLocalDB.GetMyAccount();
             if (account.Count == 0)
@@ -50,7 +61,7 @@ namespace LaVida
             else
             {
                 var mySQLAccount = account.ToArray()[0];
-               var myAccountFromDB =  await MongoAccountDB.GetAccountById(mySQLAccount.AccountID);
+               var myAccountFromDB =  await MongoDBDatabase.GetAccountById(mySQLAccount.AccountID);
 
                 myAccount = myAccountFromDB;
                 _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new ChatsOverviewPage()); });

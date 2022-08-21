@@ -24,16 +24,14 @@ namespace LaVida.ViewModels
         public async Task LoadPossibleConnectionsFromDB()
         {
             ContactsCollection = await ContactCore.GetContactCollection();
-            await MongoAccountDB.GetAllAccounts();
-
             foreach (var contactFromIntern in ContactsCollection)
                 foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
                     if (WhiteSpace.RemoveWhitespace(App.myAccount.PhoneNumber) == WhiteSpace.RemoveWhitespace(phoneFromIntern.PhoneNumber))
                         App.myAccount.NamePhoneIntern = contactFromIntern.GivenName;
 
 
-            await MongoAccountDB.UpdateOneItem(App.myAccount);
-            var accountsFromDB = await MongoAccountDB.GetAllAccounts();
+            await App.MongoDBDatabase.UpdateOneItem(App.myAccount);
+            var accountsFromDB = await App.MongoDBDatabase.GetAllAccounts();
             foreach (var contactFromIntern in ContactsCollection)
                 foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
                     foreach (var accountFromDB in accountsFromDB)
@@ -45,8 +43,8 @@ namespace LaVida.ViewModels
                             App.myAccount.Connections.Add(connection);
                             accountFromDB.Connections.Add(connectionForPartner);
                             accountFromDB.HasToRefreshConnections = true;
-                            await MongoAccountDB.UpdateOneItem(accountFromDB);
-                            await MongoAccountDB.UpdateOneItem(App.myAccount);
+                            await App.MongoDBDatabase.UpdateOneItem(accountFromDB);
+                            await App.MongoDBDatabase.UpdateOneItem(App.myAccount);
                         }
                     }
         }
