@@ -24,7 +24,7 @@ namespace LaVida.ViewModels
         public async Task InitializeConnectionsInDB()
         {
             ContactsCollection = await ContactCore.GetContactCollection();
-            await MongoAccountDB.GetAllAccountsFromDB();
+            await MongoAccountDB.GetAllAccounts();
             foreach (var contactFromIntern in ContactsCollection)
                 foreach (var phoneFromIntern in contactFromIntern.Phones.ToArray())
                     foreach (var accountFromDB in MongoAccountDB.AccountsFromDB)

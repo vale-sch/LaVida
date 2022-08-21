@@ -10,7 +10,7 @@
            
             <!-- Light colors -->
             <Color x:Key="LightPrimary">#577BC1</Color>
-            <Color x:Key="light-primary-back-title-color">#2666CF</Color>
+            <Color x:Key="light-primary-back-title-color">#277BC0</Color>
             <Color x:Key="LightPrimaryColor">White</Color>
             <Color x:Key="LightSecondaryColor">#303841</Color>
             <Color x:Key="LightOwnCellColor">#8CC0DE</Color>

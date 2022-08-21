@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace LaVida.Services
 {
-    internal class MongoAccountDB
+    public static class MongoAccountDB
     {
         public static IMongoCollection<Account> mongoCollection;
         public static ObservableCollection<Account> AccountsFromDB = new ObservableCollection<Account>();
+        public static Account accountFromDB = new Account();
 
         private static MongoClient Client;
         private static IMongoDatabase Database;
@@ -37,8 +38,8 @@ namespace LaVida.Services
                 Console.WriteLine(ex.Message);
             }
 
-            
-           
+
+
         }
         public static async Task InsertOne(Account accountToInsert)
         {
@@ -52,22 +53,19 @@ namespace LaVida.Services
         {
             await mongoCollection.DeleteOneAsync(a => a.Id == accountToRemove.Id);
         }
-        public static async Task GetAllAccountsFromDB()
+        public static async Task GetAllAccounts()
         {
-            try
-            {
-                var allAccounts = await mongoCollection
-           .Find(new BsonDocument())
-           .ToListAsync();
-                Console.WriteLine(allAccounts.Count);
-                foreach (var account in allAccounts)
-                    AccountsFromDB.Add(account);
-
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-            }
+            var allItems = await mongoCollection
+        .Find(new BsonDocument())
+        .ToListAsync();
+            foreach(var account in allItems)
+                AccountsFromDB.Add(account);
+        }
+        public static async Task GetAccountById(string accountId)
+        {
+            var singleAccount = await mongoCollection.Find(a => a.AccountID.Equals(accountId))
+                .FirstOrDefaultAsync();
+            accountFromDB = singleAccount;
         }
     }
 }

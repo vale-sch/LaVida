@@ -33,7 +33,7 @@ namespace LaVida
         private async void Initialize()
         {
             MongoAccountDB.Connect();
-            
+
             var account = await SQLLLocalDB.GetMyAccount();
             if (account.Count == 0)
             {
@@ -46,11 +46,10 @@ namespace LaVida
             }
             else
             {
-                await MongoAccountDB.GetAllAccountsFromDB();
                 var mySQLAccount = account.ToArray()[0];
-                foreach (var accountDB in MongoAccountDB.AccountsFromDB)
-                    if (mySQLAccount.Id == accountDB.Id)
-                        myAccount = accountDB;
+                await MongoAccountDB.GetAccountById(mySQLAccount.AccountID);
+
+                myAccount = MongoAccountDB.accountFromDB;
                 _ = Device.InvokeOnMainThreadAsync(() => { NavigationManager.NextPageWithoutBack(new ChatsOverviewPage()); });
 
             }
