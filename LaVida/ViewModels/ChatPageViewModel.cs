@@ -41,7 +41,7 @@ namespace LaVida.ViewModels
 
                 if (!string.IsNullOrEmpty(TextToSend))
                 {
-                    SendMessage(new MessageModel() { Message = DateTime.Now.ToString() + "\n" + TextToSend, UserName = App.myAccount.Name, DateTime = DateTime.Now });
+                    SendMessage(new MessageModel() { Message = DateTime.Now.ToString("HH:mm") + "\n" + TextToSend, UserName = App.myAccount.Name, DateTime = DateTime.Now });
                     TextToSend = String.Empty;
                 }
 
@@ -65,7 +65,10 @@ namespace LaVida.ViewModels
                     foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)))
                     {
                         if (Messages.Count > MessagesAmountOnScrollOrigin)
+                        {
                             Messages.RemoveAt(Messages.Count - 1);
+                            await DataStore.DeleteItemAsync(Messages.ElementAt(Messages.Count - 1));
+                        }
                     }
 
                     hasScrolledUp = false;
@@ -78,25 +81,32 @@ namespace LaVida.ViewModels
                     hasScrolledUp = true;
                     ToBeRenderedMessageFactor = ChatPage.ScrollingFactor;
                 }
+             
                 if (Messages.Count <= MessageStream.Messages.Count)
                 {
                     if (!hasScrolledUp)
                         foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)))
                         {
-                            if (!Messages.Contains(renderedMessage))
+                            if (!DataStore.GetItemsAsync().Result.Contains(renderedMessage))
                             {
                                 if (Messages.Count >= ToBeRenderedMessageFactor)
+                                {
                                     Messages.RemoveAt(Messages.Count - 1);
+                                    await DataStore.DeleteItemAsync(Messages.ElementAt(Messages.Count - 1));
+                                }
 
 
                                 if (LastMessageVisible)
+                                {
                                     Messages.Insert(0, renderedMessage);
+                                    await DataStore.AddItemAsync(renderedMessage);
+                                }
                                 else
                                 {
                                     Messages.Insert(0, renderedMessage);
+                                    await DataStore.AddItemAsync(renderedMessage);
                                     PendingMessageCount++;
                                 }
-                                await Task.Delay(2);
 
                             }
                         }
@@ -104,17 +114,19 @@ namespace LaVida.ViewModels
                     {
                         foreach (var renderedMessage in MessageStream.Messages.Skip(Math.Max(0, MessageStream.Messages.Count - ToBeRenderedMessageFactor)).Reverse())
                         {
-                            if (!Messages.Contains(renderedMessage))
+                            if (!DataStore.GetItemsAsync().Result.Contains(renderedMessage))
                             {
                                 if (LastMessageVisible)
+                                {
                                     Messages.Insert(Messages.Count, renderedMessage);
+                                   await  DataStore.AddItemAsync(renderedMessage);
+                                }
                                 else
                                 {
                                     Messages.Insert(Messages.Count, renderedMessage);
+                                    await DataStore.AddItemAsync(renderedMessage);
                                     PendingMessageCount++;
                                 }
-                                await Task.Delay(2);
-
                             }
                         }
                     }

@@ -41,7 +41,7 @@ namespace LaVida.Views
             Account newAccount = new Account() { Name = userName.Text, Password = password.Text, PhoneNumber = phoneNumber.Text, AccountID = App.DeviceIdentifier.DeviceID, HasToRefreshConnections = false, Connections = new List<Connection>() };
             App.myAccount = newAccount;
             await MongoAccountDB.InsertOne(newAccount);
-            await registrationViewModel.InitializeConnectionsInDB();
+            await registrationViewModel.LoadPossibleConnectionsFromDB();
             await App.SQLLLocalDB.SaveMyAccount(new SQLAccount() { Id = newAccount.Id, Name = newAccount.Name, AccountID = newAccount.AccountID });
             NavigationManager.NextPageWithoutBack(new ChatsOverviewPage());
         }

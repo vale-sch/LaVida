@@ -31,7 +31,6 @@ namespace LaVida.Services
 
                 foreach (var contact in contacts)
                     newContactsCollection.Add(contact);
-
                 return newContactsCollection;
             }
             catch (Exception ex)

@@ -32,17 +32,17 @@ namespace LaVida.Services
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> DeleteItemAsync(string Message)
+        public async Task<bool> DeleteItemAsync(MessageModel Message)
         {
-            var oldItem = Messages.Where((MessageModel arg) => arg.Message == Message).FirstOrDefault();
+            var oldItem = Messages.Where((MessageModel arg) => arg == Message).FirstOrDefault();
             Messages.Remove(oldItem);
 
             return await Task.FromResult(true);
         }
 
-        public async Task<MessageModel> GetItemAsync(string Message)
+        public async Task<MessageModel> GetItemAsync(MessageModel Message)
         {
-            return await Task.FromResult(Messages.FirstOrDefault(s => s.Message == Message));
+            return await Task.FromResult(Messages.FirstOrDefault(s => s == Message));
         }
 
         public async Task<IEnumerable<MessageModel>> GetItemsAsync(bool forceRefresh = false)

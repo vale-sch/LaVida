@@ -11,6 +11,7 @@ namespace LaVida
     public partial class App : Application
     {
         public static DeviceIDMessage DeviceIdentifier = new DeviceIDMessage();
+
         public static Account myAccount;
         private static SQLLocalDB sQLLocalDB;
 
@@ -27,10 +28,12 @@ namespace LaVida
         public App()
         {
             InitializeComponent();
+            DependencyService.Register<MockDataStore>();
+
             MainPage = new NavigationPage(new MainPage());
-            Initialize();
+            InitializeAccount();
         }
-        private async void Initialize()
+        private async void InitializeAccount()
         {
             MongoAccountDB.Connect();
 

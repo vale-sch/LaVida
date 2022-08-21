@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "196132647217",
+    "firebase_url": "https://lavida-b6aca-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "lavida-b6aca",
+    "storage_bucket": "lavida-b6aca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196132647217:android:328a4a0a5d7a31ca170010",
+        "android_client_info": {
+          "package_name": "com.schmidberger.lavida"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196132647217-28ih4cf5m25p4evmil3vh1si0s68g7tl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqSNI29ihn2mSVNrXqlVNBY6sCpzbsH7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196132647217-28ih4cf5m25p4evmil3vh1si0s68g7tl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

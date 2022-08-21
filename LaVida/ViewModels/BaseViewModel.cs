@@ -5,11 +5,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
+using LaVida.Services;
 
 namespace LaVida.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        public IDataStore<MessageModel> DataStore => DependencyService.Get<IDataStore<MessageModel>>();
+
         protected bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName] string propertyName = "",
             Action onChanged = null)

@@ -9,7 +9,7 @@ namespace LaVida.Models
         public string ChatPartner { get; set; }
         public string ChatPhoneNumber { get; set; }
         public ChatType ChatType { get; set; }
-
+        public List<string> AccountIDS { get; set; }
         public string ChatID { get; set; }
         public bool IsActive { get; set; }
 
