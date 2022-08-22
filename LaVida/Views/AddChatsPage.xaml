@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             x:Class="LaVida.Views.AddChatsPage"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:LaVida.ViewModels"  
+             xmlns:model="clr-namespace:LaVida.Services"
+             x:Name="BrowseConnectionPage"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true">
+    <ContentView x:DataType="local:AddChatViewModel">
+        <CollectionView x:Name="ItemsListView"
+                ItemsSource="{Binding RealTimeMessages}"
+                SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Spacing="8" HorizontalOptions="EndAndExpand"   >
+                        <Frame Style="{StaticResource outerFrame}">
+                            <Frame Style="{StaticResource innerFrame}">
+                                <StackLayout Style="{StaticResource itemsCardViewStackLayoutStyle}">
+                                    <StackLayout >
+
+                                        <StackLayout Padding="25" x:DataType="model:RealTimeMessageStream" >
+                                            <Label Text="{Binding Connection.ChatPartner}" 
+                                               LineBreakMode="NoWrap" 
+                                               Style="{StaticResource NameLabel}"
+                                               />
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer 
+                                                NumberOfTapsRequired="1"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:AddChatViewModel}}, Path=ChatTapped}"		
+                                                CommandParameter="{Binding .}">
+                                                </TapGestureRecognizer>
+                                            </StackLayout.GestureRecognizers>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </StackLayout>
+                            </Frame>
+                        </Frame>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentView>
+</ContentPage>

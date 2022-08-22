@@ -22,13 +22,16 @@
     <Compile Update="Views\ChatsOverviewPage.xaml.cs">
       <DependentUpon>ChatsOverviewPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\AddChatsPage.xaml.cs">
+      <DependentUpon>AddChatsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Views\ChatsOverviewPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\PossibleNewChats.xaml">
+    <EmbeddedResource Update="Views\AddChatsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

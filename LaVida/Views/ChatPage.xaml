@@ -11,8 +11,6 @@
             <local:ChatTemplateSelector x:Key="MessageTemplateSelector"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-
-
     <ContentView>
     <Grid RowSpacing="0" 
            ColumnSpacing="0" >

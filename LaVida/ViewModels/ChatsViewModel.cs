@@ -22,8 +22,9 @@ namespace LaVida.ViewModels
         private RealTimeMessageStream _selectedChat;
         public ObservableCollection<RealTimeMessageStream> RealTimeMessages { get; set; }
         public Command AddConnectionCommand { get; set; }
+
         public Xamarin.Forms.Command<RealTimeMessageStream> ChatTapped { get; set; }
-        private readonly Dictionary<RealTimeMessageStream, Page> chatPages = new Dictionary<RealTimeMessageStream, Page>();
+        public static Dictionary<RealTimeMessageStream, Page> chatPages = new Dictionary<RealTimeMessageStream, Page>();
         private static FirebaseDB firebaseDB;
 
         public static FirebaseDB FirebaseDB
@@ -39,10 +40,9 @@ namespace LaVida.ViewModels
         public ChatsViewModel()
         {
             RealTimeMessages = new ObservableCollection<RealTimeMessageStream>();
-            LoadConnections();
-
 
             AddConnectionCommand = new Command(OnConnectionAdd);
+
 
             ChatTapped = new Xamarin.Forms.Command<RealTimeMessageStream>(OnConnectionSelected);
 
@@ -51,10 +51,11 @@ namespace LaVida.ViewModels
         void LoadConnections()
         {
             foreach (var connection in App.myAccount.Connections)
-                Device.InvokeOnMainThreadAsync(() =>
-                {
-                    RealTimeMessages.Add(new RealTimeMessageStream(connection, new List<MessageModel>()));
-                });
+                if (connection.IsActive)
+                    Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        RealTimeMessages.Add(new RealTimeMessageStream(connection, new List<MessageModel>()));
+                    });
 
         }
         /* void ExecuteLoadConnectionCommand()
@@ -88,13 +89,15 @@ namespace LaVida.ViewModels
                 IsBusy = false;
             }
         }*/
-        private void OnConnectionAdd(object obj)
-        {
-            NavigationManager.NextPageWithBack(new PossibleNewChats());
-        }
+ 
         public void OnAppearing()
         {
             SelectedConnection = null;
+            LoadConnections();
+        }
+        private void OnConnectionAdd(object obj)
+        {
+            NavigationManager.NextPageWithBack(new AddChatsPage());
         }
         public RealTimeMessageStream SelectedConnection
         {

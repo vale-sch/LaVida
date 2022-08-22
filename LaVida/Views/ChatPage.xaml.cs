@@ -14,6 +14,7 @@ namespace LaVida.Views
     public partial class ChatPage : ContentPage
     {
         public static int ScrollingFactor = 30;
+
         public ChatPage(RealTimeMessageStream realTimeMessageStream)
         {
             InitializeComponent();
