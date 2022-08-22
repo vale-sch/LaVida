@@ -21,9 +21,9 @@ namespace LaVida.Services
         }
         public static void NextPageNewChat(Page oldAddPage, Page newChat)
         {
-            App.Current.MainPage.Navigation.RemovePage(oldAddPage);
+           
             _ = App.Current.MainPage.Navigation.PushAsync(newChat);
-
+            App.Current.MainPage.Navigation.RemovePage(oldAddPage);
 
         }
     }
