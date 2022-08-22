@@ -52,10 +52,15 @@ namespace LaVida.ViewModels
         {
             foreach (var connection in App.myAccount.Connections)
                 if (connection.IsActive)
-                    Device.InvokeOnMainThreadAsync(() =>
-                    {
+                {
+                    bool hasNewConnection = true;
+                    foreach (var realTimeMessageStream in RealTimeMessages)
+                        if (realTimeMessageStream.Connection == connection) hasNewConnection = false;
+                    if (hasNewConnection)
                         RealTimeMessages.Add(new RealTimeMessageStream(connection, new List<MessageModel>()));
-                    });
+
+                }
+
 
         }
         /* void ExecuteLoadConnectionCommand()
@@ -89,7 +94,7 @@ namespace LaVida.ViewModels
                 IsBusy = false;
             }
         }*/
- 
+
         public void OnAppearing()
         {
             SelectedConnection = null;
